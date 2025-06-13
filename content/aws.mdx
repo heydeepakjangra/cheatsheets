@@ -169,7 +169,8 @@ aws ec2 describe-volumes
 aws ec2 describe-volumes --filters "Name=status,Values=available"
 
 # List volumes by state
-aws ec2 describe-volumes --filters "Name=status,Values=creating,available,in-use,deleting,deleted,error"
+aws ec2 describe-volumes \
+  --filters "Name=status,Values=creating,available,in-use,deleting,deleted,error"
 
 # Create volume
 aws ec2 create-volume \
@@ -192,9 +193,10 @@ aws ec2 delete-volume --volume-id <volume-id>
 
 #### Snapshots and AMIs
 ```bash
-# Create snapshot
-aws ec2 create-snapshot --volume-id <volume-id>
-aws ec2 create-snapshot --volume-id <volume-id> --description "snapshot-$(date +'%Y-%m-%d_%H-%M-%S')"
+# Create snapshot with description
+aws ec2 create-snapshot \
+  --volume-id <volume-id> \
+  --description "snapshot-$(date +'%Y-%m-%d_%H-%M-%S')"
 
 # List snapshots
 aws ec2 describe-snapshots --owner-ids self
@@ -223,7 +225,9 @@ aws ec2 create-image \
 aws ec2 describe-images --owners self
 
 # List public Amazon AMIs
-aws ec2 describe-images --owners amazon --filters "Name=name,Values=amzn2-ami-hvm-*"
+aws ec2 describe-images \
+  --owners amazon \
+  --filters "Name=name,Values=amzn2-ami-hvm-*"
 
 # List AMIs with filters
 aws ec2 describe-images \
@@ -314,7 +318,9 @@ aws s3api get-bucket-location --bucket <bucket-name>
 aws s3api get-bucket-policy --bucket <bucket-name>
 
 # Set bucket policy
-aws s3api put-bucket-policy --bucket <bucket-name> --policy file://policy.json
+aws s3api put-bucket-policy \
+  --bucket <bucket-name> \
+  --policy file://policy.json
 ```
 
 ### File Operations
@@ -361,10 +367,15 @@ aws s3 rm s3://<bucket-name>/folder/ --recursive
 aws s3 rm s3://<bucket-name> --recursive
 
 # Get object metadata
-aws s3api head-object --bucket <bucket-name> --key file.txt
+aws s3api head-object \
+  --bucket <bucket-name> \
+  --key file.txt
 
 # Set object ACL
-aws s3api put-object-acl --bucket <bucket-name> --key file.txt --acl public-read
+aws s3api put-object-acl \
+  --bucket <bucket-name> \
+  --key file.txt \
+  --acl public-read
 ```
 
 ## IAM (Identity and Access Management)
@@ -390,10 +401,14 @@ aws iam delete-user --user-name <username>
 aws iam get-user --user-name <username>
 
 # Add user to group
-aws iam add-user-to-group --user-name <username> --group-name <group-name>
+aws iam add-user-to-group \
+  --user-name <username> \
+  --group-name <group-name>
 
 # Remove user from group
-aws iam remove-user-from-group --user-name <username> --group-name <group-name>
+aws iam remove-user-from-group \
+  --user-name <username> \
+  --group-name <group-name>
 
 # List groups for user
 aws iam get-groups-for-user --user-name <username>
@@ -408,10 +423,15 @@ aws iam list-access-keys --user-name <username>
 aws iam create-access-key --user-name <username>
 
 # Delete access key
-aws iam delete-access-key --user-name <username> --access-key-id <access-key-id>
+aws iam delete-access-key \
+  --user-name <username> \
+  --access-key-id <access-key-id>
 
 # Update access key status
-aws iam update-access-key --user-name <username> --access-key-id <access-key-id> --status Inactive
+aws iam update-access-key \
+  --user-name <username> \
+  --access-key-id <access-key-id> \
+  --status Inactive
 ```
 
 ### Policies and Roles
@@ -425,17 +445,25 @@ aws iam list-policies
 aws iam list-attached-user-policies --user-name <username>
 
 # Attach policy to user
-aws iam attach-user-policy --user-name <username> --policy-arn <policy-arn>
+aws iam attach-user-policy \
+  --user-name <username> \
+  --policy-arn <policy-arn>
 
 # Detach policy from user
-aws iam detach-user-policy --user-name <username> --policy-arn <policy-arn>
+aws iam detach-user-policy \
+  --user-name <username> \
+  --policy-arn <policy-arn>
 
 # Get policy document
 aws iam get-policy --policy-arn <policy-arn>
-aws iam get-policy-version --policy-arn <policy-arn> --version-id <version-id>
+aws iam get-policy-version \
+  --policy-arn <policy-arn> \
+  --version-id <version-id>
 
 # Create policy
-aws iam create-policy --policy-name <policy-name> --policy-document file://policy.json
+aws iam create-policy \
+  --policy-name <policy-name> \
+  --policy-document file://policy.json
 ```
 
 #### Role management
@@ -444,13 +472,17 @@ aws iam create-policy --policy-name <policy-name> --policy-document file://polic
 aws iam list-roles
 
 # Create role
-aws iam create-role --role-name <role-name> --assume-role-policy-document file://trust-policy.json
+aws iam create-role \
+  --role-name <role-name> \
+  --assume-role-policy-document file://trust-policy.json
 
 # Delete role
 aws iam delete-role --role-name <role-name>
 
 # Attach policy to role
-aws iam attach-role-policy --role-name <role-name> --policy-arn <policy-arn>
+aws iam attach-role-policy \
+  --role-name <role-name> \
+  --policy-arn <policy-arn>
 
 # List attached role policies
 aws iam list-attached-role-policies --role-name <role-name>
@@ -514,8 +546,9 @@ aws lambda invoke \
   output.json
 
 # Get function logs
-aws logs describe-log-groups --log-group-name-prefix /aws/lambda/<function-name>
-aws logs get-log-events --log-group-name /aws/lambda/<function-name> --log-stream-name <stream-name>
+aws logs get-log-events \
+  --log-group-name /aws/lambda/<function-name> \
+  --log-stream-name <stream-name>
 ```
 
 #### Aliases and versions
@@ -542,7 +575,9 @@ aws lambda update-alias \
   --function-version <new-version>
 
 # Delete alias
-aws lambda delete-alias --function-name <function-name> --name <alias-name>
+aws lambda delete-alias \
+  --function-name <function-name> \
+  --name <alias-name>
 ```
 
 ## VPC (Virtual Private Cloud)
@@ -565,13 +600,19 @@ aws ec2 create-vpc --cidr-block 10.0.0.0/16
 aws ec2 delete-vpc --vpc-id <vpc-id>
 
 # Enable DNS hostnames
-aws ec2 modify-vpc-attribute --vpc-id <vpc-id> --enable-dns-hostnames
+aws ec2 modify-vpc-attribute \
+  --vpc-id <vpc-id> \
+  --enable-dns-hostnames
 
-# Enable DNS resolution
-aws ec2 modify-vpc-attribute --vpc-id <vpc-id> --enable-dns-support
+# Enable DNS support
+aws ec2 modify-vpc-attribute \
+  --vpc-id <vpc-id> \
+  --enable-dns-support
 
-# Get VPC attributes
-aws ec2 describe-vpc-attribute --vpc-id <vpc-id> --attribute enableDnsHostnames
+# Describe VPC attribute
+aws ec2 describe-vpc-attribute \
+  --vpc-id <vpc-id> \
+  --attribute enableDnsHostnames
 ```
 
 ### Subnets
@@ -715,7 +756,8 @@ aws rds reboot-db-instance --db-instance-identifier <db-instance-id>
 #### Database monitoring and backups
 ```bash
 # List public databases
-aws rds describe-db-instances --query 'DBInstances[?PubliclyAccessible==`true`].[DBInstanceIdentifier,Endpoint.Address]'
+aws rds describe-db-instances \
+  --query 'DBInstances[?PubliclyAccessible==`true`].[DBInstanceIdentifier,Endpoint.Address]'
 
 # List databases without deletion protection
 aws rds describe-db-instances \

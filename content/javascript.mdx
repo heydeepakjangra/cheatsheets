@@ -294,7 +294,8 @@ fruits.join(', ');                     // 'apple, banana, orange, banana'
 
 // Concatenate arrays
 const vegetables = ['carrot', 'potato'];
-fruits.concat(vegetables);             // ['apple', 'banana', 'orange', 'banana', 'carrot', 'potato']
+fruits.concat(vegetables);             
+// ['apple', 'banana', 'orange', 'banana', 'carrot', 'potato']
 
 // Convert to string
 fruits.toString();                     // 'apple,banana,orange,banana'
@@ -517,7 +518,12 @@ const user = {
     }
   }
 };
-const {info: {name: userName, contact: {email}}} = user;
+const {
+  info: {
+    name: userName, 
+    contact: {email}
+  }
+} = user;
 
 // Function parameter destructuring
 function displayUser({name, age}) {

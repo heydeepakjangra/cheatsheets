@@ -400,7 +400,8 @@ CSS animations bring your designs to life with smooth transitions and keyframe-b
 .animated-element {
   animation-name: slideIn;
   animation-duration: 2s | 500ms;
-  animation-timing-function: ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-timing-function: ease | linear | ease-in | ease-out | 
+                           ease-in-out | cubic-bezier(0.25, 0.1, 0.25, 1);
   animation-delay: 1s | 200ms;
   animation-iteration-count: 3 | infinite;
   animation-direction: normal | reverse | alternate | alternate-reverse;
@@ -605,21 +606,75 @@ Media queries are essential for responsive design, allowing different styles for
 
 #### Common responsive patterns
 ```css
+/* Tablet landscape with retina */
+@media only screen and 
+       (min-width: 641px) and 
+       (max-width: 1024px) {
+  .tablet-retina {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
 /* Desktop first breakpoints */
-@media all and (min-width: 1024px) and (max-width: 1280px) {
+@media all and 
+       (min-width: 1024px) and 
+       (max-width: 1280px) {
   /* Desktop styles */
 }
 
-@media all and (min-width: 768px) and (max-width: 1024px) {
+@media all and 
+       (min-width: 768px) and 
+       (max-width: 1024px) {
   /* Tablet landscape */
 }
 
-@media all and (min-width: 480px) and (max-width: 768px) {
+@media all and 
+       (min-width: 480px) and 
+       (max-width: 768px) {
   /* Tablet portrait */
 }
 
 @media all and (max-width: 480px) {
   /* Mobile */
+}
+
+/* iPhone Portrait */
+@media screen and 
+       (max-device-width: 480px) and 
+       (orientation: portrait) {
+  .iphone-portrait {
+    padding: 10px;
+  }
+}
+
+/* iPhone Landscape */
+@media screen and 
+       (max-device-width: 480px) and 
+       (orientation: landscape) {
+  .iphone-landscape {
+    padding: 5px;
+  }
+}
+
+/* iPad Portrait */
+@media screen and 
+       (min-device-width: 481px) and 
+       (max-device-width: 1024px) and 
+       (orientation: portrait) {
+  .ipad-portrait {
+    columns: 2;
+  }
+}
+
+/* iPad Landscape */
+@media screen and 
+       (min-device-width: 481px) and 
+       (max-device-width: 1024px) and 
+       (orientation: landscape) {
+  .ipad-landscape {
+    columns: 3;
+  }
 }
 ```
 
@@ -662,37 +717,6 @@ Media queries are essential for responsive design, allowing different styles for
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-}
-```
-
-#### Device-specific queries
-```css
-/* iPhone Portrait */
-@media screen and (max-device-width: 480px) and (orientation: portrait) {
-  .iphone-portrait {
-    padding: 10px;
-  }
-}
-
-/* iPhone Landscape */
-@media screen and (max-device-width: 480px) and (orientation: landscape) {
-  .iphone-landscape {
-    padding: 5px;
-  }
-}
-
-/* iPad Portrait */
-@media screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
-  .ipad-portrait {
-    columns: 2;
-  }
-}
-
-/* iPad Landscape */
-@media screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
-  .ipad-landscape {
-    columns: 3;
   }
 }
 ```

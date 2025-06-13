@@ -1,0 +1,481 @@
+---
+title: "cURL Cheatsheet"
+description: "Complete cURL cheatsheet covering HTTP requests, authentication, SSL, data transfer, and advanced options for command-line web interactions."
+image: "/images/cheatsheets/curl.png"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["curl", "http", "api", "web"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# cURL Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    cURL
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    HTTP
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    API
+  </span>
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    Web Tools
+  </span>
+</div>
+
+Complete reference for cURL commands, from basic HTTP requests to advanced data transfer, authentication, and performance monitoring.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🌐 Basic Requests</h3>
+    <p className="text-sm text-muted-foreground">Essential HTTP GET, POST, PUT, DELETE operations</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔐 Authentication</h3>
+    <p className="text-sm text-muted-foreground">Basic auth, tokens, and SSL certificate handling</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📊 Data Transfer</h3>
+    <p className="text-sm text-muted-foreground">Upload, download, and file operations</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📈 Performance</h3>
+    <p className="text-sm text-muted-foreground">Timing, debugging, and output formatting</p>
+  </div>
+</div>
+
+## Basic Commands
+
+### Help and Information
+
+#### Show help
+```bash
+curl -h
+```
+
+#### Show detailed help
+```bash
+curl --help
+```
+
+#### Show manual page
+```bash
+curl --manual
+```
+
+### Verbose Output
+
+#### Enable verbose output
+```bash
+curl -v
+```
+
+#### Enable extra verbose output
+```bash
+curl -vv
+```
+
+### Basic Requests
+
+#### Simple GET request
+```bash
+curl http://example.com
+```
+
+#### Display response headers only
+```bash
+curl -I http://example.com
+```
+
+#### Follow redirects
+```bash
+curl -L http://example.com
+```
+
+## File Operations
+
+### Download Files
+
+#### Redirect output to file
+```bash
+curl http://url/file > file
+```
+
+#### Write to specific file
+```bash
+curl -o filename http://url/file
+```
+
+#### Write to file with same name as remote
+```bash
+curl -O http://url/file
+```
+
+#### Download multiple files
+```bash
+curl -O http://url/file1 -O http://url/file2
+```
+
+### Execute Remote Scripts
+
+#### Execute remote bash script
+```bash
+bash <(curl -s http://url/script.sh)
+```
+
+## HTTP Methods
+
+### GET Requests
+
+#### Explicit GET request
+```bash
+curl -X GET http://example.com/api/data
+```
+
+#### GET with query parameters
+```bash
+curl "http://example.com/api/search?q=term&limit=10"
+```
+
+### POST Requests
+
+#### POST with JSON data
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"key":"value"}' \
+  http://example.com/api
+```
+
+#### POST with form data
+```bash
+curl -X POST \
+  -d "name=value&email=test@example.com" \
+  http://example.com/form
+```
+
+#### POST data from file
+```bash
+curl -X POST \
+  -d @data.json \
+  -H "Content-Type: application/json" \
+  http://example.com/api
+```
+
+### PUT Requests
+
+#### PUT with data
+```bash
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  -d '{"key":"value"}' \
+  http://example.com/api/resource
+```
+
+### DELETE Requests
+
+#### DELETE request
+```bash
+curl -X DELETE http://example.com/api/resource/123
+```
+
+## Authentication
+
+<Callout type="info">
+cURL supports various authentication methods for secure API access.
+</Callout>
+
+### Basic Authentication
+
+#### Basic auth with username and password
+```bash
+curl -u username:password http://example.com/protected
+```
+
+#### Basic auth with prompt for password
+```bash
+curl -u username http://example.com/protected
+```
+
+### Bearer Token Authentication
+
+#### Authorization header with bearer token
+```bash
+curl -H "Authorization: Bearer your_token_here" http://example.com/api
+```
+
+### API Key Authentication
+
+#### API key in header
+```bash
+curl -H "X-API-Key: your_api_key" http://example.com/api
+```
+
+#### API key in query parameter
+```bash
+curl "http://example.com/api?api_key=your_api_key"
+```
+
+## SSL and Security
+
+<Callout type="warn">
+Use SSL options carefully in production environments.
+</Callout>
+
+### SSL Certificate Handling
+
+#### Ignore SSL certificate errors
+```bash
+curl -k https://self-signed-cert.example.com
+```
+
+#### Specify CA certificate
+```bash
+curl --cacert ca-cert.pem https://example.com
+```
+
+#### Use client certificate
+```bash
+curl --cert client.pem \
+  --key client-key.pem \
+  https://example.com
+```
+
+## Headers and Cookies
+
+### Custom Headers
+
+#### Add custom header
+```bash
+curl -H "User-Agent: MyApp/1.0" http://example.com
+```
+
+#### Multiple custom headers
+```bash
+curl -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  http://example.com
+```
+
+#### Remove default header
+```bash
+curl -H "User-Agent:" http://example.com
+```
+
+### Cookie Management
+
+#### Send cookies
+```bash
+curl -b "session=abc123; user=john" http://example.com
+```
+
+#### Save cookies to file
+```bash
+curl -c cookies.txt http://example.com
+```
+
+#### Load cookies from file
+```bash
+curl -b cookies.txt http://example.com
+```
+
+## Advanced Options
+
+### Timeouts and Retries
+
+#### Set connection timeout
+```bash
+curl --connect-timeout 10 http://example.com
+```
+
+#### Set maximum time for operation
+```bash
+curl --max-time 30 http://example.com
+```
+
+#### Retry on failure
+```bash
+curl --retry 3 --retry-delay 2 http://example.com
+```
+
+### Proxy Settings
+
+#### Use HTTP proxy
+```bash
+curl --proxy http://proxy.example.com:8080 \
+  http://example.com
+```
+
+#### Use SOCKS proxy
+```bash
+curl --socks5 proxy.example.com:1080 http://example.com
+```
+
+## Performance Monitoring
+
+<Callout type="tip">
+Use write-out options to monitor request performance and debug issues.
+</Callout>
+
+### Basic Performance Metrics
+
+#### Show response code
+```bash
+curl -w "%{response_code}\n" -s -o /dev/null http://example.com
+```
+
+#### Show total time
+```bash
+curl -w "%{time_total}\n" -s -o /dev/null http://example.com
+```
+
+#### Show download speed
+```bash
+curl -w "%{speed_download}\n" -s -o /dev/null http://example.com
+```
+
+### Detailed Timing Information
+
+#### Complete timing breakdown
+```bash
+curl -w "namelookup: %{time_namelookup}\n\
+connect: %{time_connect}\n\
+appconnect: %{time_appconnect}\n\
+pretransfer: %{time_pretransfer}\n\
+redirect: %{time_redirect}\n\
+starttransfer: %{time_starttransfer}\n\
+total: %{time_total}\n" \
+-s -o /dev/null http://example.com
+```
+
+#### Size information
+```bash
+curl -w "size_download: %{size_download}\n\
+size_upload: %{size_upload}\n\
+size_header: %{size_header}\n" \
+-s -o /dev/null http://example.com
+```
+
+## Write-Out Format Variables
+
+### Response Information
+
+#### Content type
+```bash
+curl -w "%{content_type}" -s -o /dev/null http://example.com
+```
+
+#### Response code
+```bash
+curl -w "%{response_code}" -s -o /dev/null http://example.com
+```
+
+#### Effective URL
+```bash
+curl -w "%{url_effective}" -s -o /dev/null http://example.com
+```
+
+### Network Information
+
+#### Remote IP address
+```bash
+curl -w "%{remote_ip}" -s -o /dev/null http://example.com
+```
+
+#### Local IP address
+```bash
+curl -w "%{local_ip}" -s -o /dev/null http://example.com
+```
+
+#### Number of redirects
+```bash
+curl -w "%{num_redirects}" -s -o /dev/null http://example.com
+```
+
+## Configuration
+
+### Config File
+
+#### Use config file
+```bash
+curl -K config.txt
+```
+
+#### Default config file location
+```bash
+# ~/.curlrc (Unix-like systems)
+```
+
+#### Sample config file content
+```bash
+# Sample .curlrc
+user-agent = "MyApp/1.0"
+connect-timeout = 10
+max-time = 30
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these cURL best practices for reliable and secure HTTP operations.
+</Callout>
+
+- **Use HTTPS** whenever possible for secure communication
+- **Set timeouts** to prevent hanging requests
+- **Handle errors** by checking response codes
+- **Use config files** for repeated options
+- **Validate SSL certificates** in production
+- **Log requests** for debugging and monitoring
+- **Use appropriate HTTP methods** (GET, POST, PUT, DELETE)
+- **Include proper headers** for API compatibility
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive cURL documentation</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://curl.se/docs/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official Docs
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://curl.se/docs/manpage.html" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Manual Page
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://httpie.io/docs" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            HTTPie Alternative
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

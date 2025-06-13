@@ -1,0 +1,820 @@
+---
+title: "Kubernetes Cheatsheet"
+description: "Complete Kubernetes cheatsheet covering pods, deployments, services, ingress, storage, networking, and cluster management with kubectl commands."
+image: "/images/cheatsheets/kubernetes.png"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["kubernetes", "kubectl", "containers", "orchestration"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Kubernetes Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    Kubernetes
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    kubectl
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Containers
+  </span>
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    Orchestration
+  </span>
+</div>
+
+Complete reference for Kubernetes container orchestration covering pods, deployments, services, ingress, storage, networking, and cluster management with kubectl commands.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🚀 Workloads & Pods</h3>
+    <p className="text-sm text-muted-foreground">Pod management, deployments, services, and scaling</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔧 Configuration</h3>
+    <p className="text-sm text-muted-foreground">ConfigMaps, secrets, namespaces, and RBAC</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🌐 Networking</h3>
+    <p className="text-sm text-muted-foreground">Services, ingress, network policies, and DNS</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">💾 Storage & Monitoring</h3>
+    <p className="text-sm text-muted-foreground">Persistent volumes, monitoring, and troubleshooting</p>
+  </div>
+</div>
+
+## Getting Started
+
+<Callout type="info">
+Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications across clusters of hosts.
+</Callout>
+
+### Kubernetes Basics
+
+#### Key concepts
+- **Cluster** - A set of nodes that run containerized applications
+- **Node** - A worker machine in Kubernetes, either physical or virtual
+- **Pod** - The smallest deployable unit that can contain one or more containers
+- **Service** - An abstraction that defines a logical set of pods and access policy
+- **Deployment** - Manages a replicated application on your cluster
+
+#### Essential kubectl setup
+```bash
+# Install kubectl (Linux)
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# Check kubectl version
+kubectl version --client
+
+# Get cluster information
+kubectl cluster-info
+
+# Check cluster status
+kubectl get nodes
+
+# Set default namespace
+kubectl config set-context --current --namespace=<namespace_name>
+```
+
+## Creating Objects
+
+<Callout type="tip">
+Kubernetes objects can be created declaratively using YAML files or imperatively using kubectl commands. Declarative approach is recommended for production.
+</Callout>
+
+### Basic Resource Creation
+
+#### Creating resources from files
+```bash
+# Create resource from YAML file
+kubectl apply -f ./file.yaml
+
+# Create from multiple files
+kubectl apply -f ./file1.yaml -f ./file2.yaml
+
+# Create all files in directory
+kubectl apply -f ./directory/
+
+# Create from URL
+kubectl apply -f https://example.com/resource.yaml
+
+# Create inline YAML
+cat <<EOF | kubectl create -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+EOF
+```
+
+#### Imperative resource creation
+```bash
+# Create pod
+kubectl run <pod_name> --image <image_name>
+
+# Create pod and expose as service
+kubectl run <pod_name> --image <image_name> --port <port> --expose
+
+# Create deployment
+kubectl create deployment <deployment_name> --image <image_name>
+
+# Create service
+kubectl create service <service-type> <service_name> --tcp=<port:target_port>
+
+# Expose deployment as service
+kubectl expose deployment <deployment_name> --type=<service-type> --port <port> --target-port <target_port>
+```
+
+#### Generate YAML files
+```bash
+# Generate pod YAML
+kubectl run <pod_name> --image <image_name> --dry-run=client -o yaml > pod.yaml
+
+# Generate deployment YAML
+kubectl create deployment <deployment_name> --image <image_name> --dry-run=client -o yaml > deployment.yaml
+
+# Generate service YAML
+kubectl create service <service-type> <service_name> --tcp=<port:target_port> --dry-run=client -o yaml > service.yaml
+```
+
+## Pods
+
+<Callout type="info">
+Pods are the smallest deployable units in Kubernetes and represent a group of one or more containers that share storage and network resources.
+</Callout>
+
+### Pod Management
+
+#### Basic pod operations
+```bash
+# Get pods
+kubectl get pods
+kubectl get pod <pod_name>
+kubectl get pods -o wide
+kubectl get pods --watch
+
+# Describe pod
+kubectl describe pod <pod_name>
+
+# Get pod YAML
+kubectl get pod <pod_name> -o yaml
+
+# Edit pod
+kubectl edit pod <pod_name>
+
+# Delete pod
+kubectl delete pod <pod_name>
+```
+
+#### Pod interaction
+```bash
+# View pod logs
+kubectl logs <pod_name>
+kubectl logs <pod_name> -f  # Follow logs
+kubectl logs <pod_name> -c <container_name>  # Multi-container pod
+
+# Execute commands in pod
+kubectl exec -it <pod_name> -- /bin/bash
+kubectl exec -it <pod_name> -c <container_name> -- /bin/sh
+
+# Copy files to/from pod
+kubectl cp <local_path> <pod_name>:<pod_path>
+kubectl cp <pod_name>:<pod_path> <local_path>
+
+# Port forwarding
+kubectl port-forward <pod_name> <local_port>:<pod_port>
+```
+
+#### Temporary pods for debugging
+```bash
+# Run temporary pod for testing
+kubectl run test-pod --image=curlimages/curl --rm -it --restart=Never -- curl <destination>
+
+# Run busybox for debugging
+kubectl run busybox --image=busybox --rm -it --restart=Never -- /bin/sh
+
+# Run temporary pod with specific commands
+kubectl run debug --image=alpine --rm -it --restart=Never -- ping <target>
+```
+
+## Deployments
+
+<Callout type="tip">
+Deployments provide declarative updates for pods and ReplicaSets, enabling rolling updates, rollbacks, and scaling operations.
+</Callout>
+
+### Deployment Management
+
+#### Basic deployment operations
+```bash
+# Get deployments
+kubectl get deployments
+kubectl get deployment <deployment_name>
+kubectl get deployment <deployment_name> -o wide
+
+# Describe deployment
+kubectl describe deployment <deployment_name>
+
+# Edit deployment
+kubectl edit deployment <deployment_name>
+
+# Delete deployment
+kubectl delete deployment <deployment_name>
+```
+
+#### Scaling and updates
+```bash
+# Scale deployment
+kubectl scale deployment <deployment_name> --replicas <number>
+
+# Set autoscaling
+kubectl autoscale deployment <deployment_name> --min=<min> --max=<max> --cpu-percent=<percent>
+
+# Update image
+kubectl set image deployment <deployment_name> <container_name>=<new_image>
+
+# Update with record
+kubectl set image deployment <deployment_name> <container_name>=<new_image> --record
+
+# View deployment logs
+kubectl logs deployment/<deployment_name> -f
+```
+
+#### Rollout management
+```bash
+# Check rollout status
+kubectl rollout status deployment <deployment_name>
+
+# View rollout history
+kubectl rollout history deployment <deployment_name>
+
+# View specific revision
+kubectl rollout history deployment <deployment_name> --revision=<number>
+
+# Rollback to previous version
+kubectl rollout undo deployment <deployment_name>
+
+# Rollback to specific revision
+kubectl rollout undo deployment <deployment_name> --to-revision=<number>
+
+# Restart deployment
+kubectl rollout restart deployment <deployment_name>
+```
+
+## Services
+
+<Callout type="info">
+Services provide stable network endpoints for pods, enabling load balancing and service discovery within the cluster.
+</Callout>
+
+### Service Types and Management
+
+#### Service operations
+```bash
+# Get services
+kubectl get services
+kubectl get service <service_name>
+kubectl get service <service_name> -o wide
+
+# Describe service
+kubectl describe service <service_name>
+
+# Edit service
+kubectl edit service <service_name>
+
+# Delete service
+kubectl delete service <service_name>
+
+# Get endpoints
+kubectl get endpoints <service_name>
+```
+
+#### Service types
+```bash
+# ClusterIP (internal access only)
+kubectl create service clusterip <service_name> --tcp=<port:target_port>
+
+# NodePort (external access via node IP)
+kubectl create service nodeport <service_name> --tcp=<port:target_port>
+
+# LoadBalancer (external load balancer)
+kubectl create service loadbalancer <service_name> --tcp=<port:target_port>
+
+# ExternalName (DNS CNAME record)
+kubectl create service externalname <service_name> --external-name=<external_dns>
+```
+
+## Configuration Management
+
+<Callout type="tip">
+ConfigMaps and Secrets allow you to decouple configuration from application code, making your applications more portable and secure.
+</Callout>
+
+### ConfigMaps
+
+#### ConfigMap operations
+```bash
+# Create ConfigMap from literal values
+kubectl create configmap <configmap_name> --from-literal=<key>=<value>
+
+# Create ConfigMap from file
+kubectl create configmap <configmap_name> --from-file=<file_path>
+
+# Create ConfigMap from env file
+kubectl create configmap <configmap_name> --from-env-file=<file_path>
+
+# Get ConfigMaps
+kubectl get configmaps
+kubectl get configmap <configmap_name> -o yaml
+
+# Edit ConfigMap
+kubectl edit configmap <configmap_name>
+
+# Delete ConfigMap
+kubectl delete configmap <configmap_name>
+```
+
+### Secrets
+
+#### Secret operations
+```bash
+# Create Secret from literal values
+kubectl create secret generic <secret_name> --from-literal=<key>=<value>
+
+# Create Secret from file
+kubectl create secret generic <secret_name> --from-file=<file_path>
+
+# Create TLS Secret
+kubectl create secret tls <secret_name> --cert=<cert_file> --key=<key_file>
+
+# Create Docker registry Secret
+kubectl create secret docker-registry <secret_name> \
+  --docker-server=<server> \
+  --docker-username=<username> \
+  --docker-password=<password>
+
+# Get Secrets
+kubectl get secrets
+kubectl get secret <secret_name> -o yaml
+
+# Edit Secret
+kubectl edit secret <secret_name>
+
+# Delete Secret
+kubectl delete secret <secret_name>
+```
+
+## Namespaces
+
+<Callout type="info">
+Namespaces provide a way to divide cluster resources between multiple users, teams, or environments within the same cluster.
+</Callout>
+
+### Namespace Management
+
+#### Namespace operations
+```bash
+# Get namespaces
+kubectl get namespaces
+
+# Create namespace
+kubectl create namespace <namespace_name>
+
+# Describe namespace
+kubectl describe namespace <namespace_name>
+
+# Delete namespace
+kubectl delete namespace <namespace_name>
+
+# Set default namespace
+kubectl config set-context --current --namespace=<namespace_name>
+
+# Check current namespace
+kubectl config view --minify | grep namespace:
+```
+
+#### Working with namespaces
+```bash
+# Get resources in specific namespace
+kubectl get pods --namespace=<namespace_name>
+kubectl get all -n <namespace_name>
+
+# Clean up namespace resources
+kubectl delete all --all --namespace=<namespace_name>
+
+# Clean up current namespace (be careful!)
+kubectl delete all --all
+```
+
+## Storage
+
+<Callout type="tip">
+Kubernetes provides persistent storage through Persistent Volumes (PV) and Persistent Volume Claims (PVC) for stateful applications.
+</Callout>
+
+### Persistent Volumes
+
+#### PV operations
+```bash
+# Get persistent volumes
+kubectl get pv
+kubectl get pv <pv_name>
+
+# Describe persistent volume
+kubectl describe pv <pv_name>
+
+# Edit persistent volume
+kubectl edit pv <pv_name>
+
+# Delete persistent volume
+kubectl delete pv <pv_name>
+```
+
+#### PVC operations
+```bash
+# Get persistent volume claims
+kubectl get pvc
+kubectl get pvc <pvc_name>
+
+# Describe PVC
+kubectl describe pvc <pvc_name>
+
+# Edit PVC
+kubectl edit pvc <pvc_name>
+
+# Delete PVC
+kubectl delete pvc <pvc_name>
+```
+
+## Workload Controllers
+
+<Callout type="info">
+Kubernetes provides various workload controllers for different use cases: DaemonSets for node-level services, StatefulSets for stateful applications, and Jobs for batch processing.
+</Callout>
+
+### DaemonSets
+
+#### DaemonSet operations
+```bash
+# Get DaemonSets
+kubectl get daemonsets
+kubectl get daemonset <daemonset_name> -o yaml
+
+# Describe DaemonSet
+kubectl describe daemonset <daemonset_name>
+
+# Edit DaemonSet
+kubectl edit daemonset <daemonset_name>
+
+# Delete DaemonSet
+kubectl delete daemonset <daemonset_name>
+```
+
+### StatefulSets
+
+#### StatefulSet operations
+```bash
+# Get StatefulSets
+kubectl get statefulsets
+kubectl get statefulset <statefulset_name> -o yaml
+
+# Describe StatefulSet
+kubectl describe statefulset <statefulset_name>
+
+# Edit StatefulSet
+kubectl edit statefulset <statefulset_name>
+
+# Delete StatefulSet
+kubectl delete statefulset <statefulset_name>
+
+# Scale StatefulSet
+kubectl scale statefulset <statefulset_name> --replicas=<number>
+```
+
+### Jobs and CronJobs
+
+#### Job operations
+```bash
+# Create Job
+kubectl create job <job_name> --image=<image_name>
+
+# Create Job from CronJob
+kubectl create job <job_name> --from=cronjob/<cronjob_name>
+
+# Get Jobs
+kubectl get jobs
+kubectl get job <job_name> -o yaml
+
+# Describe Job
+kubectl describe job <job_name>
+
+# Delete Job
+kubectl delete job <job_name>
+```
+
+#### CronJob operations
+```bash
+# Create CronJob
+kubectl create cronjob <cronjob_name> --image=<image_name> --schedule='<cron_expression>' -- <command>
+
+# Get CronJobs
+kubectl get cronjobs
+kubectl get cronjob <cronjob_name> -o yaml
+
+# Describe CronJob
+kubectl describe cronjob <cronjob_name>
+
+# Edit CronJob
+kubectl edit cronjob <cronjob_name>
+
+# Delete CronJob
+kubectl delete cronjob <cronjob_name>
+```
+
+## Networking
+
+<Callout type="tip">
+Kubernetes networking includes Ingress controllers for external access, Network Policies for security, and service mesh integration for advanced traffic management.
+</Callout>
+
+### Ingress
+
+#### Ingress operations
+```bash
+# Get Ingress
+kubectl get ingress
+kubectl get ingress -o wide
+
+# Describe Ingress
+kubectl describe ingress <ingress_name>
+
+# Edit Ingress
+kubectl edit ingress <ingress_name>
+
+# Delete Ingress
+kubectl delete ingress <ingress_name>
+```
+
+### Network Policies
+
+#### Network Policy operations
+```bash
+# Get Network Policies
+kubectl get networkpolicies
+kubectl get networkpolicy <policy_name> -o wide
+
+# Describe Network Policy
+kubectl describe networkpolicy <policy_name>
+
+# Edit Network Policy
+kubectl edit networkpolicy <policy_name>
+
+# Delete Network Policy
+kubectl delete networkpolicy <policy_name>
+```
+
+## Node Management
+
+<Callout type="info">
+Node management includes monitoring node health, cordoning nodes for maintenance, and draining nodes safely before updates.
+</Callout>
+
+### Node Operations
+
+#### Node management
+```bash
+# Get nodes
+kubectl get nodes
+kubectl get nodes -o wide
+
+# Describe node
+kubectl describe node <node_name>
+
+# Get node YAML
+kubectl get node <node_name> -o yaml
+
+# Cordon node (mark as unschedulable)
+kubectl cordon <node_name>
+
+# Uncordon node (mark as schedulable)
+kubectl uncordon <node_name>
+
+# Drain node (safely evict pods)
+kubectl drain <node_name> --ignore-daemonsets --delete-emptydir-data
+
+# Get node resource usage
+kubectl top nodes
+kubectl top node <node_name>
+```
+
+## Monitoring and Troubleshooting
+
+<Callout type="tip">
+Kubernetes provides various tools for monitoring cluster health, resource usage, and troubleshooting application issues.
+</Callout>
+
+### Resource Monitoring
+
+#### Resource usage
+```bash
+# Get resource usage for nodes
+kubectl top nodes
+
+# Get resource usage for pods
+kubectl top pods
+kubectl top pods -n <namespace>
+kubectl top pod <pod_name>
+
+# Get resource usage with containers
+kubectl top pods --containers
+
+# Get resource usage sorted by CPU
+kubectl top pods --sort-by=cpu
+
+# Get resource usage sorted by memory
+kubectl top pods --sort-by=memory
+```
+
+#### Cluster information
+```bash
+# Get cluster info
+kubectl cluster-info
+kubectl cluster-info dump
+
+# Get API resources
+kubectl api-resources
+
+# Get API versions
+kubectl api-versions
+
+# Explain resource fields
+kubectl explain <resource>
+kubectl explain pod.spec.containers
+```
+
+## Labels and Selectors
+
+<Callout type="info">
+Labels are key-value pairs attached to objects for identification and selection. Selectors are used to filter objects based on labels.
+</Callout>
+
+### Label Operations
+
+#### Working with labels
+```bash
+# Show labels
+kubectl get pods --show-labels
+kubectl get nodes --show-labels
+
+# Add label
+kubectl label pod <pod_name> <key>=<value>
+kubectl label node <node_name> <key>=<value>
+
+# Remove label
+kubectl label pod <pod_name> <key>-
+kubectl label node <node_name> <key>-
+
+# Update label
+kubectl label pod <pod_name> <key>=<new_value> --overwrite
+
+# Select by labels
+kubectl get pods -l <key>=<value>
+kubectl get pods -l '<key> in (value1,value2)'
+kubectl get pods -l '<key>!=<value>'
+
+# Delete resources by label
+kubectl delete pods -l <key>=<value>
+kubectl delete all -l <key>=<value>
+```
+
+## Security and RBAC
+
+<Callout type="tip">
+Role-Based Access Control (RBAC) provides fine-grained access control to Kubernetes resources based on user roles and permissions.
+</Callout>
+
+### RBAC Operations
+
+#### Permission checking
+```bash
+# Check current user permissions
+kubectl auth can-i --list
+
+# Check specific permission
+kubectl auth can-i <verb> <resource>
+
+# Check permission as different user
+kubectl auth can-i <verb> <resource> --as=<user>
+
+# Check permission in specific namespace
+kubectl auth can-i <verb> <resource> -n <namespace>
+```
+
+#### Service Accounts
+```bash
+# Create service account
+kubectl create serviceaccount <serviceaccount_name>
+
+# Get service accounts
+kubectl get serviceaccounts
+
+# Describe service account
+kubectl describe serviceaccount <serviceaccount_name>
+
+# Delete service account
+kubectl delete serviceaccount <serviceaccount_name>
+```
+
+#### Roles and Bindings
+```bash
+# Create role
+kubectl create role <role_name> --verb=<verbs> --resource=<resources>
+
+# Create cluster role
+kubectl create clusterrole <clusterrole_name> --verb=<verbs> --resource=<resources>
+
+# Create role binding
+kubectl create rolebinding <binding_name> --role=<role_name> --user=<user_name>
+
+# Create cluster role binding
+kubectl create clusterrolebinding <binding_name> --clusterrole=<clusterrole_name> --user=<user_name>
+
+# Bind service account to role
+kubectl create rolebinding <binding_name> --role=<role_name> --serviceaccount=<namespace>:<serviceaccount_name>
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these Kubernetes best practices for secure, efficient, and maintainable cluster operations.
+</Callout>
+
+- **Use namespaces** to organize and isolate resources in multi-tenant environments
+- **Apply resource limits** and requests to prevent resource starvation
+- **Use liveness and readiness probes** for application health monitoring
+- **Implement RBAC** for proper access control and security
+- **Use ConfigMaps and Secrets** for configuration management
+- **Label resources consistently** for better organization and automation
+- **Use Deployments over Pods** for better management and rolling updates
+- **Monitor resource usage** with kubectl top and proper monitoring tools
+- **Use ingress controllers** for external traffic management
+- **Implement network policies** for network segmentation and security
+- **Regular cluster maintenance** including node updates and certificate rotation
+- **Use helm charts** for complex application deployment and management
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive Kubernetes documentation and container orchestration best practices</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://kubernetes.io/docs/home/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official Kubernetes Documentation
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Kubernetes kubectl Cheatsheet
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            kubectl Command Reference
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

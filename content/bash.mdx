@@ -1,0 +1,1851 @@
+---
+title: "Bash Cheatsheet"
+description: "Complete Bash cheatsheet covering shortcuts, file operations, variables, functions, flow controls, I/O redirection, and process handling for shell scripting."
+image: "/images/cheatsheets/bash.png"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["bash", "shell", "terminal", "scripting"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Bash Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    Bash
+  </span>
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    Shell
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Terminal
+  </span>
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    Scripting
+  </span>
+</div>
+
+Complete reference for Bash shell commands, shortcuts, scripting techniques, and advanced terminal operations for efficient command-line usage.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⌨️ Shortcuts & History</h3>
+    <p className="text-sm text-muted-foreground">Essential keyboard shortcuts and command history</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📁 File Operations</h3>
+    <p className="text-sm text-muted-foreground">File and directory management commands</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔧 Variables & Functions</h3>
+    <p className="text-sm text-muted-foreground">Shell scripting and variable manipulation</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔄 Process Control</h3>
+    <p className="text-sm text-muted-foreground">Job management and process handling</p>
+  </div>
+</div>
+
+## Shortcuts and History
+
+<Callout type="info">
+Master these keyboard shortcuts to dramatically improve your command-line efficiency and navigation speed.
+</Callout>
+
+### Navigation Shortcuts
+
+#### Move to beginning of line
+```bash
+CTRL+A
+```
+
+#### Move to end of line
+```bash
+CTRL+E
+```
+
+#### Move backward one character
+```bash
+CTRL+B
+```
+
+#### Move forward one character
+```bash
+CTRL+F
+```
+
+#### Move backward one word
+```bash
+ALT+B
+```
+
+#### Move forward one word
+```bash
+ALT+F
+```
+
+### Editing Shortcuts
+
+#### Delete to end of line
+```bash
+CTRL+K
+```
+
+#### Delete to beginning of line
+```bash
+CTRL+U
+```
+
+#### Delete word behind cursor
+```bash
+CTRL+W
+```
+
+#### Delete next word
+```bash
+ALT+D
+```
+
+#### Transpose two characters
+```bash
+CTRL+T
+```
+
+#### Transpose two words
+```bash
+ALT+T
+```
+
+### Control Shortcuts
+
+#### Halt current command
+```bash
+CTRL+C
+```
+
+#### Log out or delete character
+```bash
+CTRL+D
+```
+
+#### Clear screen
+```bash
+CTRL+L
+```
+
+#### Suspend current command
+```bash
+CTRL+Z
+```
+
+### History Navigation
+
+#### Previous command in history
+```bash
+CTRL+P
+```
+
+#### Next command in history
+```bash
+CTRL+N
+```
+
+#### Search backward in history
+```bash
+CTRL+R
+```
+
+#### Repeat last command
+```bash
+!!
+```
+
+#### Refer to command line 'n'
+```bash
+!<n>
+```
+
+#### Refer to command starting with 'string'
+```bash
+!<string>
+```
+
+#### Show command history
+```bash
+history
+```
+
+### Advanced Shortcuts
+
+#### Capitalize word from cursor
+```bash
+ALT+C
+```
+
+#### Lowercase word from cursor
+```bash
+ALT+L
+```
+
+#### Uppercase word from cursor
+```bash
+ALT+U
+```
+
+#### Paste last word from previous command
+```bash
+ALT+.
+```
+
+#### Start recording keyboard macro
+```bash
+CTRL+X then (
+```
+
+#### Stop recording keyboard macro
+```bash
+CTRL+X then )
+```
+
+#### Execute recorded macro
+```bash
+CTRL+X then E
+```
+
+## Bash Basics
+
+### Environment Information
+
+#### Display all environment variables
+```bash
+env
+```
+
+#### Show current shell
+```bash
+echo $SHELL
+```
+
+#### Show Bash version
+```bash
+echo $BASH_VERSION
+```
+
+#### Switch to Bash shell
+```bash
+bash
+```
+
+#### Find Bash location
+```bash
+whereis bash
+```
+
+#### Find Bash executable path
+```bash
+which bash
+```
+
+#### Clear terminal screen
+```bash
+clear
+```
+
+#### Exit current session
+```bash
+exit
+```
+
+## File Commands
+
+<Callout type="info">
+File operations are fundamental to shell usage. These commands help you navigate, manipulate, and manage files efficiently.
+</Callout>
+
+### File Listing and Information
+
+#### List files in current directory
+```bash
+ls
+```
+
+#### List files with detailed information
+```bash
+ls -l
+```
+
+#### List all files including hidden
+```bash
+ls -a
+```
+
+#### Show directory tree structure
+```bash
+tree
+```
+
+#### Show file/directory sizes
+```bash
+du <filename>
+```
+
+#### Show disk usage
+```bash
+df
+```
+
+### File Creation and Modification
+
+#### Create or update file
+```bash
+touch <filename>
+```
+
+#### Create temporary file
+```bash
+mktemp -t <filename>
+```
+
+#### Create symbolic link
+```bash
+ln -s <filename> <link>
+```
+
+#### Show symbolic link target
+```bash
+readlink <filename>
+```
+
+### File Content Operations
+
+#### Display file content
+```bash
+cat <filename>
+```
+
+#### Display file with line numbers
+```bash
+cat -n <filename>
+```
+
+#### Show line numbers in file
+```bash
+nl <file.sh>
+```
+
+#### Copy file content to another file
+```bash
+cat filename1 > filename2
+```
+
+#### Append file content to another file
+```bash
+cat filename1 >> filename2
+```
+
+#### Show first part of file
+```bash
+more <filename>
+```
+
+#### Show first lines of file (default: 10)
+```bash
+head <filename>
+```
+
+#### Show last lines of file (default: 10)
+```bash
+tail <filename>
+```
+
+#### Follow file changes in real-time
+```bash
+tail -f <filename>
+```
+
+### File Management
+
+#### Move/rename file
+```bash
+mv <filename1> <dest>
+```
+
+#### Copy file
+```bash
+cp <filename1> <dest>
+```
+
+#### Remove file
+```bash
+rm <filename>
+```
+
+#### Edit file with Vim
+```bash
+vim <filename>
+```
+
+### File Search and Analysis
+
+#### Find files by name
+```bash
+find . -name <name> <type>
+```
+
+#### Compare two files
+```bash
+diff <filename1> <filename2>
+```
+
+#### Count lines, words, characters
+```bash
+wc <filename>
+```
+
+#### Count only lines
+```bash
+wc -l <filename>
+```
+
+#### Count only words
+```bash
+wc -w <filename>
+```
+
+#### Count only characters
+```bash
+wc -c <filename>
+```
+
+#### Sort file contents alphabetically
+```bash
+sort <filename>
+```
+
+#### Sort numerically
+```bash
+sort -n <filename>
+```
+
+#### Sort in reverse order
+```bash
+sort -r <filename>
+```
+
+#### Sort by specific field
+```bash
+sort -t -k <filename>
+```
+
+#### Reverse string characters
+```bash
+rev
+```
+
+### File Permissions and Compression
+
+#### Change file permissions
+```bash
+chmod -options <filename>
+```
+
+#### Compress file with gzip
+```bash
+gzip <filename>
+```
+
+#### Decompress gzip file
+```bash
+gunzip <filename>
+```
+
+#### View gzipped file without decompressing
+```bash
+gzcat <filename>
+```
+
+### Text Processing
+
+#### Search for pattern in files
+```bash
+grep <pattern> <filenames>
+```
+
+#### Search recursively in directory
+```bash
+grep -r <pattern> <dir>
+```
+
+#### Print nth line from file
+```bash
+head -n file_name | tail +n
+```
+
+#### Display lines from x to y
+```bash
+head -y lines.txt | tail +x
+```
+
+#### Replace pattern in file (output to stdout)
+```bash
+sed 's/<pattern>/<replacement>/g' <filename>
+```
+
+#### Replace pattern in file (in-place)
+```bash
+sed -i 's/<pattern>/<replacement>/g' <filename>
+```
+
+#### Replace pattern from input stream
+```bash
+echo "this" | sed 's/is/at/g'
+```
+
+### Printing Operations
+
+#### Print file
+```bash
+lpr <filename>
+```
+
+#### Check printer queue
+```bash
+lpq
+```
+
+#### Remove job from printer queue
+```bash
+lprm <jobnumber>
+```
+
+#### Convert text to PostScript
+```bash
+genscript
+```
+
+#### Print DVI files
+```bash
+dvips <filename>
+```
+
+## Directory Commands
+
+### Basic Directory Operations
+
+#### Create new directory
+```bash
+mkdir <dirname>
+```
+
+#### Remove empty directory
+```bash
+rmdir <dirname>
+```
+
+#### Remove directory and contents
+```bash
+rmdir -rf <dirname>
+```
+
+#### Rename directory
+```bash
+mv <dir1> <dir2>
+```
+
+#### Copy directory recursively
+```bash
+cp -r <dir1> <dir2>
+```
+
+### Directory Navigation
+
+#### Change to home directory
+```bash
+cd
+```
+
+#### Change to parent directory
+```bash
+cd ..
+```
+
+#### Change to specific directory
+```bash
+cd <dirname>
+```
+
+#### Change to home directory
+```bash
+cd ~
+```
+
+#### Change to previous directory
+```bash
+cd -
+```
+
+#### Show current directory
+```bash
+pwd
+```
+
+## SSH, System Info & Network Commands
+
+<Callout type="info">
+System information and network commands are essential for server management and troubleshooting.
+</Callout>
+
+### SSH Operations
+
+#### Connect to host as user
+```bash
+ssh user@host
+```
+
+#### Connect on specific port
+```bash
+ssh -p <port> user@host
+```
+
+#### Copy SSH key to host
+```bash
+ssh-copy-id user@host
+```
+
+### User and System Information
+
+#### Show current username
+```bash
+whoami
+```
+
+#### Switch to different user
+```bash
+su <user>
+```
+
+#### Switch to root user
+```bash
+su -
+```
+
+#### Execute command as root
+```bash
+sudo <command>
+```
+
+#### Change password
+```bash
+passwd
+```
+
+#### Show disk quota
+```bash
+quota -v
+```
+
+#### Show current date and time
+```bash
+date
+```
+
+#### Show month's calendar
+```bash
+cal
+```
+
+#### Show system uptime
+```bash
+uptime
+```
+
+#### Show who's online
+```bash
+w
+```
+
+#### Show user information
+```bash
+finger <user>
+```
+
+#### Show kernel information
+```bash
+uname -a
+```
+
+#### Show command manual
+```bash
+man <command>
+```
+
+#### Show command documentation
+```bash
+info <command>
+```
+
+#### Show built-in help
+```bash
+help
+```
+
+#### Show last logins
+```bash
+last <yourUsername>
+```
+
+### Process Management
+
+#### List your processes
+```bash
+ps -u yourusername
+```
+
+#### Kill process by PID
+```bash
+kill <PID>
+```
+
+#### Kill all processes by name
+```bash
+killall <processname>
+```
+
+#### Show active processes
+```bash
+top
+```
+
+#### List open files
+```bash
+lsof
+```
+
+#### List background jobs
+```bash
+bg
+```
+
+#### Bring job to foreground
+```bash
+fg
+```
+
+#### Bring specific job to foreground
+```bash
+fg <job>
+```
+
+### Network Commands
+
+#### Ping host
+```bash
+ping <host>
+```
+
+#### Get domain whois information
+```bash
+whois <domain>
+```
+
+#### Get DNS information
+```bash
+dig <domain>
+```
+
+#### Reverse DNS lookup
+```bash
+dig -x <host>
+```
+
+#### Download file
+```bash
+wget <file>
+```
+
+#### Show network connections
+```bash
+netstat
+```
+
+#### Measure command execution time
+```bash
+time <command>
+```
+
+## Variables
+
+<Callout type="info">
+Variables in Bash are fundamental for storing data and creating dynamic scripts.
+</Callout>
+
+### Basic Variable Operations
+
+#### Define a variable
+```bash
+varname=value
+```
+
+#### Define variable for subprocess
+```bash
+varname=value command
+```
+
+#### Check variable value
+```bash
+echo $varname
+```
+
+#### Print process ID of current shell
+```bash
+echo $$
+```
+
+#### Print process ID of last background job
+```bash
+echo $!
+```
+
+#### Display exit status of last command
+```bash
+echo $?
+```
+
+#### Read input into variable
+```bash
+read <varname>
+```
+
+#### Read input with prompt
+```bash
+read -p "prompt" <varname>
+```
+
+#### Display in columns
+```bash
+column -t <filename>
+```
+
+#### Perform mathematical calculation
+```bash
+let <varname> = <equation>
+```
+
+### Environment Variables
+
+#### Export environment variable
+```bash
+export VARNAME=value
+```
+
+#### Export function
+```bash
+export -f <funcname>
+```
+
+#### Export and assign simultaneously
+```bash
+export var1="var1 value"
+```
+
+#### Copy Bash variable
+```bash
+export <varname>
+```
+
+#### Declare exported variable
+```bash
+declare -x <varname>
+```
+
+### Arrays
+
+#### Define array elements
+```bash
+array[0]=valA
+array[1]=valB
+array[2]=valC
+```
+
+#### Alternative array definition
+```bash
+array=([2]=valC [0]=valA [1]=valB)
+```
+
+#### Another array definition method
+```bash
+array=(valA valB valC)
+```
+
+#### Access array element
+```bash
+${array[i]}
+```
+
+#### Get length of array element
+```bash
+${#array[i]}
+```
+
+#### Get number of array elements
+```bash
+${#array[@]}
+```
+
+### Variable Declarations
+
+#### Treat variables as arrays
+```bash
+declare -a
+```
+
+#### Use function names only
+```bash
+declare -f
+```
+
+#### Display function names without definitions
+```bash
+declare -F
+```
+
+#### Treat variables as integers
+```bash
+declare -i
+```
+
+#### Make variables read-only
+```bash
+declare -r
+```
+
+#### Mark variables for export
+```bash
+declare -x
+```
+
+#### Convert to lowercase
+```bash
+declare -l
+```
+
+#### Make associative array
+```bash
+declare -A
+```
+
+### Parameter Expansion
+
+#### Return value or default word
+```bash
+${varname:-word}
+```
+
+#### Return value or word (alternative)
+```bash
+${varname:word}
+```
+
+#### Set variable if null and return
+```bash
+${varname:=word}
+```
+
+#### Return value or print error
+```bash
+${varname:?message}
+```
+
+#### Return word if variable exists
+```bash
+${varname:+word}
+```
+
+#### Extract substring
+```bash
+${varname:offset:length}
+```
+
+#### Remove shortest match from beginning
+```bash
+${variable#pattern}
+```
+
+#### Remove longest match from beginning
+```bash
+${variable##pattern}
+```
+
+#### Remove shortest match from end
+```bash
+${variable%pattern}
+```
+
+#### Remove longest match from end
+```bash
+${variable%%pattern}
+```
+
+#### Replace first match
+```bash
+${variable/pattern/string}
+```
+
+#### Replace all matches
+```bash
+${variable//pattern/string}
+```
+
+#### Get variable length
+```bash
+${#varname}
+```
+
+### Pattern Matching
+
+#### Match zero or more occurrences
+```bash
+*(patternlist)
+```
+
+#### Match one or more occurrences
+```bash
++(patternlist)
+```
+
+#### Match zero or one occurrence
+```bash
+?(patternlist)
+```
+
+#### Match exactly one pattern
+```bash
+@(patternlist)
+```
+
+#### Match anything except pattern
+```bash
+!(patternlist)
+```
+
+### Command Substitution
+
+#### Run command and return output
+```bash
+$(UNIX command)
+```
+
+#### Make variable local
+```bash
+typeset -l <x>
+```
+
+## Functions
+
+<Callout type="info">
+Functions allow you to group commands and create reusable code blocks in your scripts.
+</Callout>
+
+### Function Definition
+
+#### Define a function
+```bash
+function functname() {
+  shell commands
+}
+```
+
+#### Delete function definition
+```bash
+unset -f functname
+```
+
+#### Display all defined functions
+```bash
+declare -f
+```
+
+## Flow Controls
+
+<Callout type="info">
+Flow control structures allow you to create conditional logic and loops in your scripts.
+</Callout>
+
+### Logical Operators
+
+#### AND operator
+```bash
+statement1 && statement2
+```
+
+#### OR operator
+```bash
+statement1 || statement2
+```
+
+#### AND operator in test
+```bash
+-a
+```
+
+#### OR operator in test
+```bash
+-o
+```
+
+### String Comparisons
+
+#### String equality
+```bash
+str1 == str2
+```
+
+#### String inequality
+```bash
+str1 != str2
+```
+
+#### String less than (alphabetically)
+```bash
+str1 < str2
+```
+
+#### String greater than (alphabetically)
+```bash
+str1 > str2
+```
+
+#### String sorted after
+```bash
+str1 \> str2
+```
+
+#### String sorted before
+```bash
+str1 \< str2
+```
+
+#### String is not null
+```bash
+-n str1
+```
+
+#### String is null
+```bash
+-z str1
+```
+
+### File Tests
+
+#### File exists
+```bash
+-a file
+```
+
+#### File is directory
+```bash
+-d file
+```
+
+#### File exists (same as -a)
+```bash
+-e file
+```
+
+#### File is regular file
+```bash
+-f file
+```
+
+#### File is readable
+```bash
+-r file
+```
+
+#### File exists and not empty
+```bash
+-s file
+```
+
+#### File is writable
+```bash
+-w file
+```
+
+#### File is executable
+```bash
+-x file
+```
+
+#### File was modified since last read
+```bash
+-N file
+```
+
+#### You own the file
+```bash
+-O file
+```
+
+#### File group matches yours
+```bash
+-G file
+```
+
+#### File1 is newer than file2
+```bash
+file1 -nt file2
+```
+
+#### File1 is older than file2
+```bash
+file1 -ot file2
+```
+
+### Numeric Comparisons
+
+#### Less than
+```bash
+-lt
+```
+
+#### Less than or equal
+```bash
+-le
+```
+
+#### Equal
+```bash
+-eq
+```
+
+#### Greater than or equal
+```bash
+-ge
+```
+
+#### Greater than
+```bash
+-gt
+```
+
+#### Not equal
+```bash
+-ne
+```
+
+### Conditional Statements
+
+#### If statement
+```bash
+if condition
+then
+  statements
+[elif condition
+  then statements...]
+[else
+  statements]
+fi
+```
+
+#### Case statement
+```bash
+case expression in
+  pattern1 )
+    statements ;;
+  pattern2 )
+    statements ;;
+esac
+```
+
+### Loops
+
+#### For loop with range
+```bash
+for x in {1..10}
+do
+  statements
+done
+```
+
+#### For loop with list
+```bash
+for name [in list]
+do
+  statements that can use $name
+done
+```
+
+#### C-style for loop
+```bash
+for (( initialisation ; ending condition ; update ))
+do
+  statements...
+done
+```
+
+#### Select menu
+```bash
+select name [in list]
+do
+  statements that can use $name
+done
+```
+
+#### While loop
+```bash
+while condition; do
+  statements
+done
+```
+
+#### Until loop
+```bash
+until condition; do
+  statements
+done
+```
+
+## Command-Line Processing
+
+### Command Lookup Override
+
+#### Remove alias and function lookup
+```bash
+command
+```
+
+#### Look up only built-ins
+```bash
+builtin
+```
+
+#### Enable/disable shell built-ins
+```bash
+enable
+```
+
+#### Re-evaluate arguments
+```bash
+eval
+```
+
+## Input/Output Redirectors
+
+<Callout type="info">
+I/O redirection is powerful for controlling where command input comes from and where output goes.
+</Callout>
+
+### Basic Redirection
+
+#### Pipe output to input
+```bash
+cmd1|cmd2
+```
+
+#### Input from file
+```bash
+< file
+```
+
+#### Output to file
+```bash
+> file
+```
+
+#### Append to file
+```bash
+>> file
+```
+
+#### Force output to file
+```bash
+>|file
+```
+
+#### Use file for both input and output
+```bash
+<> file
+```
+
+### File Descriptor Operations
+
+#### Force output from descriptor n
+```bash
+n>|file
+```
+
+#### Use file for both I/O on descriptor n
+```bash
+n<>file
+```
+
+#### Direct descriptor n to file
+```bash
+n>file
+```
+
+#### Take descriptor n from file
+```bash
+n<file
+```
+
+#### Append descriptor n to file
+```bash
+n>>file
+```
+
+#### Duplicate stdout to descriptor n
+```bash
+n>&
+```
+
+#### Duplicate stdin from descriptor n
+```bash
+n<&
+```
+
+#### Copy output descriptor
+```bash
+n>&m
+```
+
+#### Copy input descriptor
+```bash
+n<&m
+```
+
+#### Direct stdout and stderr to file
+```bash
+&>file
+```
+
+#### Close standard input
+```bash
+<&-
+```
+
+#### Close standard output
+```bash
+>&-
+```
+
+#### Close output from descriptor n
+```bash
+n>&-
+```
+
+#### Close input from descriptor n
+```bash
+n<&-
+```
+
+#### Output to terminal and file
+```bash
+|tee <file>
+```
+
+## Process Handling
+
+<Callout type="warn">
+Process management is crucial for controlling running programs and managing system resources.
+</Callout>
+
+### Background Jobs
+
+#### Run job in background
+```bash
+myCommand &
+```
+
+#### List all jobs
+```bash
+jobs
+```
+
+#### List jobs with PIDs
+```bash
+jobs -l
+```
+
+#### Bring job to foreground
+```bash
+fg
+```
+
+#### Bring most recent background job
+```bash
+fg %+
+```
+
+#### Bring second most recent job
+```bash
+fg %-
+```
+
+#### Bring job number N
+```bash
+fg %N
+```
+
+#### Bring job starting with string
+```bash
+fg %string
+```
+
+#### Bring job containing string
+```bash
+fg %?string
+```
+
+### Process Termination
+
+#### List all signals
+```bash
+kill -l
+```
+
+#### Terminate process by PID
+```bash
+kill PID
+```
+
+#### Send specific signal
+```bash
+kill -s SIGKILL 4500
+```
+
+#### Send TERM signal
+```bash
+kill -15 913
+```
+
+#### Kill job by number
+```bash
+kill %1
+```
+
+### Process Information
+
+#### Show current processes
+```bash
+ps
+```
+
+#### Show all processes with tty
+```bash
+ps -a
+```
+
+### Signal Handling
+
+#### Execute command on signal
+```bash
+trap cmd sig1 sig2
+```
+
+#### Ignore signals
+```bash
+trap "" sig1 sig2
+```
+
+#### Reset signal handling
+```bash
+trap - sig1 sig2
+```
+
+### Process Control
+
+#### Remove process from job list
+```bash
+disown <PID|JID>
+```
+
+#### Wait for background jobs
+```bash
+wait
+```
+
+#### Wait specified seconds
+```bash
+sleep <number>
+```
+
+#### Display progress bar
+```bash
+pv
+```
+
+#### Auto-respond yes
+```bash
+yes
+```
+
+## Debugging Shell Programs
+
+<Callout type="tip">
+Debugging tools help you identify and fix issues in your shell scripts.
+</Callout>
+
+### Syntax Checking
+
+#### Check syntax without running
+```bash
+bash -n scriptname
+```
+
+#### Set no-execute option in script
+```bash
+set -o noexec
+```
+
+### Verbose Output
+
+#### Echo commands before running
+```bash
+bash -v scriptname
+```
+
+#### Set verbose option in script
+```bash
+set -o verbose
+```
+
+### Execution Tracing
+
+#### Echo commands after processing
+```bash
+bash -x scriptname
+```
+
+#### Set trace option in script
+```bash
+set -o xtrace
+```
+
+### Debug Traps
+
+#### Print variable on exit
+```bash
+trap 'echo $varname' EXIT
+```
+
+#### Error trap function
+```bash
+function errtrap {
+  es=$?
+  echo "ERROR line $1: Command exited with status $es."
+}
+
+trap 'errtrap $LINENO' ERR
+```
+
+#### Debug trap function
+```bash
+function dbgtrap {
+  echo "badvar is $badvar"
+}
+
+trap dbgtrap DEBUG
+```
+
+#### Turn off debug trap
+```bash
+trap - DEBUG
+```
+
+#### Return trap function
+```bash
+function returntrap {
+  echo "A return occurred"
+}
+
+trap returntrap RETURN
+```
+
+## Colors and Backgrounds
+
+<Callout type="info">
+Color codes allow you to add visual formatting to your terminal output and scripts.
+</Callout>
+
+### Reset Color
+
+#### Text reset
+```bash
+Color_Off='\033[0m'
+```
+
+### Regular Colors
+
+#### Basic colors
+```bash
+Black='\033[0;30m'    # Black
+Red='\033[0;31m'      # Red
+Green='\033[0;32m'    # Green
+Yellow='\033[0;33m'   # Yellow
+Blue='\033[0;34m'     # Blue
+Purple='\033[0;35m'   # Purple
+Cyan='\033[0;36m'     # Cyan
+White='\033[0;97m'    # White
+```
+
+#### Additional colors
+```bash
+LGrey='\033[0;37m'    # Light Gray
+DGrey='\033[0;90m'    # Dark Gray
+LRed='\033[0;91m'     # Light Red
+LGreen='\033[0;92m'   # Light Green
+LYellow='\033[0;93m'  # Light Yellow
+LBlue='\033[0;94m'    # Light Blue
+LPurple='\033[0;95m'  # Light Purple
+LCyan='\033[0;96m'    # Light Cyan
+```
+
+### Bold Colors
+
+#### Bold text colors
+```bash
+BBlack='\033[1;30m'   # Bold Black
+BRed='\033[1;31m'     # Bold Red
+BGreen='\033[1;32m'   # Bold Green
+BYellow='\033[1;33m'  # Bold Yellow
+BBlue='\033[1;34m'    # Bold Blue
+BPurple='\033[1;35m'  # Bold Purple
+BCyan='\033[1;36m'    # Bold Cyan
+BWhite='\033[1;37m'   # Bold White
+```
+
+### Underlined Colors
+
+#### Underlined text colors
+```bash
+UBlack='\033[4;30m'   # Underlined Black
+URed='\033[4;31m'     # Underlined Red
+UGreen='\033[4;32m'   # Underlined Green
+UYellow='\033[4;33m'  # Underlined Yellow
+UBlue='\033[4;34m'    # Underlined Blue
+UPurple='\033[4;35m'  # Underlined Purple
+UCyan='\033[4;36m'    # Underlined Cyan
+UWhite='\033[4;37m'   # Underlined White
+```
+
+### Background Colors
+
+#### Background colors
+```bash
+On_Black='\033[40m'   # Black background
+On_Red='\033[41m'     # Red background
+On_Green='\033[42m'   # Green background
+On_Yellow='\033[43m'  # Yellow background
+On_Blue='\033[44m'    # Blue background
+On_Purple='\033[45m'  # Purple background
+On_Cyan='\033[46m'    # Cyan background
+On_White='\033[47m'   # White background
+```
+
+### Usage Examples
+
+#### Print colored text
+```bash
+echo -e "${Green}This is GREEN text${Color_Off} and normal text"
+echo -e "${Red}${On_White}This is Red text on White background${Color_Off}"
+```
+
+#### Printf with colors
+```bash
+printf "${Red} This is red \n"
+```
+
+## Tips & Tricks
+
+<Callout type="tip">
+These advanced tips will help you become more productive with Bash and shell scripting.
+</Callout>
+
+### Aliases
+
+#### Set an alias in .bash_profile
+```bash
+cd; nano .bash_profile
+# Add your alias
+alias gentlenode='ssh admin@gentlenode.com -p 3404'
+```
+
+### Quick Directory Access
+
+#### Set up cdable variables in .bashrc
+```bash
+cd; nano .bashrc
+# Add these lines
+shopt -s cdable_vars
+export websites="/Users/mac/Documents/websites"
+
+# Then source and use
+source .bashrc
+cd $websites
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these Bash best practices for writing maintainable and efficient shell scripts.
+</Callout>
+
+- **Use proper quoting** to handle spaces and special characters in variables
+- **Check exit codes** using `$?` to handle errors appropriately
+- **Use functions** to organize code and avoid repetition
+- **Add error handling** with `set -e` to exit on errors
+- **Use meaningful variable names** and add comments for clarity
+- **Test scripts thoroughly** before deploying to production
+- **Use shellcheck** to validate script syntax and catch common issues
+- **Handle edge cases** like empty inputs and missing files
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive Bash documentation and advanced scripting techniques</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://www.gnu.org/software/bash/manual/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Bash Manual
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://tldp.org/LDP/Bash-Beginners-Guide/html/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Bash Guide
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://www.shellcheck.net/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            ShellCheck
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

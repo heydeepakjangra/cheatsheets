@@ -1,0 +1,803 @@
+---
+title: "CSS3 Cheatsheet"
+description: "Complete CSS3 cheatsheet covering fonts, layouts, flexbox, grid, animations, media queries, and modern styling techniques for web development."
+image: "/images/cheatsheets/css3.png"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["css3", "styling", "web", "frontend"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# CSS3 Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    CSS3
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Styling
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    Web
+  </span>
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    Frontend
+  </span>
+</div>
+
+Complete reference for CSS3 properties, selectors, layouts, animations, and modern styling techniques for creating beautiful and responsive web designs.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🎨 Typography & Colors</h3>
+    <p className="text-sm text-muted-foreground">Font properties, text styling, and color systems</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📦 Box Model & Layout</h3>
+    <p className="text-sm text-muted-foreground">Positioning, spacing, borders, and backgrounds</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔧 Flexbox & Grid</h3>
+    <p className="text-sm text-muted-foreground">Modern layout systems for responsive design</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">✨ Animations & Media Queries</h3>
+    <p className="text-sm text-muted-foreground">Transitions, animations, and responsive design</p>
+  </div>
+</div>
+
+## Font Properties
+
+<Callout type="info">
+Font properties allow you to control the appearance of text, including family, size, weight, and style.
+</Callout>
+
+### Font Family and Style
+
+#### Font family declaration
+```css
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  /* Multiple fonts declared in order of preference */
+}
+```
+
+#### Font style variations
+```css
+.text {
+  font-style: normal | italic | oblique;
+}
+```
+
+#### Font variants
+```css
+.small-caps {
+  font-variant: normal | small-caps;
+}
+```
+
+#### Font weight options
+```css
+.bold-text {
+  font-weight: normal | bold | bolder | lighter | 100-900;
+}
+```
+
+#### Font size units
+```css
+.responsive-text {
+  font-size: 16px | 1rem | 1.2em | larger | smaller;
+}
+```
+
+#### Font shorthand property
+```css
+.complete-font {
+  font: italic small-caps bold 16px/1.5 Arial, sans-serif;
+  /* style variant weight size/line-height family */
+}
+```
+
+## Text Properties
+
+<Callout type="info">
+Text properties control text alignment, spacing, decoration, and transformation for better typography.
+</Callout>
+
+### Text Alignment and Spacing
+
+#### Text alignment options
+```css
+.container {
+  text-align: left | right | center | justify;
+}
+```
+
+#### Letter and word spacing
+```css
+.spaced-text {
+  letter-spacing: 0.1em | 2px | normal;
+  word-spacing: 0.25em | 4px | normal;
+}
+```
+
+#### Text indentation
+```css
+.paragraph {
+  text-indent: 2em | 30px | 10%;
+}
+```
+
+#### Line height control
+```css
+.readable-text {
+  line-height: 1.5 | 24px | 150% | normal;
+}
+```
+
+### Text Decoration and Transform
+
+#### Text decoration styles
+```css
+.decorated-text {
+  text-decoration: none | underline | overline | line-through;
+  text-decoration-color: red;
+  text-decoration-style: solid | dotted | dashed | wavy;
+}
+```
+
+#### Text transformation
+```css
+.transformed-text {
+  text-transform: none | uppercase | lowercase | capitalize;
+}
+```
+
+## Background Properties
+
+<Callout type="info">
+Background properties control the visual backdrop of elements, including colors, images, and positioning.
+</Callout>
+
+### Background Images and Colors
+
+#### Background image setup
+```css
+.hero-section {
+  background-image: url("path/to/image.jpg");
+  background-position: center | top left | 50% 30%;
+  background-size: cover | contain | 100% 50%;
+  background-repeat: no-repeat | repeat | repeat-x | repeat-y;
+  background-attachment: scroll | fixed | local;
+}
+```
+
+#### Background color options
+```css
+.colored-bg {
+  background-color: #ff6b6b | rgb(255, 107, 107) | hsl(0, 79%, 72%);
+}
+```
+
+#### Background shorthand
+```css
+.complete-bg {
+  background: #f0f0f0 url("bg.jpg") no-repeat center/cover;
+  /* color image repeat position/size */
+}
+```
+
+## Border Properties
+
+<Callout type="info">
+Border properties define the outline of elements with customizable width, style, color, and radius.
+</Callout>
+
+### Border Styles and Dimensions
+
+#### Border width and style
+```css
+.bordered-element {
+  border-width: 1px | thin | medium | thick;
+  border-style: solid | dotted | dashed | double | groove | ridge | inset | outset;
+  border-color: #333 | rgb(51, 51, 51) | currentColor;
+}
+```
+
+#### Border radius for rounded corners
+```css
+.rounded-element {
+  border-radius: 5px | 50% | 10px 20px 30px 40px;
+  /* single value | circle | top-left top-right bottom-right bottom-left */
+}
+```
+
+#### Individual border sides
+```css
+.custom-borders {
+  border-top: 2px solid red;
+  border-right: 1px dashed blue;
+  border-bottom: 3px dotted green;
+  border-left: 4px double yellow;
+}
+```
+
+#### Border shorthand
+```css
+.simple-border {
+  border: 2px solid #333;
+  /* width style color */
+}
+```
+
+## Box Model Properties
+
+<Callout type="warn">
+The CSS box model consists of content, padding, border, and margin. Understanding this is crucial for proper layout control.
+</Callout>
+
+### Positioning and Layout
+
+#### Display types
+```css
+.layout-element {
+  display: block | inline | inline-block | flex | grid | none;
+}
+```
+
+#### Positioning methods
+```css
+.positioned-element {
+  position: static | relative | absolute | fixed | sticky;
+  top: 10px;
+  right: 20px;
+  bottom: 30px;
+  left: 40px;
+  z-index: 100;
+}
+```
+
+#### Float and clear
+```css
+.floated-element {
+  float: left | right | none;
+  clear: left | right | both | none;
+}
+```
+
+### Dimensions and Spacing
+
+#### Width and height
+```css
+.sized-element {
+  width: 300px | 50% | auto | fit-content;
+  height: 200px | 100vh | auto | fit-content;
+  max-width: 1200px;
+  min-width: 320px;
+  max-height: 600px;
+  min-height: 100px;
+}
+```
+
+#### Margin and padding
+```css
+.spaced-element {
+  margin: 10px | 10px 20px | 10px 20px 30px 40px | auto;
+  padding: 15px | 15px 25px | 15px 25px 35px 45px;
+  /* single | vertical horizontal | top horizontal bottom | top right bottom left */
+}
+```
+
+#### Overflow control
+```css
+.overflow-element {
+  overflow: visible | hidden | scroll | auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+```
+
+#### Visibility and opacity
+```css
+.visibility-element {
+  visibility: visible | hidden | collapse;
+  opacity: 0.5 | 0 | 1;
+}
+```
+
+#### Box sizing
+```css
+.box-sizing-element {
+  box-sizing: content-box | border-box;
+}
+```
+
+## Color Systems
+
+<Callout type="info">
+CSS supports multiple color formats including named colors, hex, RGB, HSL, and with alpha transparency.
+</Callout>
+
+### Color Formats
+
+#### Different color representations
+```css
+.colorful-text {
+  /* Named colors */
+  color: red | blue | cornsilk | transparent;
+  
+  /* Hexadecimal */
+  color: #ff0000 | #f00 | #ff0000ff;
+  
+  /* RGB/RGBA */
+  color: rgb(255, 0, 0) | rgba(255, 0, 0, 0.5);
+  
+  /* HSL/HSLA */
+  color: hsl(0, 100%, 50%) | hsla(0, 100%, 50%, 0.5);
+}
+```
+
+## Table Styling
+
+### Table Properties
+
+#### Table layout and spacing
+```css
+table {
+  border-collapse: separate | collapse;
+  border-spacing: 5px | 5px 10px;
+  table-layout: auto | fixed;
+  caption-side: top | bottom;
+  empty-cells: show | hide;
+}
+```
+
+## Column Layout
+
+### Multi-column Properties
+
+#### Column configuration
+```css
+.multi-column {
+  column-count: 3 | auto;
+  column-width: 200px | auto;
+  column-gap: 20px | normal;
+  column-rule: 1px solid #ddd;
+  column-rule-width: thin | medium | thick | 2px;
+  column-rule-style: solid | dotted | dashed;
+  column-rule-color: #333;
+  column-span: none | all;
+}
+```
+
+## List Styling
+
+### List and Marker Properties
+
+#### List style customization
+```css
+ul, ol, li {
+  list-style-type: disc | circle | square | decimal | none;
+  list-style-position: inside | outside;
+  list-style-image: url("bullet.png") | none;
+  list-style: square inside url("custom-bullet.gif");
+}
+```
+
+## Animations
+
+<Callout type="tip">
+CSS animations bring your designs to life with smooth transitions and keyframe-based animations.
+</Callout>
+
+### Animation Properties
+
+#### Animation configuration
+```css
+.animated-element {
+  animation-name: slideIn;
+  animation-duration: 2s | 500ms;
+  animation-timing-function: ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-delay: 1s | 200ms;
+  animation-iteration-count: 3 | infinite;
+  animation-direction: normal | reverse | alternate | alternate-reverse;
+  animation-fill-mode: none | forwards | backwards | both;
+  animation-play-state: running | paused;
+}
+```
+
+#### Animation shorthand
+```css
+.quick-animation {
+  animation: slideIn 2s ease-in-out 1s infinite alternate both;
+  /* name duration timing-function delay iteration-count direction fill-mode */
+}
+```
+
+#### Keyframes definition
+```css
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-10%);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+```
+
+## Transitions
+
+### Transition Properties
+
+#### Smooth state changes
+```css
+.transition-element {
+  transition-property: all | color | transform | opacity;
+  transition-duration: 0.3s | 300ms;
+  transition-timing-function: ease | linear | ease-in | ease-out;
+  transition-delay: 0.1s | 100ms;
+}
+```
+
+#### Transition shorthand
+```css
+.smooth-hover {
+  transition: all 0.3s ease-in-out 0.1s;
+  /* property duration timing-function delay */
+}
+
+.smooth-hover:hover {
+  color: blue;
+  transform: scale(1.1);
+}
+```
+
+## CSS Flexbox
+
+<Callout type="tip">
+Flexbox is a powerful one-dimensional layout method for arranging items in rows or columns with flexible sizing.
+</Callout>
+
+### Flex Container Properties
+
+#### Flex container setup
+```css
+.flex-container {
+  display: flex | inline-flex;
+  
+  flex-direction: row | row-reverse | column | column-reverse;
+  flex-wrap: nowrap | wrap | wrap-reverse;
+  flex-flow: row wrap; /* shorthand for direction and wrap */
+  
+  justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly;
+  align-items: stretch | flex-start | flex-end | center | baseline;
+  align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+  
+  gap: 10px | 10px 20px; /* row-gap column-gap */
+}
+```
+
+### Flex Item Properties
+
+#### Flex item behavior
+```css
+.flex-item {
+  order: 0 | 1 | -1; /* default is 0 */
+  
+  flex-grow: 0 | 1 | 2; /* default 0 */
+  flex-shrink: 1 | 0 | 2; /* default 1 */
+  flex-basis: auto | 0 | 200px | 30%; /* default auto */
+  
+  flex: 1 | 0 1 auto | none; /* shorthand for grow shrink basis */
+  
+  align-self: auto | flex-start | flex-end | center | baseline | stretch;
+}
+```
+
+## CSS Grid
+
+<Callout type="tip">
+CSS Grid is a powerful two-dimensional layout system perfect for complex layouts and responsive designs.
+</Callout>
+
+### Grid Container Properties
+
+#### Grid container setup
+```css
+.grid-container {
+  display: grid | inline-grid;
+  
+  grid-template-columns: 200px 1fr 100px | repeat(3, 1fr) | auto 1fr;
+  grid-template-rows: 100px auto 50px | repeat(2, minmax(100px, auto));
+  grid-template-areas: 
+    "header header header"
+    "sidebar main main"
+    "footer footer footer";
+  
+  grid-template: 
+    "header header" 80px
+    "sidebar main" 1fr
+    "footer footer" 60px
+    / 200px 1fr; /* rows / columns */
+  
+  column-gap: 20px;
+  row-gap: 15px;
+  gap: 15px 20px; /* row-gap column-gap */
+  
+  justify-items: start | end | center | stretch;
+  align-items: start | end | center | stretch;
+  place-items: center; /* align-items justify-items */
+  
+  justify-content: start | end | center | stretch | space-around | space-between | space-evenly;
+  align-content: start | end | center | stretch | space-around | space-between | space-evenly;
+  place-content: center; /* align-content justify-content */
+  
+  grid-auto-columns: 100px | 1fr | minmax(100px, auto);
+  grid-auto-rows: 50px | auto | minmax(50px, 100px);
+  grid-auto-flow: row | column | row dense | column dense;
+}
+```
+
+### Grid Item Properties
+
+#### Grid item positioning
+```css
+.grid-item {
+  grid-column-start: 1 | span 2 | auto;
+  grid-column-end: 3 | span 1 | auto;
+  grid-row-start: 2 | span 1 | auto;
+  grid-row-end: 4 | span 2 | auto;
+  
+  grid-column: 1 / 3 | 1 / span 2 | 2 / -1;
+  grid-row: 2 / 4 | 1 / span 3 | 1 / -2;
+  
+  grid-area: header | 1 / 1 / 3 / 3 | 2 / 1 / span 2 / span 3;
+  
+  justify-self: start | end | center | stretch;
+  align-self: start | end | center | stretch;
+  place-self: center; /* align-self justify-self */
+}
+```
+
+## Media Queries
+
+<Callout type="warn">
+Media queries are essential for responsive design, allowing different styles for different devices and screen sizes.
+</Callout>
+
+### Responsive Breakpoints
+
+#### Standard device breakpoints
+```css
+/* Mobile First Approach */
+/* Small screens - MOBILE */
+@media only screen and (max-width: 640px) {
+  .mobile-only {
+    display: block;
+  }
+}
+
+/* Medium screens - TABLET */
+@media only screen and (min-width: 641px) and (max-width: 1024px) {
+  .tablet-styles {
+    font-size: 18px;
+  }
+}
+
+/* Large screens - DESKTOP */
+@media only screen and (min-width: 1025px) {
+  .desktop-styles {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+```
+
+#### Common responsive patterns
+```css
+/* Desktop first breakpoints */
+@media all and (min-width: 1024px) and (max-width: 1280px) {
+  /* Desktop styles */
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  /* Tablet landscape */
+}
+
+@media all and (min-width: 480px) and (max-width: 768px) {
+  /* Tablet portrait */
+}
+
+@media all and (max-width: 480px) {
+  /* Mobile */
+}
+```
+
+### Advanced Media Queries
+
+#### Orientation and device features
+```css
+/* Orientation */
+@media screen and (orientation: portrait) {
+  .portrait-layout {
+    flex-direction: column;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .landscape-layout {
+    flex-direction: row;
+  }
+}
+
+/* High DPI/Retina displays */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi) {
+  .retina-image {
+    background-image: url("high-res-image@2x.png");
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+#### Device-specific queries
+```css
+/* iPhone Portrait */
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+  .iphone-portrait {
+    padding: 10px;
+  }
+}
+
+/* iPhone Landscape */
+@media screen and (max-device-width: 480px) and (orientation: landscape) {
+  .iphone-landscape {
+    padding: 5px;
+  }
+}
+
+/* iPad Portrait */
+@media screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  .ipad-portrait {
+    columns: 2;
+  }
+}
+
+/* iPad Landscape */
+@media screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
+  .ipad-landscape {
+    columns: 3;
+  }
+}
+```
+
+## Modern CSS Features
+
+### CSS Custom Properties (Variables)
+
+#### CSS variables
+```css
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --font-size-base: 16px;
+  --spacing-unit: 8px;
+}
+
+.component {
+  color: var(--primary-color);
+  font-size: var(--font-size-base);
+  margin: calc(var(--spacing-unit) * 2);
+}
+```
+
+### CSS Functions
+
+#### Useful CSS functions
+```css
+.modern-css {
+  /* Calculations */
+  width: calc(100% - 40px);
+  
+  /* Clamping values */
+  font-size: clamp(14px, 4vw, 24px);
+  
+  /* Min/Max values */
+  width: min(500px, 100%);
+  height: max(200px, 50vh);
+  
+  /* Color functions */
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  color: hsl(200, 50%, 50%);
+}
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these CSS3 best practices for maintainable, performant, and accessible stylesheets.
+</Callout>
+
+- **Use semantic class names** that describe content, not appearance
+- **Implement mobile-first design** with progressive enhancement
+- **Utilize CSS Grid and Flexbox** for modern layout solutions
+- **Optimize performance** by minimizing reflows and repaints
+- **Use CSS custom properties** for consistent theming
+- **Follow BEM methodology** for scalable CSS architecture
+- **Validate your CSS** and test across different browsers
+- **Consider accessibility** with proper contrast ratios and focus states
+- **Use CSS animations sparingly** and respect user preferences for reduced motion
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive CSS3 documentation and advanced styling techniques</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://developer.mozilla.org/en-US/docs/Web/CSS" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            MDN CSS Reference
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://web.dev/learn/css/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Web.dev CSS Course
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://css-tricks.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            CSS-Tricks
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+

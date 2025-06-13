@@ -1,0 +1,611 @@
+---
+title: "Redis Cheatsheet"
+description: "Complete Redis cheatsheet covering strings, lists, sets, sorted sets, hashes, HyperLogLog, pub/sub, and essential commands for data manipulation."
+image: "/images/cheatsheets/redis.png"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["redis", "database", "cache"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Redis Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800 dark:bg-red-900 dark:text-red-200">
+    Redis
+  </span>
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    Database
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Cache
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    NoSQL
+  </span>
+</div>
+
+Complete reference for Redis commands, covering all data types from basic strings to advanced data structures like HyperLogLog and pub/sub messaging.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔧 Basics & Setup</h3>
+    <p className="text-sm text-muted-foreground">Server management and basic operations</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📝 Strings & Keys</h3>
+    <p className="text-sm text-muted-foreground">String operations and key management</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📋 Lists & Sets</h3>
+    <p className="text-sm text-muted-foreground">Collection data structures and operations</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔄 Advanced Features</h3>
+    <p className="text-sm text-muted-foreground">Pub/sub, HyperLogLog, and sorted sets</p>
+  </div>
+</div>
+
+## Basics & Setup
+
+### Server Management
+
+#### Start Redis with configuration file
+```bash
+redis-server /path/redis.conf
+```
+
+#### Open Redis prompt
+```bash
+redis-cli
+```
+
+#### Restart Redis service
+```bash
+sudo systemctl restart redis.service
+```
+
+#### Check Redis status
+```bash
+sudo systemctl status redis
+```
+
+## Strings
+
+<Callout type="info">
+Strings are the most basic kind of Redis value. Redis strings are binary safe, meaning they can contain any kind of data.
+</Callout>
+
+### Basic String Operations
+
+#### Set value in key
+```bash
+SET key value
+```
+
+#### Get value in key
+```bash
+GET key
+```
+
+#### Set if not exist value in key
+```bash
+SETNX key value
+```
+
+#### Delete key
+```bash
+DEL key
+```
+
+### String Manipulation
+
+#### Append a value to a key
+```bash
+APPEND key value
+```
+
+#### Get the length of the value stored in a key
+```bash
+STRLEN key
+```
+
+#### Overwrite part of a string at key starting at the specified offset
+```bash
+SETRANGE key offset value
+```
+
+#### Get substring of stored value from start to end offsets (both inclusive)
+```bash
+GETRANGE key start end
+```
+
+### Multiple Operations
+
+#### Set multiple keys to multiple values
+```bash
+MSET key value [key value ...]
+```
+
+#### Set multiple keys to multiple values, only if none of the keys exist
+```bash
+MSETNX key value [key value ...]
+```
+
+#### Get the values of all the given keys
+```bash
+MGET key [key ...]
+```
+
+### Numeric Operations
+
+#### Increment value in key
+```bash
+INCR key
+```
+
+#### Increment the integer value of a key by the given amount
+```bash
+INCRBY key increment
+```
+
+#### Increment the float value of a key by the given amount
+```bash
+INCRBYFLOAT key increment
+```
+
+#### Decrement the integer value of key by one
+```bash
+DECR key
+```
+
+#### Decrement the integer value of a key by the given number
+```bash
+DECRBY key decrement
+```
+
+### Key Expiration
+
+#### Set key to expire in 120 seconds
+```bash
+EXPIRE key 120
+```
+
+#### Returns the number of seconds until a key is deleted
+```bash
+TTL key
+```
+
+#### Count set bits in a string
+```bash
+BITCOUNT key [start end]
+```
+
+## Lists
+
+<Callout type="info">
+Redis lists are ordered collections of strings. You can add elements to the head or tail of a list.
+</Callout>
+
+### Adding Elements
+
+#### Put the new value at the end of the list
+```bash
+RPUSH key value [value ...]
+```
+
+#### Append a value at the end of the list, only if it exists
+```bash
+RPUSHX key value
+```
+
+#### Put the new value at the start of the list
+```bash
+LPUSH key value [value ...]
+```
+
+#### Append a value at the start of the list, only if it exists
+```bash
+LPUSHX key value
+```
+
+### Retrieving Elements
+
+#### Give a subset of the list
+```bash
+LRANGE key start stop
+```
+
+#### Get an element from a list by its index
+```bash
+LINDEX key index
+```
+
+#### Return the current length of the list
+```bash
+LLEN key
+```
+
+### Modifying Lists
+
+#### Insert an element before or after another element in a list
+```bash
+LINSERT key BEFORE|AFTER pivot value
+```
+
+#### Set the value of an element in a list by its index
+```bash
+LSET key index value
+```
+
+#### Delete occurrences of value if the list stored in key
+```bash
+LREM key number_of_occurrences value
+```
+
+#### Trim a list to the specified range
+```bash
+LTRIM key start stop
+```
+
+### Removing Elements
+
+#### Remove the first element from the list and returns it
+```bash
+LPOP key
+```
+
+#### Remove the last element from the list and returns it
+```bash
+RPOP key
+```
+
+#### Remove the last element in a list, prepend it to another list and return it
+```bash
+RPOPLPUSH source destination
+```
+
+### Blocking Operations
+
+#### Remove and get the first element in a list, or block until one is available
+```bash
+BLPOP key [key ...] timeout
+```
+
+#### Remove and get the last element in a list, or block until one is available
+```bash
+BRPOP key [key ...] timeout
+```
+
+## Sets
+
+<Callout type="info">
+Redis sets are unordered collections of unique strings. You can add, remove, and test for the existence of members.
+</Callout>
+
+### Basic Set Operations
+
+#### Add the given value to the set
+```bash
+SADD key member [member ...]
+```
+
+#### Get the number of members in a set
+```bash
+SCARD key
+```
+
+#### Remove the given value from the set
+```bash
+SREM key member [member ...]
+```
+
+#### Test if the given value is in the set
+```bash
+SISMEMBER myset value
+```
+
+#### Return a list of all the members of this set
+```bash
+SMEMBERS myset
+```
+
+### Set Operations
+
+#### Combine two or more sets and returns the list of all elements
+```bash
+SUNION key [key ...]
+```
+
+#### Intersect multiple sets
+```bash
+SINTER key [key ...]
+```
+
+#### Move a member from one set to another
+```bash
+SMOVE source destination member
+```
+
+#### Remove and return one or multiple random members from a set
+```bash
+SPOP key [count]
+```
+
+## Sorted Sets
+
+<Callout type="info">
+Sorted sets are similar to regular sets, but each member has an associated score used for ordering.
+</Callout>
+
+### Basic Operations
+
+#### Add one or more members to a sorted set, or update its score if it already exists
+```bash
+ZADD key [NX|XX] [CH] [INCR] score member [score member ...]
+```
+
+#### Get the number of members in a sorted set
+```bash
+ZCARD key
+```
+
+#### Count the members in a sorted set with scores within the given values
+```bash
+ZCOUNT key min max
+```
+
+#### Increment the score of a member in a sorted set
+```bash
+ZINCRBY key increment member
+```
+
+### Retrieving Members
+
+#### Returns a subset of the sorted set
+```bash
+ZRANGE key start stop [WITHSCORES]
+```
+
+#### Return a range of members in a sorted set, by score
+```bash
+ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
+```
+
+#### Determine the index of a member in a sorted set
+```bash
+ZRANK key member
+```
+
+#### Get the score associated with the given member in a sorted set
+```bash
+ZSCORE key member
+```
+
+### Removing Members
+
+#### Remove one or more members from a sorted set
+```bash
+ZREM key member [member ...]
+```
+
+#### Remove all members in a sorted set within the given indexes
+```bash
+ZREMRANGEBYRANK key start stop
+```
+
+#### Remove all members in a sorted set, by index, with scores ordered from high to low
+```bash
+ZREMRANGEBYSCORE key min max
+```
+
+## Hashes
+
+<Callout type="info">
+Redis hashes are maps between string fields and string values, perfect for representing objects.
+</Callout>
+
+### Basic Hash Operations
+
+#### Get the value of a hash field
+```bash
+HGET key field
+```
+
+#### Get all the fields and values in a hash
+```bash
+HGETALL key
+```
+
+#### Set the string value of a hash field
+```bash
+HSET key field value
+```
+
+#### Set the string value of a hash field, only if the field does not exist
+```bash
+HSETNX key field value
+```
+
+#### Set multiple fields at once
+```bash
+HMSET key field value [field value ...]
+```
+
+### Hash Information
+
+#### Determine if a hash field exists
+```bash
+HEXISTS key field
+```
+
+#### Get all the fields in a hash
+```bash
+HKEYS key
+```
+
+#### Get all the values in a hash
+```bash
+HVALS key
+```
+
+#### Get the number of fields in a hash
+```bash
+HLEN key
+```
+
+#### Get the length of the value of a hash field
+```bash
+HSTRLEN key field
+```
+
+### Hash Modification
+
+#### Increment value in hash by X
+```bash
+HINCRBY key field increment
+```
+
+#### Delete one or more hash fields
+```bash
+HDEL key field [field ...]
+```
+
+## HyperLogLog
+
+<Callout type="warn">
+HyperLogLog provides approximation of unique elements in a set using constant memory, ideal for counting unique visitors.
+</Callout>
+
+### HyperLogLog Operations
+
+#### Add the specified elements to the specified HyperLogLog
+```bash
+PFADD key element [element ...]
+```
+
+#### Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s)
+```bash
+PFCOUNT key [key ...]
+```
+
+#### Merge N HyperLogLogs into a single one
+```bash
+PFMERGE destkey sourcekey [sourcekey ...]
+```
+
+## Publication & Subscription
+
+<Callout type="info">
+Redis pub/sub implements the messaging paradigm where senders (publishers) are not programmed to send messages to specific receivers (subscribers).
+</Callout>
+
+### Publishing
+
+#### Post a message to a channel
+```bash
+PUBLISH channel message
+```
+
+### Subscribing
+
+#### Listen for messages published to the given channels
+```bash
+SUBSCRIBE channel [channel ...]
+```
+
+#### Stop listening for messages posted to the given channels
+```bash
+UNSUBSCRIBE [channel [channel ...]]
+```
+
+### Pattern Subscription
+
+#### Listen for messages published to channels matching the given patterns
+```bash
+PSUBSCRIBE pattern [pattern ...]
+```
+
+#### Stop listening for messages posted to channels matching the given patterns
+```bash
+PUNSUBSCRIBE [pattern [pattern ...]]
+```
+
+### Pub/Sub Information
+
+#### Inspect the state of the Pub/Sub subsystem
+```bash
+PUBSUB subcommand [argument [argument ...]]
+```
+
+## Other Commands
+
+### Key Management
+
+#### Find all keys matching the given pattern
+```bash
+KEYS pattern
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these Redis best practices for optimal performance and reliability.
+</Callout>
+
+- **Use appropriate data types** for your use case to optimize memory and performance
+- **Set expiration times** on keys to prevent memory leaks
+- **Use pipelining** for multiple commands to reduce network overhead
+- **Monitor memory usage** and configure maxmemory policies
+- **Use Redis persistence** (RDB/AOF) based on your durability requirements
+- **Implement proper error handling** for network timeouts and connection issues
+- **Use Redis Cluster** for horizontal scaling in production environments
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive Redis documentation and tutorials</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://redis.io/documentation" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official Docs
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://redis.io/commands" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Command Reference
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://redis.io/topics/data-types" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Data Types
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

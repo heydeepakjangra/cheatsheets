@@ -1,0 +1,1064 @@
+---
+title: "JavaScript Cheatsheet"
+description: "Complete JavaScript cheatsheet covering objects, arrays, functions, ES6+ features, DOM manipulation, and modern JavaScript development techniques."
+image: "/images/cheatsheets/javascript.jpeg"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["javascript", "js", "programming", "web"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# JavaScript Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+    JavaScript
+  </span>
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    JS
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Programming
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    Web
+  </span>
+</div>
+
+Complete reference for JavaScript fundamentals, modern ES6+ features, built-in objects, arrays, functions, and web development techniques.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📚 Objects & Arrays</h3>
+    <p className="text-sm text-muted-foreground">Built-in object methods and array manipulation techniques</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⚡ Functions & ES6+</h3>
+    <p className="text-sm text-muted-foreground">Function declarations, arrow functions, and modern syntax</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🌐 DOM & Events</h3>
+    <p className="text-sm text-muted-foreground">Document manipulation and event handling</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔄 Async & APIs</h3>
+    <p className="text-sm text-muted-foreground">Promises, async/await, and API interactions</p>
+  </div>
+</div>
+
+## Variables and Data Types
+
+<Callout type="info">
+JavaScript is a dynamically typed language with several primitive and non-primitive data types.
+</Callout>
+
+### Variable Declarations
+
+#### Variable declaration methods
+```javascript
+// ES6+ preferred declarations
+let variableName = "value";           // Block-scoped, can be reassigned
+const constantName = "value";         // Block-scoped, cannot be reassigned
+
+// Legacy declaration (avoid in modern code)
+var oldVariable = "value";            // Function-scoped, can be reassigned
+```
+
+### Primitive Data Types
+
+#### Basic data types
+```javascript
+// String
+let text = "Hello World";
+let template = `Template literal: ${text}`;
+
+// Number
+let integer = 42;
+let float = 3.14;
+let scientific = 2e5;  // 200000
+
+// Boolean
+let isTrue = true;
+let isFalse = false;
+
+// Undefined and null
+let undefinedVar;      // undefined
+let nullVar = null;    // null
+
+// Symbol (ES6)
+let symbol = Symbol('description');
+
+// BigInt (ES2020)
+let bigNumber = 123456789012345678901234567890n;
+```
+
+### Non-Primitive Data Types
+
+#### Complex data types
+```javascript
+// Object
+let person = {
+  name: "John",
+  age: 30,
+  city: "New York"
+};
+
+// Array
+let numbers = [1, 2, 3, 4, 5];
+let mixed = ["text", 42, true, null];
+
+// Function
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+// Date
+let now = new Date();
+let specificDate = new Date('2025-01-15');
+```
+
+## Object Methods
+
+<Callout type="info">
+JavaScript Objects are collections of key-value pairs with powerful built-in methods for manipulation and inspection.
+</Callout>
+
+### Object Static Methods
+
+#### Object creation and property management
+```javascript
+// Object.assign() - Copy properties to target object
+const target = { a: 1 };
+const source = { b: 2, c: 3 };
+const result = Object.assign(target, source);  // { a: 1, b: 2, c: 3 }
+
+// Object.create() - Create object with specified prototype
+const prototype = { greet: function() { return "Hello!"; } };
+const obj = Object.create(prototype);
+
+// Object.defineProperty() - Define property with descriptor
+Object.defineProperty(obj, 'name', {
+  value: 'John',
+  writable: true,
+  enumerable: true,
+  configurable: true
+});
+
+// Object.entries() - Get [key, value] pairs
+const person = { name: 'Alice', age: 25 };
+Object.entries(person);  // [['name', 'Alice'], ['age', 25]]
+
+// Object.keys() - Get object keys
+Object.keys(person);     // ['name', 'age']
+
+// Object.values() - Get object values
+Object.values(person);   // ['Alice', 25]
+```
+
+#### Object state management
+```javascript
+// Object.freeze() - Make object immutable
+const frozen = Object.freeze({ name: "John" });
+
+// Object.seal() - Prevent property addition/deletion
+const sealed = Object.seal({ name: "Jane" });
+
+// Object.preventExtensions() - Prevent new properties
+Object.preventExtensions(obj);
+
+// Check object state
+Object.isFrozen(frozen);      // true
+Object.isSealed(sealed);      // true
+Object.isExtensible(obj);     // false
+```
+
+### Object Instance Methods
+
+#### Property checking and conversion
+```javascript
+const obj = { name: "John", age: 30 };
+
+// Check if property exists
+obj.hasOwnProperty('name');           // true
+
+// Check if object is prototype
+Object.prototype.isPrototypeOf(obj);  // true
+
+// Check if property is enumerable
+obj.propertyIsEnumerable('name');     // true
+
+// Convert to string
+obj.toString();                       // "[object Object]"
+obj.toLocaleString();                 // "[object Object]"
+
+// Get primitive value
+obj.valueOf();                        // Returns the object itself
+```
+
+## Array Methods
+
+<Callout type="tip">
+Arrays in JavaScript come with powerful methods for manipulation, iteration, and transformation. Understanding these is crucial for effective JavaScript programming.
+</Callout>
+
+### Array Creation and Static Methods
+
+#### Creating arrays
+```javascript
+// Array literals
+const fruits = ['apple', 'banana', 'orange'];
+const numbers = [1, 2, 3, 4, 5];
+
+// Array constructor
+const empty = new Array(5);           // [empty × 5]
+const filled = new Array(1, 2, 3);    // [1, 2, 3]
+
+// Array.from() - Create from iterable
+Array.from('hello');                  // ['h', 'e', 'l', 'l', 'o']
+Array.from([1, 2, 3], x => x * 2);    // [2, 4, 6]
+
+// Array.of() - Create from arguments
+Array.of(1, 2, 3);                    // [1, 2, 3]
+
+// Array.isArray() - Check if array
+Array.isArray([1, 2, 3]);             // true
+Array.isArray('string');              // false
+```
+
+### Mutator Methods (Modify Original Array)
+
+#### Adding and removing elements
+```javascript
+const arr = [1, 2, 3];
+
+// Add/remove at end
+arr.push(4, 5);        // [1, 2, 3, 4, 5] - returns new length
+arr.pop();             // [1, 2, 3, 4] - returns removed element
+
+// Add/remove at beginning
+arr.unshift(0);        // [0, 1, 2, 3, 4] - returns new length
+arr.shift();           // [1, 2, 3, 4] - returns removed element
+
+// Add/remove at any position
+arr.splice(1, 2, 'a', 'b');  // [1, 'a', 'b', 4] - returns removed elements
+
+// Fill array
+arr.fill(0);           // [0, 0, 0, 0]
+arr.fill('x', 1, 3);   // [0, 'x', 'x', 0]
+
+// Reverse array
+arr.reverse();         // Reverses in place
+
+// Sort array
+arr.sort();                    // Alphabetical sort
+arr.sort((a, b) => a - b);     // Numeric sort ascending
+arr.sort((a, b) => b - a);     // Numeric sort descending
+```
+
+#### Array manipulation
+```javascript
+const arr = [1, 2, 3, 4, 5];
+
+// Copy elements within array
+arr.copyWithin(0, 3, 5);       // [4, 5, 3, 4, 5]
+
+// Flatten nested arrays
+const nested = [1, [2, 3], [4, [5, 6]]];
+nested.flat();                 // [1, 2, 3, 4, [5, 6]]
+nested.flat(2);                // [1, 2, 3, 4, 5, 6]
+```
+
+### Accessor Methods (Return New Array/Value)
+
+#### Array searching and extraction
+```javascript
+const fruits = ['apple', 'banana', 'orange', 'banana'];
+
+// Check if element exists
+fruits.includes('apple');              // true
+fruits.indexOf('banana');              // 1
+fruits.lastIndexOf('banana');          // 3
+
+// Get element at index
+fruits.at(0);                          // 'apple'
+fruits.at(-1);                         // 'banana' (last element)
+
+// Extract section
+fruits.slice(1, 3);                    // ['banana', 'orange']
+
+// Join elements
+fruits.join(', ');                     // 'apple, banana, orange, banana'
+
+// Concatenate arrays
+const vegetables = ['carrot', 'potato'];
+fruits.concat(vegetables);             // ['apple', 'banana', 'orange', 'banana', 'carrot', 'potato']
+
+// Convert to string
+fruits.toString();                     // 'apple,banana,orange,banana'
+```
+
+### Iteration Methods
+
+#### Array transformation and filtering
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// Transform elements
+const doubled = numbers.map(x => x * 2);         // [2, 4, 6, 8, 10]
+const squared = numbers.map(x => x ** 2);        // [1, 4, 9, 16, 25]
+
+// Filter elements
+const evens = numbers.filter(x => x % 2 === 0);  // [2, 4]
+const odds = numbers.filter(x => x % 2 !== 0);   // [1, 3, 5]
+
+// Find elements
+const found = numbers.find(x => x > 3);          // 4
+const foundIndex = numbers.findIndex(x => x > 3); // 3
+
+// Reduce to single value
+const sum = numbers.reduce((acc, x) => acc + x, 0);     // 15
+const product = numbers.reduce((acc, x) => acc * x, 1); // 120
+
+// Check conditions
+const allPositive = numbers.every(x => x > 0);    // true
+const someEven = numbers.some(x => x % 2 === 0);  // true
+
+// Execute for each element
+numbers.forEach((value, index) => {
+  console.log(`Index ${index}: ${value}`);
+});
+```
+
+#### Array iterators
+```javascript
+const arr = ['a', 'b', 'c'];
+
+// Get array iterators
+for (const key of arr.keys()) {
+  console.log(key);     // 0, 1, 2
+}
+
+for (const value of arr.values()) {
+  console.log(value);   // 'a', 'b', 'c'
+}
+
+for (const [index, value] of arr.entries()) {
+  console.log(index, value);  // 0 'a', 1 'b', 2 'c'
+}
+```
+
+## Functions
+
+<Callout type="info">
+Functions are first-class objects in JavaScript, meaning they can be stored in variables, passed as arguments, and returned from other functions.
+</Callout>
+
+### Function Declarations and Expressions
+
+#### Different ways to define functions
+```javascript
+// Function declaration
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+// Function expression
+const greet2 = function(name) {
+  return `Hi, ${name}!`;
+};
+
+// Arrow function (ES6)
+const greet3 = (name) => `Hey, ${name}!`;
+const greet4 = name => `Hello ${name}!`;  // Single parameter
+const add = (a, b) => a + b;              // Single expression
+
+// Arrow function with block body
+const greet5 = (name) => {
+  const message = `Welcome, ${name}!`;
+  return message;
+};
+
+// Immediately Invoked Function Expression (IIFE)
+(function() {
+  console.log("This runs immediately!");
+})();
+
+// Arrow IIFE
+(() => {
+  console.log("Arrow IIFE");
+})();
+```
+
+### Function Parameters and Arguments
+
+#### Advanced parameter handling
+```javascript
+// Default parameters
+function greet(name = "World", greeting = "Hello") {
+  return `${greeting}, ${name}!`;
+}
+
+// Rest parameters
+function sum(...numbers) {
+  return numbers.reduce((a, b) => a + b, 0);
+}
+
+// Destructuring parameters
+function displayUser({name, age, city = "Unknown"}) {
+  console.log(`${name}, ${age}, from ${city}`);
+}
+
+// Spread operator in function calls
+const numbers = [1, 2, 3, 4, 5];
+console.log(Math.max(...numbers));       // 5
+
+// Arguments object (not in arrow functions)
+function oldStyle() {
+  console.log(arguments);  // Array-like object
+}
+```
+
+### Higher-Order Functions
+
+#### Functions that work with other functions
+```javascript
+// Function that returns a function
+function multiplier(factor) {
+  return function(number) {
+    return number * factor;
+  };
+}
+const double = multiplier(2);
+const triple = multiplier(3);
+
+// Function that takes a function as parameter
+function applyOperation(arr, operation) {
+  return arr.map(operation);
+}
+
+const numbers = [1, 2, 3, 4, 5];
+const doubled = applyOperation(numbers, x => x * 2);
+
+// Callback functions
+function fetchData(callback) {
+  setTimeout(() => {
+    const data = { id: 1, name: "John" };
+    callback(data);
+  }, 1000);
+}
+
+fetchData((data) => {
+  console.log("Received:", data);
+});
+```
+
+## ES6+ Modern Features
+
+<Callout type="tip">
+ES6 and later versions introduced many features that make JavaScript more powerful and expressive. These are essential for modern JavaScript development.
+</Callout>
+
+### Template Literals and String Methods
+
+#### Enhanced string handling
+```javascript
+const name = "Alice";
+const age = 25;
+
+// Template literals
+const message = `Hello, my name is ${name} and I'm ${age} years old.`;
+const multiline = `
+  This is a
+  multi-line
+  string.
+`;
+
+// Tagged template literals
+function highlight(strings, ...values) {
+  return strings.map((string, i) => {
+    return string + (values[i] ? `<mark>${values[i]}</mark>` : '');
+  }).join('');
+}
+
+const highlighted = highlight`Hello ${name}, you are ${age} years old!`;
+
+// String methods
+"hello world".startsWith("hello");     // true
+"hello world".endsWith("world");       // true
+"hello world".includes("lo wo");       // true
+"hello".repeat(3);                     // "hellohellohello"
+"  hello  ".trim();                    // "hello"
+"hello".padStart(10, "*");             // "*****hello"
+"hello".padEnd(10, "*");               // "hello*****"
+```
+
+### Destructuring Assignment
+
+#### Extract values from arrays and objects
+```javascript
+// Array destructuring
+const [first, second, ...rest] = [1, 2, 3, 4, 5];
+// first = 1, second = 2, rest = [3, 4, 5]
+
+// Object destructuring
+const person = { name: "John", age: 30, city: "NYC" };
+const {name, age, city = "Unknown"} = person;
+
+// Nested destructuring
+const user = {
+  id: 1,
+  info: {
+    name: "Alice",
+    contact: {
+      email: "alice@example.com"
+    }
+  }
+};
+const {info: {name: userName, contact: {email}}} = user;
+
+// Function parameter destructuring
+function displayUser({name, age}) {
+  console.log(`${name}, ${age}`);
+}
+
+// Swapping variables
+let a = 1, b = 2;
+[a, b] = [b, a];  // a = 2, b = 1
+```
+
+### Classes and Objects
+
+#### Modern class syntax
+```javascript
+// Class declaration
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  
+  // Method
+  greet() {
+    return `Hello, I'm ${this.name}`;
+  }
+  
+  // Static method
+  static species() {
+    return "Homo sapiens";
+  }
+  
+  // Getter
+  get info() {
+    return `${this.name} (${this.age})`;
+  }
+  
+  // Setter
+  set name(newName) {
+    this._name = newName.trim();
+  }
+}
+
+// Class inheritance
+class Student extends Person {
+  constructor(name, age, grade) {
+    super(name, age);  // Call parent constructor
+    this.grade = grade;
+  }
+  
+  study() {
+    return `${this.name} is studying`;
+  }
+  
+  // Override parent method
+  greet() {
+    return `${super.greet()}, I'm a student`;
+  }
+}
+
+const student = new Student("Alice", 20, "A");
+```
+
+### Modules (Import/Export)
+
+#### Module system
+```javascript
+// Named exports
+export const PI = 3.14159;
+export function add(a, b) {
+  return a + b;
+}
+export class Calculator {
+  // class implementation
+}
+
+// Default export
+export default function multiply(a, b) {
+  return a * b;
+}
+
+// Import named exports
+import { PI, add, Calculator } from './math.js';
+
+// Import default export
+import multiply from './math.js';
+
+// Import all exports
+import * as math from './math.js';
+
+// Dynamic imports
+async function loadModule() {
+  const module = await import('./dynamic-module.js');
+  module.someFunction();
+}
+```
+
+## Asynchronous JavaScript
+
+<Callout type="warn">
+Asynchronous programming is crucial for handling operations like API calls, file reading, and timers without blocking the main thread.
+</Callout>
+
+### Promises
+
+#### Working with Promises
+```javascript
+// Creating a Promise
+const myPromise = new Promise((resolve, reject) => {
+  const success = Math.random() > 0.5;
+  setTimeout(() => {
+    if (success) {
+      resolve("Operation successful!");
+    } else {
+      reject(new Error("Operation failed!"));
+    }
+  }, 1000);
+});
+
+// Using Promises
+myPromise
+  .then(result => console.log(result))
+  .catch(error => console.error(error))
+  .finally(() => console.log("Promise completed"));
+
+// Promise static methods
+Promise.resolve("Immediate success");
+Promise.reject(new Error("Immediate failure"));
+
+// Promise.all - Wait for all promises
+const promises = [
+  fetch('/api/users'),
+  fetch('/api/posts'),
+  fetch('/api/comments')
+];
+
+Promise.all(promises)
+  .then(responses => {
+    // All requests completed
+    return Promise.all(responses.map(r => r.json()));
+  })
+  .then(data => {
+    console.log("All data loaded:", data);
+  });
+
+// Promise.race - First promise to complete
+Promise.race([
+  fetch('/api/fast'),
+  fetch('/api/slow')
+]).then(response => {
+  console.log("First response received");
+});
+
+// Promise.allSettled - Wait for all, regardless of outcome
+Promise.allSettled(promises)
+  .then(results => {
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled') {
+        console.log(`Promise ${index} succeeded:`, result.value);
+      } else {
+        console.log(`Promise ${index} failed:`, result.reason);
+      }
+    });
+  });
+```
+
+### Async/Await
+
+#### Modern asynchronous syntax
+```javascript
+// Async function declaration
+async function fetchUserData(userId) {
+  try {
+    const response = await fetch(`/api/users/${userId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const userData = await response.json();
+    return userData;
+  } catch (error) {
+    console.error("Failed to fetch user data:", error);
+    throw error;
+  }
+}
+
+// Async arrow function
+const fetchPosts = async () => {
+  const response = await fetch('/api/posts');
+  return response.json();
+};
+
+// Using async functions
+async function main() {
+  try {
+    const user = await fetchUserData(123);
+    const posts = await fetchPosts();
+    console.log("User:", user);
+    console.log("Posts:", posts);
+  } catch (error) {
+    console.error("Error in main:", error);
+  }
+}
+
+// Parallel execution with async/await
+async function loadAllData() {
+  try {
+    const [users, posts, comments] = await Promise.all([
+      fetch('/api/users').then(r => r.json()),
+      fetch('/api/posts').then(r => r.json()),
+      fetch('/api/comments').then(r => r.json())
+    ]);
+    
+    return { users, posts, comments };
+  } catch (error) {
+    console.error("Failed to load data:", error);
+  }
+}
+
+// Async generators
+async function* asyncGenerator() {
+  for (let i = 0; i < 5; i++) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    yield i;
+  }
+}
+
+// Using async generators
+async function useAsyncGenerator() {
+  for await (const value of asyncGenerator()) {
+    console.log("Generated:", value);
+  }
+}
+```
+
+## DOM Manipulation
+
+<Callout type="info">
+The Document Object Model (DOM) provides an interface for interacting with HTML elements in web pages.
+</Callout>
+
+### Element Selection
+
+#### Finding elements in the DOM
+```javascript
+// Single element selection
+const elementById = document.getElementById('myId');
+const elementByQuery = document.querySelector('.my-class');
+const elementByTag = document.querySelector('div');
+
+// Multiple elements selection
+const elementsByClass = document.getElementsByClassName('my-class');
+const elementsByTag = document.getElementsByTagName('div');
+const elementsByQuery = document.querySelectorAll('.my-class');
+
+// Advanced selectors
+document.querySelector('[data-id="123"]');        // Attribute selector
+document.querySelector('div > p');                // Direct child
+document.querySelector('div p');                  // Descendant
+document.querySelector('input[type="text"]');     // Input with type
+```
+
+### Element Manipulation
+
+#### Modifying DOM elements
+```javascript
+const element = document.querySelector('#myElement');
+
+// Content manipulation
+element.textContent = 'New text content';
+element.innerHTML = '<strong>Bold text</strong>';
+element.outerHTML = '<div>Completely new element</div>';
+
+// Attribute manipulation
+element.setAttribute('data-id', '123');
+element.getAttribute('data-id');
+element.removeAttribute('data-id');
+element.hasAttribute('data-id');
+
+// Class manipulation
+element.classList.add('new-class');
+element.classList.remove('old-class');
+element.classList.toggle('active');
+element.classList.contains('my-class');
+element.className = 'class1 class2 class3';
+
+// Style manipulation
+element.style.color = 'red';
+element.style.backgroundColor = 'blue';
+element.style.fontSize = '16px';
+element.style.cssText = 'color: red; background: blue;';
+
+// Dataset API
+element.dataset.userId = '123';      // Sets data-user-id="123"
+element.dataset.userName = 'John';   // Sets data-user-name="John"
+```
+
+### Creating and Inserting Elements
+
+#### Adding new elements to the DOM
+```javascript
+// Create elements
+const div = document.createElement('div');
+const text = document.createTextNode('Hello World');
+const fragment = document.createDocumentFragment();
+
+// Setup element
+div.textContent = 'New div element';
+div.className = 'my-class';
+div.setAttribute('id', 'newDiv');
+
+// Insert elements
+const parent = document.querySelector('#parent');
+
+// Append to end
+parent.appendChild(div);
+parent.append(div, 'text', anotherElement);
+
+// Prepend to beginning
+parent.prepend(div);
+
+// Insert at specific position
+const sibling = document.querySelector('#sibling');
+parent.insertBefore(div, sibling);
+
+// Modern insertion methods
+parent.insertAdjacentElement('beforebegin', div);  // Before parent
+parent.insertAdjacentElement('afterbegin', div);   // First child
+parent.insertAdjacentElement('beforeend', div);    // Last child
+parent.insertAdjacentElement('afterend', div);     // After parent
+
+parent.insertAdjacentHTML('beforeend', '<p>New paragraph</p>');
+parent.insertAdjacentText('beforeend', 'Plain text');
+
+// Remove elements
+element.remove();                    // Remove element
+parent.removeChild(element);         // Remove child element
+
+// Replace elements
+parent.replaceChild(newElement, oldElement);
+oldElement.replaceWith(newElement);
+```
+
+### Event Handling
+
+#### Handling user interactions
+```javascript
+const button = document.querySelector('#myButton');
+
+// Add event listeners
+button.addEventListener('click', function(event) {
+  console.log('Button clicked!');
+  console.log('Event target:', event.target);
+  console.log('Current target:', event.currentTarget);
+});
+
+// Arrow function event handler
+button.addEventListener('click', (e) => {
+  e.preventDefault();     // Prevent default behavior
+  e.stopPropagation();    // Stop event bubbling
+  console.log('Clicked with arrow function');
+});
+
+// Event delegation (for dynamic elements)
+document.addEventListener('click', function(e) {
+  if (e.target.matches('.dynamic-button')) {
+    console.log('Dynamic button clicked');
+  }
+});
+
+// Multiple events
+['mouseenter', 'mouseleave'].forEach(eventType => {
+  button.addEventListener(eventType, handleMouseEvent);
+});
+
+function handleMouseEvent(e) {
+  console.log(`Mouse ${e.type} event`);
+}
+
+// Remove event listeners
+button.removeEventListener('click', handleClick);
+
+// Custom events
+const customEvent = new CustomEvent('myCustomEvent', {
+  detail: { message: 'Hello from custom event' }
+});
+
+element.addEventListener('myCustomEvent', (e) => {
+  console.log(e.detail.message);
+});
+
+element.dispatchEvent(customEvent);
+
+// Form events
+const form = document.querySelector('#myForm');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  console.log('Form data:', Object.fromEntries(formData));
+});
+
+// Input events
+const input = document.querySelector('#myInput');
+input.addEventListener('input', (e) => {
+  console.log('Input value:', e.target.value);
+});
+```
+
+## Error Handling
+
+<Callout type="warn">
+Proper error handling is essential for building robust JavaScript applications that can gracefully handle unexpected situations.
+</Callout>
+
+### Try-Catch-Finally
+
+#### Handling errors gracefully
+```javascript
+// Basic try-catch
+try {
+  const result = riskyOperation();
+  console.log('Success:', result);
+} catch (error) {
+  console.error('Error occurred:', error.message);
+} finally {
+  console.log('This always runs');
+}
+
+// Catching specific error types
+try {
+  JSON.parse('invalid json');
+} catch (error) {
+  if (error instanceof SyntaxError) {
+    console.error('Invalid JSON syntax');
+  } else if (error instanceof TypeError) {
+    console.error('Type error occurred');
+  } else {
+    console.error('Unknown error:', error);
+  }
+}
+
+// Async error handling
+async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    if (error instanceof TypeError) {
+      console.error('Network error:', error.message);
+    } else {
+      console.error('Fetch error:', error.message);
+    }
+    throw error;  // Re-throw if needed
+  }
+}
+
+// Custom error classes
+class ValidationError extends Error {
+  constructor(message, field) {
+    super(message);
+    this.name = 'ValidationError';
+    this.field = field;
+  }
+}
+
+function validateEmail(email) {
+  if (!email.includes('@')) {
+    throw new ValidationError('Invalid email format', 'email');
+  }
+}
+
+try {
+  validateEmail('invalid-email');
+} catch (error) {
+  if (error instanceof ValidationError) {
+    console.error(`Validation failed for ${error.field}: ${error.message}`);
+  }
+}
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these JavaScript best practices for writing clean, maintainable, and efficient code.
+</Callout>
+
+- **Use `const` by default**, `let` when reassignment is needed, avoid `var`
+- **Prefer arrow functions** for short functions and callbacks
+- **Use template literals** instead of string concatenation
+- **Destructure objects and arrays** to extract values cleanly
+- **Handle errors properly** with try-catch blocks and proper error messages
+- **Use async/await** instead of promise chains for better readability
+- **Validate inputs** and handle edge cases in your functions
+- **Use meaningful variable and function names** that describe their purpose
+- **Keep functions small and focused** on a single responsibility
+- **Use modern array methods** like `map`, `filter`, `reduce` instead of loops when appropriate
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive JavaScript documentation and advanced programming techniques</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            MDN JavaScript Reference
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://javascript.info/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            JavaScript.info
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://tc39.es/ecma262/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            ECMAScript Specification
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1274 @@
+---
+title: "Python Cheatsheet"
+description: "Complete Python cheatsheet covering data types, data structures, control flow, functions, object-oriented programming, and modern Python development."
+image: "/images/cheatsheets/python.jpg"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["python", "programming", "scripting", "development"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Python Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    Python
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    Programming
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Scripting
+  </span>
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    Development
+  </span>
+</div>
+
+Complete reference for Python programming language covering data types, data structures, control flow, functions, object-oriented programming, and modern development practices.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">📊 Data Types & Structures</h3>
+    <p className="text-sm text-muted-foreground">Basic types, lists, tuples, sets, and dictionaries</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔄 Control Flow</h3>
+    <p className="text-sm text-muted-foreground">Conditionals, loops, and program flow control</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⚙️ Functions & Classes</h3>
+    <p className="text-sm text-muted-foreground">Function definitions and object-oriented programming</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🎯 Keywords & Operators</h3>
+    <p className="text-sm text-muted-foreground">Python keywords, operators, and special syntax</p>
+  </div>
+</div>
+
+## Getting Started
+
+<Callout type="info">
+Python is an interpreted, high-level, general-purpose, dynamically typed programming language that emphasizes code readability and simplicity.
+</Callout>
+
+### Python Basics
+
+#### Key characteristics
+- **Interpreted language** - No compilation step required
+- **Object-oriented** - Everything is an object in Python
+- **Dynamically typed** - Variables don't need explicit type declarations
+- **Indentation-based** - Uses indentation instead of braces for code blocks
+- **Cross-platform** - Runs on Windows, macOS, Linux, and more
+
+#### Running Python programs
+```bash
+# Run a Python file
+python filename.py
+
+# Python 3 specifically
+python3 filename.py
+
+# Interactive Python shell
+python
+python3
+
+# Execute Python code directly
+python -c "print('Hello, World!')"
+```
+
+#### Creating and executing a program
+```bash
+# 1. Create a new Python file
+nano hello.py
+
+# 2. Write your program
+echo 'print("Hello, World!")' > hello.py
+
+# 3. Execute the program
+python hello.py
+```
+
+## Data Types
+
+<Callout type="info">
+Python supports several built-in data types that are automatically determined based on the value assigned to variables.
+</Callout>
+
+### Basic Data Types
+
+#### Primitive data types
+```python
+# Integer
+age = 25
+negative_num = -10
+large_num = 1000000
+
+# Float
+price = 19.99
+scientific = 2.5e6  # 2500000.0
+pi = 3.14159
+
+# String
+name = "John Doe"
+message = 'Hello, World!'
+multiline = """This is a
+multi-line string"""
+
+# Boolean
+is_active = True
+is_complete = False
+
+# None type
+empty_value = None
+
+# Complex numbers
+complex_num = 2 + 3j
+another_complex = complex(4, -1)  # 4-1j
+```
+
+#### Type checking and conversion
+```python
+# Check data types
+print(type(42))          # <class 'int'>
+print(type(3.14))        # <class 'float'>
+print(type("Hello"))     # <class 'str'>
+print(type(True))        # <class 'bool'>
+
+# Type conversion
+str_num = "123"
+int_num = int(str_num)   # 123
+float_num = float(str_num)  # 123.0
+str_bool = str(True)     # "True"
+
+# Check if instance of type
+isinstance(42, int)      # True
+isinstance("hello", str) # True
+```
+
+## Keywords and Operators
+
+<Callout type="warn">
+Python 3.8+ has 35 reserved keywords that cannot be used as variable names. Understanding these is essential for proper Python programming.
+</Callout>
+
+### Python Keywords
+
+#### Value keywords
+```python
+# Boolean values
+result = True
+finished = False
+
+# None value
+data = None
+```
+
+#### Operator keywords
+```python
+# Logical operators
+if condition1 and condition2:
+    pass
+
+if condition1 or condition2:
+    pass
+
+if not condition:
+    pass
+
+# Membership operators
+if item in my_list:
+    pass
+
+# Identity operators
+if variable is None:
+    pass
+
+if variable is not None:
+    pass
+```
+
+#### Control flow keywords
+```python
+# Conditional statements
+if condition:
+    pass
+elif another_condition:
+    pass
+else:
+    pass
+
+# Loops
+for item in iterable:
+    if condition:
+        break      # Exit loop
+    if other_condition:
+        continue   # Skip to next iteration
+
+while condition:
+    pass
+
+# Exception handling
+try:
+    risky_operation()
+except ValueError:
+    handle_error()
+except Exception as e:
+    handle_general_error(e)
+finally:
+    cleanup()
+
+# Raise custom exceptions
+raise ValueError("Invalid input")
+
+# Assertions
+assert condition, "Error message"
+```
+
+#### Structure keywords
+```python
+# Function definition
+def my_function(param):
+    return param * 2
+
+# Class definition
+class MyClass:
+    def __init__(self):
+        pass
+
+# Lambda functions
+square = lambda x: x ** 2
+
+# Context managers
+with open('file.txt', 'r') as file:
+    content = file.read()
+
+# Import statements
+import os
+from datetime import datetime
+import numpy as np
+
+# Async programming
+async def async_function():
+    await some_async_operation()
+
+# Variable scope
+global global_var
+nonlocal outer_var
+
+# Delete variables
+del unnecessary_var
+```
+
+### Operators
+
+#### Arithmetic operators
+```python
+a, b = 10, 3
+
+# Basic arithmetic
+addition = a + b        # 13
+subtraction = a - b     # 7
+multiplication = a * b  # 30
+division = a / b        # 3.333...
+floor_division = a // b # 3
+modulo = a % b         # 1
+exponentiation = a ** b # 1000
+
+# Unary operators
+positive = +a          # 10
+negative = -a          # -10
+```
+
+#### Comparison operators
+```python
+a, b = 5, 10
+
+# Comparison operations
+equal = a == b         # False
+not_equal = a != b     # True
+less_than = a < b      # True
+less_equal = a <= b    # True
+greater_than = a > b   # False
+greater_equal = a >= b # False
+```
+
+#### Bitwise operators
+```python
+a, b = 12, 8  # 1100, 1000 in binary
+
+# Bitwise operations
+bitwise_and = a & b    # 8 (1000)
+bitwise_or = a | b     # 12 (1100)
+bitwise_xor = a ^ b    # 4 (0100)
+bitwise_not = ~a       # -13
+left_shift = a << 2    # 48 (110000)
+right_shift = a >> 2   # 3 (11)
+```
+
+#### Assignment operators
+```python
+x = 10
+
+# Compound assignment
+x += 5   # x = x + 5  (15)
+x -= 3   # x = x - 3  (12)
+x *= 2   # x = x * 2  (24)
+x /= 4   # x = x / 4  (6.0)
+x //= 2  # x = x // 2 (3.0)
+x %= 2   # x = x % 2  (1.0)
+x **= 3  # x = x ** 3 (1.0)
+
+# Bitwise assignment
+x &= 5   # x = x & 5
+x |= 3   # x = x | 3
+x ^= 2   # x = x ^ 2
+x <<= 1  # x = x << 1
+x >>= 1  # x = x >> 1
+```
+
+## Data Structures
+
+<Callout type="tip">
+Python provides several built-in data structures that are fundamental for organizing and manipulating data efficiently.
+</Callout>
+
+### Lists
+
+#### List basics
+```python
+# Creating lists
+fruits = ["apple", "banana", "cherry"]
+numbers = [1, 2, 3, 4, 5]
+mixed = ["abc", 34, True, 40, "male"]
+empty_list = []
+
+# Alternative constructor
+my_list = list(("apple", "banana", "cherry"))
+
+# List properties
+print(len(fruits))      # 3
+print(type(fruits))     # <class 'list'>
+```
+
+#### List operations
+```python
+# Accessing elements
+first_fruit = fruits[0]      # "apple"
+last_fruit = fruits[-1]     # "cherry"
+slice_fruits = fruits[1:3]  # ["banana", "cherry"]
+
+# Modifying lists
+fruits[1] = "blueberry"     # Replace element
+fruits.append("orange")     # Add to end
+fruits.insert(1, "grape")  # Insert at index
+fruits.extend(["kiwi", "mango"])  # Add multiple
+
+# Removing elements
+fruits.remove("apple")      # Remove by value
+popped = fruits.pop()       # Remove last item
+popped_index = fruits.pop(0)  # Remove by index
+del fruits[1]               # Delete by index
+fruits.clear()              # Empty the list
+```
+
+#### List methods
+```python
+numbers = [3, 1, 4, 1, 5, 9, 2, 6]
+
+# List methods
+numbers.sort()              # Sort in place
+numbers.reverse()           # Reverse in place
+count = numbers.count(1)    # Count occurrences
+index = numbers.index(4)    # Find index
+numbers_copy = numbers.copy()  # Shallow copy
+
+# List comprehensions
+squares = [x**2 for x in range(10)]
+evens = [x for x in numbers if x % 2 == 0]
+```
+
+### Tuples
+
+#### Tuple basics
+```python
+# Creating tuples
+coordinates = (10, 20)
+colors = ("red", "green", "blue")
+mixed_tuple = ("apple", 123, True)
+
+# Single item tuple (note the comma)
+single_tuple = ("apple",)
+
+# Alternative constructor
+my_tuple = tuple(("apple", "banana", "cherry"))
+
+# Tuple properties
+print(len(colors))      # 3
+print(type(colors))     # <class 'tuple'>
+```
+
+#### Tuple operations
+```python
+# Accessing elements (same as lists)
+first_color = colors[0]     # "red"
+last_color = colors[-1]    # "blue"
+slice_colors = colors[1:3] # ("green", "blue")
+
+# Tuples are immutable
+# colors[0] = "yellow"  # This would raise an error
+
+# Tuple methods
+count = colors.count("red")    # Count occurrences
+index = colors.index("green")  # Find index
+
+# Tuple unpacking
+x, y = coordinates        # x=10, y=20
+red, green, blue = colors # Assign each value
+```
+
+### Sets
+
+#### Set basics
+```python
+# Creating sets
+fruits = {"apple", "banana", "cherry"}
+numbers = {1, 2, 3, 4, 5}
+mixed_set = {"abc", 34, True}
+
+# Alternative constructor
+my_set = set(("apple", "banana", "cherry"))
+
+# Empty set
+empty_set = set()  # Note: {} creates an empty dict
+
+# Set properties
+print(len(fruits))      # 3
+print(type(fruits))     # <class 'set'>
+```
+
+#### Set operations
+```python
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+
+# Adding elements
+fruits.add("orange")
+fruits.update(["grape", "kiwi"])
+
+# Removing elements
+fruits.remove("apple")     # Raises error if not found
+fruits.discard("banana")   # No error if not found
+popped = fruits.pop()      # Remove arbitrary element
+fruits.clear()             # Empty the set
+
+# Set operations
+union = set1 | set2              # {1, 2, 3, 4, 5, 6}
+intersection = set1 & set2       # {3, 4}
+difference = set1 - set2         # {1, 2}
+symmetric_diff = set1 ^ set2     # {1, 2, 5, 6}
+
+# Set methods
+set1.union(set2)
+set1.intersection(set2)
+set1.difference(set2)
+set1.symmetric_difference(set2)
+
+# Frozen sets (immutable)
+frozen = frozenset([1, 2, 3, 4])
+```
+
+### Dictionaries
+
+#### Dictionary basics
+```python
+# Creating dictionaries
+person = {
+    "name": "John",
+    "age": 30,
+    "city": "New York"
+}
+
+# Alternative ways
+person2 = dict(name="Jane", age=25, city="Boston")
+person3 = dict([("name", "Bob"), ("age", 35)])
+
+# Dictionary properties
+print(len(person))      # 3
+print(type(person))     # <class 'dict'>
+```
+
+#### Dictionary operations
+```python
+# Accessing values
+name = person["name"]           # "John"
+age = person.get("age")         # 30
+default_value = person.get("height", 0)  # 0 (default)
+
+# Modifying dictionaries
+person["age"] = 31              # Update value
+person["height"] = 180          # Add new key-value
+person.update({"weight": 75, "age": 32})  # Update multiple
+
+# Removing elements
+removed = person.pop("height")   # Remove and return value
+person.popitem()                # Remove last item
+del person["weight"]            # Delete by key
+person.clear()                  # Empty dictionary
+```
+
+#### Dictionary methods
+```python
+car = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964,
+    "colors": ["red", "white", "blue"]
+}
+
+# Dictionary methods
+keys = car.keys()           # dict_keys(['brand', 'model', 'year', 'colors'])
+values = car.values()       # dict_values(['Ford', 'Mustang', 1964, ['red', 'white', 'blue']])
+items = car.items()         # dict_items([('brand', 'Ford'), ...])
+
+# Dictionary comprehension
+squares = {x: x**2 for x in range(5)}  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Nested dictionaries
+people = {
+    "person1": {"name": "John", "age": 30},
+    "person2": {"name": "Jane", "age": 25}
+}
+```
+
+## Control Flow
+
+<Callout type="info">
+Control flow statements allow you to control the execution path of your Python programs based on conditions and iterations.
+</Callout>
+
+### Conditional Statements
+
+#### Basic conditionals
+```python
+# Simple if statement
+age = 18
+if age >= 18:
+    print("You are an adult")
+
+# If-else statement
+if age >= 18:
+    print("You are an adult")
+else:
+    print("You are a minor")
+
+# If-elif-else chain
+score = 85
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+
+print(f"Your grade is: {grade}")
+```
+
+#### Advanced conditionals
+```python
+# Multiple conditions
+age = 25
+income = 50000
+
+if age >= 18 and income >= 30000:
+    print("Eligible for loan")
+
+if age < 18 or income < 20000:
+    print("Not eligible")
+
+# Nested conditions
+weather = "sunny"
+temperature = 75
+
+if weather == "sunny":
+    if temperature > 70:
+        print("Great day for outdoor activities")
+    else:
+        print("Sunny but a bit cold")
+else:
+    print("Indoor activities recommended")
+
+# Ternary operator
+status = "adult" if age >= 18 else "minor"
+max_value = a if a > b else b
+```
+
+### Loops
+
+#### While loops
+```python
+# Basic while loop
+count = 0
+while count < 5:
+    print(f"Count: {count}")
+    count += 1
+
+# While with else
+num = 10
+while num > 0:
+    print(num)
+    num -= 1
+else:
+    print("Loop completed normally")
+
+# While with break and continue
+i = 0
+while i < 10:
+    i += 1
+    if i % 2 == 0:
+        continue  # Skip even numbers
+    if i > 7:
+        break     # Exit loop
+    print(i)
+```
+
+#### For loops
+```python
+# Iterating over sequences
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+
+# Iterating over strings
+for char in "Python":
+    print(char)
+
+# Using range()
+for i in range(5):          # 0 to 4
+    print(i)
+
+for i in range(2, 8):       # 2 to 7
+    print(i)
+
+for i in range(0, 10, 2):   # 0, 2, 4, 6, 8
+    print(i)
+
+# For with else
+for i in range(3):
+    print(i)
+else:
+    print("Loop completed")
+
+# Enumerate for index and value
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")
+
+# Zip for parallel iteration
+names = ["Alice", "Bob", "Charlie"]
+ages = [25, 30, 35]
+for name, age in zip(names, ages):
+    print(f"{name} is {age} years old")
+```
+
+#### Nested loops
+```python
+# Nested loops example
+adjectives = ["red", "big", "tasty"]
+fruits = ["apple", "banana", "cherry"]
+
+for adj in adjectives:
+    for fruit in fruits:
+        print(f"{adj} {fruit}")
+
+# Break and continue in nested loops
+for i in range(3):
+    for j in range(3):
+        if i == j:
+            continue  # Skip when i equals j
+        if i + j == 3:
+            break     # Break inner loop
+        print(f"i={i}, j={j}")
+```
+
+#### List comprehensions and generator expressions
+```python
+# List comprehensions
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]
+matrix = [[i*j for j in range(3)] for i in range(3)]
+
+# Dictionary comprehensions
+square_dict = {x: x**2 for x in range(5)}
+
+# Set comprehensions
+unique_remainders = {x % 3 for x in range(10)}
+
+# Generator expressions
+squares_gen = (x**2 for x in range(10))
+```
+
+## Functions
+
+<Callout type="tip">
+Functions are reusable blocks of code that perform specific tasks. Python functions are first-class objects and support advanced features like default parameters, variable arguments, and decorators.
+</Callout>
+
+### Function Definition and Calling
+
+#### Basic functions
+```python
+# Simple function
+def greet():
+    print("Hello, World!")
+
+# Function with parameters
+def greet_person(name):
+    print(f"Hello, {name}!")
+
+# Function with return value
+def add_numbers(a, b):
+    return a + b
+
+# Function with default parameters
+def greet_with_title(name, title="Mr."):
+    return f"Hello, {title} {name}!"
+
+# Calling functions
+greet()                           # Hello, World!
+greet_person("Alice")            # Hello, Alice!
+result = add_numbers(5, 3)       # 8
+greeting = greet_with_title("Smith", "Dr.")  # Hello, Dr. Smith!
+```
+
+#### Advanced function features
+```python
+# Variable arguments (*args)
+def sum_all(*numbers):
+    return sum(numbers)
+
+result = sum_all(1, 2, 3, 4, 5)  # 15
+
+# Keyword arguments (**kwargs)
+def print_info(**info):
+    for key, value in info.items():
+        print(f"{key}: {value}")
+
+print_info(name="John", age=30, city="New York")
+
+# Combining all parameter types
+def complex_function(required, default="default", *args, **kwargs):
+    print(f"Required: {required}")
+    print(f"Default: {default}")
+    print(f"Args: {args}")
+    print(f"Kwargs: {kwargs}")
+
+complex_function("test", "custom", 1, 2, 3, extra="value")
+```
+
+#### Function documentation and annotations
+```python
+# Function with docstring
+def calculate_area(length: float, width: float) -> float:
+    """
+    Calculate the area of a rectangle.
+    
+    Args:
+        length (float): The length of the rectangle
+        width (float): The width of the rectangle
+    
+    Returns:
+        float: The area of the rectangle
+    """
+    return length * width
+
+# Access docstring
+print(calculate_area.__doc__)
+
+# Function annotations
+def process_data(data: list, multiplier: int = 2) -> list:
+    return [x * multiplier for x in data]
+```
+
+### Lambda Functions
+
+#### Lambda expressions
+```python
+# Basic lambda
+square = lambda x: x**2
+print(square(5))  # 25
+
+# Lambda with multiple parameters
+add = lambda x, y: x + y
+print(add(3, 4))  # 7
+
+# Using lambda with built-in functions
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, numbers))      # [1, 4, 9, 16, 25]
+evens = list(filter(lambda x: x % 2 == 0, numbers))  # [2, 4]
+
+# Sorting with lambda
+students = [("Alice", 85), ("Bob", 90), ("Charlie", 78)]
+students.sort(key=lambda student: student[1])  # Sort by grade
+```
+
+### Scope and Global Variables
+
+#### Variable scope
+```python
+# Global variable
+global_var = "I'm global"
+
+def outer_function():
+    # Enclosing scope variable
+    outer_var = "I'm in outer function"
+    
+    def inner_function():
+        # Local variable
+        local_var = "I'm local"
+        print(local_var)      # Access local
+        print(outer_var)      # Access enclosing
+        print(global_var)     # Access global
+    
+    inner_function()
+
+# Using global keyword
+counter = 0
+
+def increment():
+    global counter
+    counter += 1
+
+increment()
+print(counter)  # 1
+
+# Using nonlocal keyword
+def outer():
+    x = 10
+    
+    def inner():
+        nonlocal x
+        x += 1
+        
+    inner()
+    print(x)  # 11
+
+outer()
+```
+
+## Object-Oriented Programming
+
+<Callout type="info">
+Python supports object-oriented programming with classes, inheritance, encapsulation, and polymorphism. Understanding OOP is crucial for building scalable applications.
+</Callout>
+
+### Classes and Objects
+
+#### Basic class definition
+```python
+# Simple class
+class Person:
+    # Class variable
+    species = "Homo sapiens"
+    
+    # Constructor method
+    def __init__(self, name, age):
+        # Instance variables
+        self.name = name
+        self.age = age
+    
+    # Instance method
+    def introduce(self):
+        return f"Hi, I'm {self.name} and I'm {self.age} years old"
+    
+    # Class method
+    @classmethod
+    def get_species(cls):
+        return cls.species
+    
+    # Static method
+    @staticmethod
+    def is_adult(age):
+        return age >= 18
+
+# Creating objects
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 17)
+
+# Using methods
+print(person1.introduce())          # Hi, I'm Alice and I'm 25 years old
+print(Person.get_species())         # Homo sapiens
+print(Person.is_adult(person1.age)) # True
+```
+
+#### Advanced class features
+```python
+class BankAccount:
+    def __init__(self, account_number, initial_balance=0):
+        self.account_number = account_number
+        self._balance = initial_balance  # Protected attribute
+        self.__pin = "1234"             # Private attribute
+    
+    # Property decorator for getter
+    @property
+    def balance(self):
+        return self._balance
+    
+    # Setter for balance
+    @balance.setter
+    def balance(self, amount):
+        if amount >= 0:
+            self._balance = amount
+        else:
+            raise ValueError("Balance cannot be negative")
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self._balance += amount
+            return True
+        return False
+    
+    def withdraw(self, amount):
+        if 0 < amount <= self._balance:
+            self._balance -= amount
+            return True
+        return False
+    
+    # String representation
+    def __str__(self):
+        return f"Account {self.account_number}: ${self._balance}"
+    
+    # Official representation
+    def __repr__(self):
+        return f"BankAccount('{self.account_number}', {self._balance})"
+
+# Using the class
+account = BankAccount("123456", 1000)
+print(account.balance)  # 1000
+account.deposit(500)
+print(account)         # Account 123456: $1500
+```
+
+### Inheritance
+
+#### Single inheritance
+```python
+# Base class
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    
+    def make_sound(self):
+        return "Some generic animal sound"
+    
+    def info(self):
+        return f"{self.name} is a {self.species}"
+
+# Derived class
+class Dog(Animal):
+    def __init__(self, name, breed):
+        super().__init__(name, "Canine")  # Call parent constructor
+        self.breed = breed
+    
+    # Override parent method
+    def make_sound(self):
+        return "Woof!"
+    
+    # Add new method
+    def fetch(self):
+        return f"{self.name} is fetching the ball"
+
+# Using inheritance
+dog = Dog("Buddy", "Golden Retriever")
+print(dog.info())       # Buddy is a Canine
+print(dog.make_sound()) # Woof!
+print(dog.fetch())      # Buddy is fetching the ball
+```
+
+#### Multiple inheritance
+```python
+class Flyable:
+    def fly(self):
+        return "Flying high!"
+
+class Swimmable:
+    def swim(self):
+        return "Swimming gracefully!"
+
+class Duck(Animal, Flyable, Swimmable):
+    def __init__(self, name):
+        super().__init__(name, "Bird")
+    
+    def make_sound(self):
+        return "Quack!"
+
+# Using multiple inheritance
+duck = Duck("Donald")
+print(duck.make_sound())  # Quack!
+print(duck.fly())         # Flying high!
+print(duck.swim())        # Swimming gracefully!
+
+# Method Resolution Order
+print(Duck.mro())
+```
+
+### Exception Handling
+
+#### Basic exception handling
+```python
+# Try-except block
+try:
+    number = int(input("Enter a number: "))
+    result = 10 / number
+    print(f"Result: {result}")
+except ValueError:
+    print("Invalid input! Please enter a valid number.")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+finally:
+    print("This always executes")
+
+# Multiple exceptions
+try:
+    # risky operation
+    pass
+except (ValueError, TypeError) as e:
+    print(f"Value or Type error: {e}")
+
+# Raising exceptions
+def validate_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    if age > 150:
+        raise ValueError("Age seems unrealistic")
+    return True
+
+# Custom exceptions
+class CustomError(Exception):
+    def __init__(self, message, error_code):
+        super().__init__(message)
+        self.error_code = error_code
+
+def risky_function():
+    raise CustomError("Something went wrong", 500)
+
+try:
+    risky_function()
+except CustomError as e:
+    print(f"Custom error {e.error_code}: {e}")
+```
+
+## File Handling and Context Managers
+
+<Callout type="info">
+Python provides powerful tools for file operations and resource management through context managers and the `with` statement.
+</Callout>
+
+### File Operations
+
+#### Reading and writing files
+```python
+# Writing to a file
+with open('example.txt', 'w') as file:
+    file.write("Hello, World!\n")
+    file.write("This is a Python file example.")
+
+# Reading from a file
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# Reading line by line
+with open('example.txt', 'r') as file:
+    for line in file:
+        print(line.strip())
+
+# Reading all lines into a list
+with open('example.txt', 'r') as file:
+    lines = file.readlines()
+
+# Appending to a file
+with open('example.txt', 'a') as file:
+    file.write("\nAppended line")
+
+# Working with different file modes
+# 'r' - read (default)
+# 'w' - write (overwrites existing)
+# 'a' - append
+# 'x' - create (fails if exists)
+# 'b' - binary mode
+# 't' - text mode (default)
+# '+' - read and write
+```
+
+#### Context managers
+```python
+# Custom context manager
+class FileManager:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+    
+    def __enter__(self):
+        print(f"Opening {self.filename}")
+        self.file = open(self.filename, self.mode)
+        return self.file
+    
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        print(f"Closing {self.filename}")
+        if self.file:
+            self.file.close()
+
+# Using custom context manager
+with FileManager('test.txt', 'w') as f:
+    f.write("Hello from custom context manager")
+
+# Context manager with contextlib
+from contextlib import contextmanager
+
+@contextmanager
+def managed_resource():
+    print("Acquiring resource")
+    resource = "Some resource"
+    try:
+        yield resource
+    finally:
+        print("Releasing resource")
+
+with managed_resource() as resource:
+    print(f"Using {resource}")
+```
+
+## Modules and Packages
+
+### Importing modules
+```python
+# Different import styles
+import math
+import os as operating_system
+from datetime import datetime, timedelta
+from collections import *
+
+# Using imported modules
+result = math.sqrt(16)
+current_time = datetime.now()
+path = operating_system.getcwd()
+
+# Conditional imports
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+
+# Dynamic imports
+module_name = "json"
+json_module = __import__(module_name)
+```
+
+### Creating modules
+```python
+# mymodule.py
+"""
+A sample module demonstrating Python module creation.
+"""
+
+PI = 3.14159
+
+def area_circle(radius):
+    """Calculate the area of a circle."""
+    return PI * radius ** 2
+
+def circumference_circle(radius):
+    """Calculate the circumference of a circle."""
+    return 2 * PI * radius
+
+class Calculator:
+    """A simple calculator class."""
+    
+    @staticmethod
+    def add(a, b):
+        return a + b
+    
+    @staticmethod
+    def multiply(a, b):
+        return a * b
+
+if __name__ == "__main__":
+    # This code runs only when the module is executed directly
+    print("Testing the module...")
+    print(f"Area of circle with radius 5: {area_circle(5)}")
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these Python best practices for writing clean, readable, and maintainable code that follows the Pythonic way.
+</Callout>
+
+- **Follow PEP 8** style guidelines for consistent code formatting
+- **Use meaningful variable and function names** that clearly express intent
+- **Write docstrings** for all functions, classes, and modules
+- **Handle exceptions appropriately** and use specific exception types
+- **Use list comprehensions** and generator expressions for concise code
+- **Leverage Python's built-in functions** like `enumerate()`, `zip()`, `any()`, `all()`
+- **Use context managers** (`with` statements) for resource management
+- **Prefer explicit over implicit** - make your code clear and readable
+- **Don't repeat yourself (DRY)** - extract common functionality into functions
+- **Use virtual environments** for project dependency management
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive Python documentation and advanced programming concepts</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://docs.python.org/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official Python Documentation
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://pep8.org/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            PEP 8 Style Guide
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://realpython.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Real Python Tutorials
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

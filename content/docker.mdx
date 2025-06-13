@@ -1,0 +1,466 @@
+---
+title: "Docker Cheatsheet"
+description: "Complete Docker cheatsheet covering containers, images, Docker Compose, services, stacks, and Docker Machine commands."
+image: "/images/cheatsheets/docker.jpg"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["docker", "containers", "devops"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Docker Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    Docker
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Containers
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    DevOps
+  </span>
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    Orchestration
+  </span>
+</div>
+
+Complete reference for Docker commands, from basic container operations to advanced orchestration with Docker Compose, services, stacks, and Docker Machine.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🐳 Basic Commands</h3>
+    <p className="text-sm text-muted-foreground">Essential Docker container and image operations</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔧 Docker Compose</h3>
+    <p className="text-sm text-muted-foreground">Multi-container application management</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⚙️ Services & Stacks</h3>
+    <p className="text-sm text-muted-foreground">Production deployment and scaling</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🖥️ Docker Machine</h3>
+    <p className="text-sm text-muted-foreground">Virtual machine provisioning and management</p>
+  </div>
+</div>
+
+## Basic Docker Commands
+
+### Getting Started
+
+#### Creates Docker-related starter files
+```bash
+docker init
+```
+
+#### Create image using this directory's Dockerfile
+```bash
+docker build -t friendlyname .
+```
+
+#### Run "friendlyname" mapping port 4000 to 80
+```bash
+docker run -p 4000:80 friendlyname
+```
+
+#### Same thing, but in detached mode
+```bash
+docker run -d -p 4000:80 friendlyname
+```
+
+### Container Management
+
+#### Enter a running container
+```bash
+docker exec -it [container-id] bash
+```
+
+#### See a list of all running containers
+```bash
+docker ps
+```
+
+#### See a list of all containers, even the ones not running
+```bash
+docker ps -a
+```
+
+#### Gracefully stop the specified container
+```bash
+docker stop <hash>
+```
+
+#### Force shutdown of the specified container
+```bash
+docker kill <hash>
+```
+
+#### Remove the specified container from this machine
+```bash
+docker rm <hash>
+```
+
+#### Remove force specified container from this machine
+```bash
+docker rm -f <hash>
+```
+
+#### Remove all containers from this machine
+```bash
+docker rm $(docker ps -a -q)
+```
+
+### Image Management
+
+#### Show all images on this machine
+```bash
+docker images -a
+```
+
+#### Remove the specified image from this machine
+```bash
+docker rmi <imagename>
+```
+
+#### Remove all images from this machine
+```bash
+docker rmi $(docker images -q)
+```
+
+#### Tag `<image>` for upload to registry
+```bash
+docker tag <image> username/repository:tag
+```
+
+#### Upload tagged image to registry
+```bash
+docker push username/repository:tag
+```
+
+#### Run image from a registry
+```bash
+docker run username/repository:tag
+```
+
+### Logging and Registry
+
+#### Live tail a container's logs
+```bash
+docker logs <container-id> -f
+```
+
+#### Log in this CLI session using your Docker credentials
+```bash
+docker login
+```
+
+### System Cleanup
+
+#### Remove all unused containers, networks, images (both dangling and unreferenced), and optionally, volumes
+```bash
+docker system prune
+```
+
+#### Remove all unused containers, networks, images not just dangling ones
+```bash
+docker system prune -a
+```
+
+#### Remove all unused local volumes
+```bash
+docker volume prune
+```
+
+#### Remove all unused networks
+```bash
+docker network prune
+```
+
+## Docker Compose
+
+<Callout type="info">
+Docker Compose is perfect for defining and running multi-container Docker applications using a YAML file.
+</Callout>
+
+### Basic Operations
+
+#### Create and start containers
+```bash
+docker-compose up
+```
+
+#### Create and start containers in detached mode
+```bash
+docker-compose up -d
+```
+
+#### Stop and remove containers, networks, images, and volumes
+```bash
+docker-compose down
+```
+
+#### Restart all service
+```bash
+docker-compose restart
+```
+
+### Development & Debugging
+
+#### View output from containers
+```bash
+docker-compose logs
+```
+
+#### Validate and view the Compose file
+```bash
+docker-compose config
+```
+
+#### Display the running processes
+```bash
+docker-compose top
+```
+
+#### Start web service and runs bash as its command, remove old container
+```bash
+docker-compose run -rm -p 2022:22 web bash
+```
+
+### Image & Service Management
+
+#### Pull all image service
+```bash
+docker-compose pull
+```
+
+#### Build all image service
+```bash
+docker-compose build
+```
+
+#### Scale special service(s)
+```bash
+docker-compose scale <service_name>=<replica>
+```
+
+## Docker Services
+
+<Callout type="info">
+Docker services are used in Docker Swarm mode for managing containerized applications across multiple nodes.
+</Callout>
+
+### Service Management
+
+#### Create new service
+```bash
+docker service create <options> <image> <command>
+```
+
+#### List Services
+```bash
+docker service ls
+```
+
+#### List the tasks of Services
+```bash
+docker service ps
+```
+
+#### Display detailed information Service(s)
+```bash
+docker service inspect --pretty <service_name>
+```
+
+### Scaling & Updates
+
+#### Scale special service(s)
+```bash
+docker service scale <service_name>=<replica>
+```
+
+#### Update Service options
+```bash
+docker service update <options> <service_name>
+```
+
+## Docker Stack
+
+<Callout type="info">
+Docker Stack is used to deploy and manage a complete application stack in Docker Swarm mode.
+</Callout>
+
+### Stack Operations
+
+#### List all running applications on this Docker host
+```bash
+docker stack ls
+```
+
+#### Run the specified Compose file
+```bash
+docker stack deploy -c <composefile> <appname>
+```
+
+#### List the services associated with an app
+```bash
+docker stack services <appname>
+```
+
+#### List the running containers associated with an app
+```bash
+docker stack ps <appname>
+```
+
+#### Tear down an application
+```bash
+docker stack rm <appname>
+```
+
+## Docker Machine
+
+<Callout type="warn">
+Docker Machine is primarily used for provisioning Docker hosts on various platforms and cloud providers.
+</Callout>
+
+### Machine Creation
+
+#### Create a VM (Mac, Win7, Linux)
+```bash
+docker-machine create --driver virtualbox myvm1
+```
+
+#### Win10
+```bash
+docker-machine create -d hyperv --hyperv-virtual-switch "myswitch" myvm1
+```
+
+### Machine Management
+
+#### Start a VM that is currently not running
+```bash
+docker-machine start myvm1
+```
+
+#### Stop all running VMs
+```bash
+docker-machine stop $(docker-machine ls -q)
+```
+
+#### Delete all VMs and their disk images
+```bash
+docker-machine rm $(docker-machine ls -q)
+```
+
+### Machine Information & Access
+
+#### View basic information about your node
+```bash
+docker-machine env myvm1
+```
+
+#### Open an SSH session with the VM; type "exit" to end
+```bash
+docker-machine ssh myvm1
+```
+
+#### Copy file to node's home dir
+```bash
+docker-machine scp docker-compose.yml myvm1:~
+```
+
+### Swarm Operations via Machine
+
+#### List the nodes in your swarm
+```bash
+docker-machine ssh myvm1 "docker node ls"
+```
+
+#### Inspect a node
+```bash
+docker-machine ssh myvm1 "docker node inspect <node ID>"
+```
+
+#### View join token
+```bash
+docker-machine ssh myvm1 "docker swarm join-token -q worker"
+```
+
+#### Make the worker leave the swarm
+```bash
+docker-machine ssh myvm2 "docker swarm leave"
+```
+
+#### Make master leave, kill swarm
+```bash
+docker-machine ssh myvm1 "docker swarm leave -f"
+```
+
+#### Deploy an app
+```bash
+docker-machine ssh myvm1 "docker stack deploy -c <file> <app>"
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these Docker best practices for better performance and security.
+</Callout>
+
+- **Use .dockerignore** to exclude unnecessary files from the build context
+- **Multi-stage builds** to keep final images small and secure
+- **Non-root users** in containers for better security
+- **Health checks** to monitor container health
+- **Resource limits** to prevent containers from consuming too many resources
+- **Environment-specific configs** using environment variables
+- **Regular cleanup** of unused images, containers, and volumes
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive Docker documentation</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://docs.docker.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official Docs
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://docs.docker.com/compose/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Docker Compose
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://docs.docker.com/engine/swarm/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Docker Swarm
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,958 @@
+---
+title: "AWS CLI Cheatsheet"
+description: "Complete AWS CLI cheatsheet covering EC2, S3, IAM, Lambda, VPC, RDS, CloudFront, and cloud infrastructure management commands."
+image: "/images/cheatsheets/aws.jpg"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["aws", "cli", "cloud", "infrastructure"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# AWS CLI Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+    AWS
+  </span>
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    CLI
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Cloud
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    Infrastructure
+  </span>
+</div>
+
+Complete reference for AWS Command Line Interface covering EC2, S3, IAM, Lambda, VPC, RDS, CloudFront, and cloud infrastructure management.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">☁️ Compute & Storage</h3>
+    <p className="text-sm text-muted-foreground">EC2 instances, EBS volumes, S3 buckets, and AMI management</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🔐 Security & Identity</h3>
+    <p className="text-sm text-muted-foreground">IAM users, roles, policies, and access management</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🌐 Networking & CDN</h3>
+    <p className="text-sm text-muted-foreground">VPC, subnets, security groups, and CloudFront</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⚡ Services & Databases</h3>
+    <p className="text-sm text-muted-foreground">Lambda functions, RDS databases, and monitoring</p>
+  </div>
+</div>
+
+## Getting Started
+
+<Callout type="info">
+AWS CLI is a unified tool to manage your AWS services from the command line. With just one tool to download and configure, you can control multiple AWS services from the command line and automate them through scripts.
+</Callout>
+
+### AWS CLI Setup
+
+#### Installation and configuration
+```bash
+# Install AWS CLI v2 (Linux/macOS)
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# Configure AWS CLI
+aws configure
+
+# Configure with specific profile
+aws configure --profile <profile_name>
+
+# List configured profiles
+aws configure list-profiles
+
+# Use specific profile
+aws s3 ls --profile <profile_name>
+
+# Set default region
+aws configure set region us-west-2
+
+# Check configuration
+aws configure list
+aws sts get-caller-identity
+```
+
+#### Basic AWS CLI structure
+```bash
+# General syntax
+aws <service> <operation> [options]
+
+# Get help
+aws help
+aws <service> help
+aws <service> <operation> help
+
+# Common global options
+--region <region>
+--profile <profile_name>
+--output <json|table|text>
+--dry-run  # Show what would happen without executing
+```
+
+## EC2 (Elastic Compute Cloud)
+
+<Callout type="tip">
+EC2 provides scalable computing capacity in the cloud. Use these commands to manage instances, security groups, and key pairs.
+</Callout>
+
+### EC2 Instances
+
+#### Instance management
+```bash
+# List all instances
+aws ec2 describe-instances
+
+# List instances in specific state
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running"
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=stopped"
+
+# Get instance information
+aws ec2 describe-instances --instance-ids <instance-id>
+
+# Start instances
+aws ec2 start-instances --instance-ids <instance-id>
+
+# Stop instances
+aws ec2 stop-instances --instance-ids <instance-id>
+
+# Reboot instances
+aws ec2 reboot-instances --instance-ids <instance-id>
+
+# Terminate instances
+aws ec2 terminate-instances --instance-ids <instance-id>
+
+# Launch new instance
+aws ec2 run-instances \
+  --image-id <ami-id> \
+  --count 1 \
+  --instance-type t2.micro \
+  --key-name <key-pair-name> \
+  --security-group-ids <sg-id> \
+  --subnet-id <subnet-id>
+```
+
+#### Instance monitoring
+```bash
+# Get instance status
+aws ec2 describe-instance-status --instance-ids <instance-id>
+
+# Enable detailed monitoring
+aws ec2 monitor-instances --instance-ids <instance-id>
+
+# Disable detailed monitoring
+aws ec2 unmonitor-instances --instance-ids <instance-id>
+
+# Get console output
+aws ec2 get-console-output --instance-id <instance-id>
+```
+
+### EBS Volumes
+
+#### Volume management
+```bash
+# List all volumes
+aws ec2 describe-volumes
+
+# List available volumes
+aws ec2 describe-volumes --filters "Name=status,Values=available"
+
+# List volumes by state
+aws ec2 describe-volumes --filters "Name=status,Values=creating,available,in-use,deleting,deleted,error"
+
+# Create volume
+aws ec2 create-volume \
+  --size 10 \
+  --volume-type gp2 \
+  --availability-zone us-west-2a
+
+# Attach volume
+aws ec2 attach-volume \
+  --volume-id <volume-id> \
+  --instance-id <instance-id> \
+  --device /dev/sdf
+
+# Detach volume
+aws ec2 detach-volume --volume-id <volume-id>
+
+# Delete volume
+aws ec2 delete-volume --volume-id <volume-id>
+```
+
+#### Snapshots and AMIs
+```bash
+# Create snapshot
+aws ec2 create-snapshot --volume-id <volume-id>
+aws ec2 create-snapshot --volume-id <volume-id> --description "snapshot-$(date +'%Y-%m-%d_%H-%M-%S')"
+
+# List snapshots
+aws ec2 describe-snapshots --owner-ids self
+
+# Delete snapshot
+aws ec2 delete-snapshot --snapshot-id <snapshot-id>
+
+# Create AMI from instance
+aws ec2 create-image \
+  --instance-id <instance-id> \
+  --name "image-$(date +'%Y-%m-%d_%H-%M-%S')" \
+  --description "Custom AMI"
+
+# Create AMI without reboot
+aws ec2 create-image \
+  --instance-id <instance-id> \
+  --name "image-$(date +'%Y-%m-%d_%H-%M-%S')" \
+  --no-reboot
+```
+
+### AMI Management
+
+#### Working with AMIs
+```bash
+# List your AMIs
+aws ec2 describe-images --owners self
+
+# List public Amazon AMIs
+aws ec2 describe-images --owners amazon --filters "Name=name,Values=amzn2-ami-hvm-*"
+
+# List AMIs with filters
+aws ec2 describe-images \
+  --owners self \
+  --filters "Name=state,Values=available" "Name=name,Values=*web*"
+
+# Deregister AMI
+aws ec2 deregister-image --image-id <ami-id>
+
+# Copy AMI to another region
+aws ec2 copy-image \
+  --source-image-id <ami-id> \
+  --source-region us-east-1 \
+  --region us-west-2 \
+  --name "copied-ami"
+```
+
+### Security Groups
+
+#### Security group management
+```bash
+# List security groups
+aws ec2 describe-security-groups
+
+# Create security group
+aws ec2 create-security-group \
+  --group-name <group-name> \
+  --description "<description>" \
+  --vpc-id <vpc-id>
+
+# Add inbound rule
+aws ec2 authorize-security-group-ingress \
+  --group-id <sg-id> \
+  --protocol tcp \
+  --port 80 \
+  --cidr 0.0.0.0/0
+
+# Add SSH access
+aws ec2 authorize-security-group-ingress \
+  --group-id <sg-id> \
+  --protocol tcp \
+  --port 22 \
+  --cidr 0.0.0.0/0
+
+# Remove inbound rule
+aws ec2 revoke-security-group-ingress \
+  --group-id <sg-id> \
+  --protocol tcp \
+  --port 80 \
+  --cidr 0.0.0.0/0
+
+# Delete security group
+aws ec2 delete-security-group --group-id <sg-id>
+```
+
+## S3 (Simple Storage Service)
+
+<Callout type="info">
+S3 provides object storage through a web service interface. Use these commands for bucket and object management.
+</Callout>
+
+### Bucket Operations
+
+#### Bucket management
+```bash
+# List all buckets
+aws s3 ls
+aws s3api list-buckets
+
+# List bucket contents
+aws s3 ls s3://<bucket-name>
+aws s3 ls s3://<bucket-name>/<prefix> --recursive
+
+# Create bucket
+aws s3 mb s3://<bucket-name>
+aws s3 mb s3://<bucket-name> --region us-west-2
+
+# Remove empty bucket
+aws s3 rb s3://<bucket-name>
+
+# Remove bucket and all contents
+aws s3 rb s3://<bucket-name> --force
+
+# Get bucket region
+aws s3api get-bucket-location --bucket <bucket-name>
+
+# Get bucket policy
+aws s3api get-bucket-policy --bucket <bucket-name>
+
+# Set bucket policy
+aws s3api put-bucket-policy --bucket <bucket-name> --policy file://policy.json
+```
+
+### File Operations
+
+#### Upload and download
+```bash
+# Copy file to S3
+aws s3 cp file.txt s3://<bucket-name>/
+aws s3 cp file.txt s3://<bucket-name>/folder/
+
+# Copy file from S3
+aws s3 cp s3://<bucket-name>/file.txt ./
+
+# Copy folder to S3
+aws s3 cp folder/ s3://<bucket-name>/folder/ --recursive
+
+# Sync local folder with S3
+aws s3 sync ./local-folder s3://<bucket-name>/remote-folder
+aws s3 sync s3://<bucket-name>/remote-folder ./local-folder
+
+# Sync with delete (remove files not in source)
+aws s3 sync ./local-folder s3://<bucket-name>/ --delete
+
+# Copy with public read access
+aws s3 cp file.txt s3://<bucket-name>/ --acl public-read
+
+# Move file
+aws s3 mv file.txt s3://<bucket-name>/
+aws s3 mv s3://<bucket-name>/old-file.txt s3://<bucket-name>/new-file.txt
+```
+
+#### File management
+```bash
+# List objects with details
+aws s3api list-objects-v2 --bucket <bucket-name>
+
+# Delete file
+aws s3 rm s3://<bucket-name>/file.txt
+
+# Delete folder
+aws s3 rm s3://<bucket-name>/folder/ --recursive
+
+# Empty bucket
+aws s3 rm s3://<bucket-name> --recursive
+
+# Get object metadata
+aws s3api head-object --bucket <bucket-name> --key file.txt
+
+# Set object ACL
+aws s3api put-object-acl --bucket <bucket-name> --key file.txt --acl public-read
+```
+
+## IAM (Identity and Access Management)
+
+<Callout type="tip">
+IAM enables you to manage access to AWS services and resources securely. Use these commands to manage users, groups, roles, and policies.
+</Callout>
+
+### Users and Groups
+
+#### User management
+```bash
+# List users
+aws iam list-users
+
+# Create user
+aws iam create-user --user-name <username>
+
+# Delete user
+aws iam delete-user --user-name <username>
+
+# Get user details
+aws iam get-user --user-name <username>
+
+# Add user to group
+aws iam add-user-to-group --user-name <username> --group-name <group-name>
+
+# Remove user from group
+aws iam remove-user-from-group --user-name <username> --group-name <group-name>
+
+# List groups for user
+aws iam get-groups-for-user --user-name <username>
+```
+
+#### Access keys
+```bash
+# List access keys for user
+aws iam list-access-keys --user-name <username>
+
+# Create access key
+aws iam create-access-key --user-name <username>
+
+# Delete access key
+aws iam delete-access-key --user-name <username> --access-key-id <access-key-id>
+
+# Update access key status
+aws iam update-access-key --user-name <username> --access-key-id <access-key-id> --status Inactive
+```
+
+### Policies and Roles
+
+#### Policy management
+```bash
+# List policies
+aws iam list-policies
+
+# List attached user policies
+aws iam list-attached-user-policies --user-name <username>
+
+# Attach policy to user
+aws iam attach-user-policy --user-name <username> --policy-arn <policy-arn>
+
+# Detach policy from user
+aws iam detach-user-policy --user-name <username> --policy-arn <policy-arn>
+
+# Get policy document
+aws iam get-policy --policy-arn <policy-arn>
+aws iam get-policy-version --policy-arn <policy-arn> --version-id <version-id>
+
+# Create policy
+aws iam create-policy --policy-name <policy-name> --policy-document file://policy.json
+```
+
+#### Role management
+```bash
+# List roles
+aws iam list-roles
+
+# Create role
+aws iam create-role --role-name <role-name> --assume-role-policy-document file://trust-policy.json
+
+# Delete role
+aws iam delete-role --role-name <role-name>
+
+# Attach policy to role
+aws iam attach-role-policy --role-name <role-name> --policy-arn <policy-arn>
+
+# List attached role policies
+aws iam list-attached-role-policies --role-name <role-name>
+```
+
+## Lambda
+
+<Callout type="info">
+AWS Lambda lets you run code without provisioning or managing servers. Use these commands to manage Lambda functions.
+</Callout>
+
+### Function Management
+
+#### Basic function operations
+```bash
+# List functions
+aws lambda list-functions
+
+# Get function details
+aws lambda get-function --function-name <function-name>
+
+# Get function configuration
+aws lambda get-function-configuration --function-name <function-name>
+
+# Create function
+aws lambda create-function \
+  --function-name <function-name> \
+  --runtime python3.9 \
+  --role <role-arn> \
+  --handler lambda_function.lambda_handler \
+  --zip-file fileb://function.zip
+
+# Update function code
+aws lambda update-function-code \
+  --function-name <function-name> \
+  --zip-file fileb://function.zip
+
+# Update function configuration
+aws lambda update-function-configuration \
+  --function-name <function-name> \
+  --timeout 30 \
+  --memory-size 256
+
+# Delete function
+aws lambda delete-function --function-name <function-name>
+```
+
+#### Function execution
+```bash
+# Invoke function synchronously
+aws lambda invoke \
+  --function-name <function-name> \
+  --payload '{"key": "value"}' \
+  output.json
+
+# Invoke function asynchronously
+aws lambda invoke \
+  --function-name <function-name> \
+  --invocation-type Event \
+  --payload '{"key": "value"}' \
+  output.json
+
+# Get function logs
+aws logs describe-log-groups --log-group-name-prefix /aws/lambda/<function-name>
+aws logs get-log-events --log-group-name /aws/lambda/<function-name> --log-stream-name <stream-name>
+```
+
+#### Aliases and versions
+```bash
+# Publish version
+aws lambda publish-version --function-name <function-name>
+
+# List versions
+aws lambda list-versions-by-function --function-name <function-name>
+
+# Create alias
+aws lambda create-alias \
+  --function-name <function-name> \
+  --name <alias-name> \
+  --function-version <version>
+
+# List aliases
+aws lambda list-aliases --function-name <function-name>
+
+# Update alias
+aws lambda update-alias \
+  --function-name <function-name> \
+  --name <alias-name> \
+  --function-version <new-version>
+
+# Delete alias
+aws lambda delete-alias --function-name <function-name> --name <alias-name>
+```
+
+## VPC (Virtual Private Cloud)
+
+<Callout type="tip">
+VPC lets you provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network.
+</Callout>
+
+### VPC Management
+
+#### VPC operations
+```bash
+# List VPCs
+aws ec2 describe-vpcs
+
+# Create VPC
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
+
+# Delete VPC
+aws ec2 delete-vpc --vpc-id <vpc-id>
+
+# Enable DNS hostnames
+aws ec2 modify-vpc-attribute --vpc-id <vpc-id> --enable-dns-hostnames
+
+# Enable DNS resolution
+aws ec2 modify-vpc-attribute --vpc-id <vpc-id> --enable-dns-support
+
+# Get VPC attributes
+aws ec2 describe-vpc-attribute --vpc-id <vpc-id> --attribute enableDnsHostnames
+```
+
+### Subnets
+
+#### Subnet management
+```bash
+# List subnets
+aws ec2 describe-subnets
+
+# Create subnet
+aws ec2 create-subnet \
+  --vpc-id <vpc-id> \
+  --cidr-block 10.0.1.0/24 \
+  --availability-zone us-west-2a
+
+# Delete subnet
+aws ec2 delete-subnet --subnet-id <subnet-id>
+
+# Enable auto-assign public IP
+aws ec2 modify-subnet-attribute \
+  --subnet-id <subnet-id> \
+  --map-public-ip-on-launch
+
+# Disable auto-assign public IP
+aws ec2 modify-subnet-attribute \
+  --subnet-id <subnet-id> \
+  --no-map-public-ip-on-launch
+```
+
+### Internet Gateway and NAT
+
+#### Internet Gateway
+```bash
+# Create Internet Gateway
+aws ec2 create-internet-gateway
+
+# Attach IGW to VPC
+aws ec2 attach-internet-gateway \
+  --internet-gateway-id <igw-id> \
+  --vpc-id <vpc-id>
+
+# Detach IGW from VPC
+aws ec2 detach-internet-gateway \
+  --internet-gateway-id <igw-id> \
+  --vpc-id <vpc-id>
+
+# Delete Internet Gateway
+aws ec2 delete-internet-gateway --internet-gateway-id <igw-id>
+```
+
+#### NAT Gateway
+```bash
+# Create NAT Gateway
+aws ec2 create-nat-gateway \
+  --subnet-id <public-subnet-id> \
+  --allocation-id <eip-allocation-id>
+
+# List NAT Gateways
+aws ec2 describe-nat-gateways
+
+# Delete NAT Gateway
+aws ec2 delete-nat-gateway --nat-gateway-id <nat-gateway-id>
+```
+
+### Route Tables
+
+#### Route table management
+```bash
+# List route tables
+aws ec2 describe-route-tables
+
+# Create route table
+aws ec2 create-route-table --vpc-id <vpc-id>
+
+# Create route to Internet Gateway
+aws ec2 create-route \
+  --route-table-id <route-table-id> \
+  --destination-cidr-block 0.0.0.0/0 \
+  --gateway-id <igw-id>
+
+# Create route to NAT Gateway
+aws ec2 create-route \
+  --route-table-id <route-table-id> \
+  --destination-cidr-block 0.0.0.0/0 \
+  --nat-gateway-id <nat-gateway-id>
+
+# Associate subnet with route table
+aws ec2 associate-route-table \
+  --subnet-id <subnet-id> \
+  --route-table-id <route-table-id>
+
+# Delete route
+aws ec2 delete-route \
+  --route-table-id <route-table-id> \
+  --destination-cidr-block 0.0.0.0/0
+```
+
+## RDS (Relational Database Service)
+
+<Callout type="info">
+RDS makes it easy to set up, operate, and scale a relational database in the cloud. Use these commands to manage database instances and clusters.
+</Callout>
+
+### Database Instances
+
+#### RDS instance management
+```bash
+# List databases
+aws rds describe-db-instances
+
+# List database names only
+aws rds describe-db-instances --query 'DBInstances[].DBInstanceIdentifier'
+
+# Get specific database details
+aws rds describe-db-instances --db-instance-identifier <db-instance-id>
+
+# Create database instance
+aws rds create-db-instance \
+  --db-instance-identifier <db-instance-id> \
+  --db-instance-class db.t3.micro \
+  --engine mysql \
+  --master-username admin \
+  --master-user-password <password> \
+  --allocated-storage 20
+
+# Delete database instance
+aws rds delete-db-instance \
+  --db-instance-identifier <db-instance-id> \
+  --skip-final-snapshot
+
+# Stop database instance
+aws rds stop-db-instance --db-instance-identifier <db-instance-id>
+
+# Start database instance
+aws rds start-db-instance --db-instance-identifier <db-instance-id>
+
+# Reboot database instance
+aws rds reboot-db-instance --db-instance-identifier <db-instance-id>
+```
+
+#### Database monitoring and backups
+```bash
+# List public databases
+aws rds describe-db-instances --query 'DBInstances[?PubliclyAccessible==`true`].[DBInstanceIdentifier,Endpoint.Address]'
+
+# List databases without deletion protection
+aws rds describe-db-instances \
+  --query 'DBInstances[?DeletionProtection==`false`].DBInstanceIdentifier' \
+  --output text
+
+# Create database snapshot
+aws rds create-db-snapshot \
+  --db-instance-identifier <db-instance-id> \
+  --db-snapshot-identifier <snapshot-id>
+
+# List snapshots
+aws rds describe-db-snapshots --db-instance-identifier <db-instance-id>
+
+# Restore from snapshot
+aws rds restore-db-instance-from-db-snapshot \
+  --db-instance-identifier <new-db-instance-id> \
+  --db-snapshot-identifier <snapshot-id>
+```
+
+### Database Clusters
+
+#### RDS cluster management
+```bash
+# Create database cluster
+aws rds create-db-cluster \
+  --db-cluster-identifier <cluster-id> \
+  --engine aurora-mysql \
+  --engine-version 5.7.12 \
+  --master-username master \
+  --master-user-password <password> \
+  --db-subnet-group-name default \
+  --vpc-security-group-ids <sg-id>
+
+# List database clusters
+aws rds describe-db-clusters
+
+# Delete database cluster
+aws rds delete-db-cluster \
+  --db-cluster-identifier <cluster-id> \
+  --skip-final-snapshot
+
+# Create cluster snapshot
+aws rds create-db-cluster-snapshot \
+  --db-cluster-identifier <cluster-id> \
+  --db-cluster-snapshot-identifier <snapshot-id>
+
+# Create read replica
+aws rds create-db-instance-read-replica \
+  --db-instance-identifier <replica-id> \
+  --source-db-instance-identifier <source-db-id>
+```
+
+## CloudFront
+
+<Callout type="tip">
+CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally.
+</Callout>
+
+### Distribution Management
+
+#### CloudFront operations
+```bash
+# List distributions
+aws cloudfront list-distributions
+
+# Get distribution details
+aws cloudfront get-distribution --id <distribution-id>
+
+# Get distribution configuration
+aws cloudfront get-distribution-config --id <distribution-id>
+
+# Create invalidation
+aws cloudfront create-invalidation \
+  --distribution-id <distribution-id> \
+  --paths '/index.html' '/css/*'
+
+# Invalidate everything
+aws cloudfront create-invalidation \
+  --distribution-id <distribution-id> \
+  --paths '/*'
+
+# List invalidations
+aws cloudfront list-invalidations --distribution-id <distribution-id>
+
+# Get invalidation status
+aws cloudfront get-invalidation \
+  --distribution-id <distribution-id> \
+  --id <invalidation-id>
+```
+
+#### Content deployment workflow
+```bash
+# Sync local files to S3 and invalidate CloudFront
+aws s3 sync ./website s3://<bucket-name> --acl public-read && \
+aws cloudfront create-invalidation \
+  --distribution-id <distribution-id> \
+  --paths '/*'
+
+# Update single file and invalidate
+aws s3 cp index.html s3://<bucket-name>/ --acl public-read && \
+aws cloudfront create-invalidation \
+  --distribution-id <distribution-id> \
+  --paths '/index.html'
+```
+
+## Monitoring and Logs
+
+<Callout type="info">
+CloudWatch provides monitoring and observability for AWS resources and applications. Use these commands to manage logs and metrics.
+</Callout>
+
+### CloudWatch Logs
+
+#### Log management
+```bash
+# List log groups
+aws logs describe-log-groups
+
+# List log streams
+aws logs describe-log-streams --log-group-name <log-group-name>
+
+# Get log events
+aws logs get-log-events \
+  --log-group-name <log-group-name> \
+  --log-stream-name <log-stream-name>
+
+# Filter log events
+aws logs filter-log-events \
+  --log-group-name <log-group-name> \
+  --filter-pattern "ERROR"
+
+# Create log group
+aws logs create-log-group --log-group-name <log-group-name>
+
+# Delete log group
+aws logs delete-log-group --log-group-name <log-group-name>
+```
+
+### CloudWatch Metrics
+
+#### Metrics and alarms
+```bash
+# List metrics
+aws cloudwatch list-metrics
+
+# Get metric statistics
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/EC2 \
+  --metric-name CPUUtilization \
+  --dimensions Name=InstanceId,Value=<instance-id> \
+  --statistics Average \
+  --start-time 2023-01-01T00:00:00Z \
+  --end-time 2023-01-01T01:00:00Z \
+  --period 300
+
+# Create alarm
+aws cloudwatch put-metric-alarm \
+  --alarm-name "high-cpu" \
+  --alarm-description "High CPU usage" \
+  --metric-name CPUUtilization \
+  --namespace AWS/EC2 \
+  --statistic Average \
+  --period 300 \
+  --threshold 80.0 \
+  --comparison-operator GreaterThanThreshold \
+  --evaluation-periods 2 \
+  --dimensions Name=InstanceId,Value=<instance-id>
+
+# List alarms
+aws cloudwatch describe-alarms
+
+# Delete alarm
+aws cloudwatch delete-alarms --alarm-names "high-cpu"
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these AWS CLI best practices for secure, efficient, and maintainable cloud operations.
+</Callout>
+
+- **Use IAM roles** instead of access keys when possible for better security
+- **Configure multiple profiles** for different environments and accounts
+- **Use --dry-run** flag to test commands before execution
+- **Implement proper tagging** strategy for resource management and cost tracking
+- **Use CloudFormation or CDK** for infrastructure as code instead of manual CLI commands
+- **Enable CloudTrail** for auditing and monitoring API calls
+- **Set up billing alerts** to monitor AWS costs and usage
+- **Use AWS CLI output filters** and queries to get specific information efficiently
+- **Keep AWS CLI updated** to access latest features and security patches
+- **Use specific regions** to avoid unexpected costs and latency
+- **Enable MFA** for sensitive operations and administrative access
+- **Regular security audits** of IAM policies and access patterns
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive AWS documentation and cloud infrastructure best practices</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://docs.aws.amazon.com/cli/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official AWS CLI Documentation
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://aws.amazon.com/cli/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            AWS CLI User Guide
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://docs.aws.amazon.com/cli/latest/reference/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            AWS CLI Command Reference
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

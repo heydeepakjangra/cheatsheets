@@ -1,0 +1,1487 @@
+---
+title: "TypeScript Cheatsheet"
+description: "Complete TypeScript cheatsheet covering types, interfaces, classes, generics, decorators, modules, and modern TypeScript development with React."
+image: "/images/cheatsheets/typescript.png"
+author: "Deepak Jangra"
+date: "2025-01-15"
+tags: ["typescript", "javascript", "types", "development"]
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# TypeScript Cheatsheet
+
+<div className="not-prose mb-8 flex flex-wrap gap-2">
+  <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    TypeScript
+  </span>
+  <span className="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+    JavaScript
+  </span>
+  <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+    Types
+  </span>
+  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+    Development
+  </span>
+</div>
+
+Complete reference for TypeScript programming language covering types, interfaces, classes, generics, decorators, modules, and modern development practices with React.
+
+## Quick Reference
+
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🎯 Types & Interfaces</h3>
+    <p className="text-sm text-muted-foreground">Basic types, custom types, interfaces, and type assertions</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">🏗️ Classes & Objects</h3>
+    <p className="text-sm text-muted-foreground">Classes, inheritance, access modifiers, and decorators</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⚡ Generics & Advanced</h3>
+    <p className="text-sm text-muted-foreground">Generic types, utility types, and advanced patterns</p>
+  </div>
+  <div className="rounded-lg border bg-card p-4">
+    <h3 className="font-semibold text-card-foreground mb-2">⚛️ React & Modules</h3>
+    <p className="text-sm text-muted-foreground">TypeScript with React, modules, and modern development</p>
+  </div>
+</div>
+
+## Getting Started
+
+<Callout type="info">
+TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. It's developed by Microsoft and adds static type definitions to JavaScript.
+</Callout>
+
+### TypeScript Basics
+
+#### Key characteristics
+- **Static typing** - Catch errors at compile time instead of runtime
+- **JavaScript superset** - All valid JavaScript is valid TypeScript
+- **Compile-time checks** - Enhanced IntelliSense and refactoring capabilities
+- **Modern JavaScript features** - Full ES6+ support with backward compatibility
+- **Gradual adoption** - Can be introduced incrementally to existing projects
+
+#### Setting up TypeScript
+```bash
+# Install TypeScript globally
+npm install -g typescript
+
+# Install for a specific project
+npm install --save-dev typescript
+
+# Initialize TypeScript configuration
+tsc --init
+
+# Compile TypeScript files
+tsc filename.ts
+
+# Watch mode for automatic compilation
+tsc --watch
+```
+
+#### Basic TypeScript configuration (tsconfig.json)
+```json
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+## Basic Types
+
+<Callout type="tip">
+TypeScript provides several basic types that correspond to JavaScript primitives, plus additional utility types for better type safety.
+</Callout>
+
+### Primitive Types
+
+#### Basic type assignments
+```typescript
+// String
+const name: string = "John Doe";
+const message: string = 'Hello, TypeScript!';
+const template: string = `Welcome, ${name}`;
+
+// Number
+const age: number = 25;
+const price: number = 19.99;
+const binary: number = 0b1010;
+const octal: number = 0o744;
+const hex: number = 0xf00d;
+
+// Boolean
+const isActive: boolean = true;
+const isComplete: boolean = false;
+
+// Undefined and null
+const undefinedValue: undefined = undefined;
+const nullValue: null = null;
+
+// Symbol
+const uniqueKey: symbol = Symbol("key");
+
+// BigInt
+const bigNumber: bigint = 100n;
+```
+
+#### Type inference
+```typescript
+// TypeScript automatically infers types
+let inferredString = "Hello"; // string
+let inferredNumber = 42;      // number
+let inferredBoolean = true;   // boolean
+
+// Multiple types (union types)
+let stringOrNumber: string | number = "hello";
+stringOrNumber = 42; // Valid
+
+// Literal types
+let direction: "up" | "down" | "left" | "right" = "up";
+let status: 200 | 404 | 500 = 200;
+```
+
+### Arrays and Tuples
+
+#### Array types
+```typescript
+// Array syntax variations
+const numbers: number[] = [1, 2, 3, 4, 5];
+const strings: Array<string> = ["hello", "world"];
+const mixed: (string | number)[] = ["hello", 42, "world"];
+
+// Multi-dimensional arrays
+const matrix: number[][] = [[1, 2], [3, 4]];
+
+// Read-only arrays
+const readOnlyNumbers: readonly number[] = [1, 2, 3];
+const readOnlyStrings: ReadonlyArray<string> = ["a", "b", "c"];
+```
+
+#### Tuple types
+```typescript
+// Basic tuples
+const coordinate: [number, number] = [10, 20];
+const nameAge: [string, number] = ["John", 30];
+
+// Named tuple elements (TypeScript 4.0+)
+const point: [x: number, y: number] = [10, 20];
+
+// Optional tuple elements
+const coordinates: [number, number, number?] = [10, 20];
+
+// Rest elements in tuples
+const stringNumberBooleans: [string, number, ...boolean[]] = 
+  ["hello", 42, true, false, true];
+
+// Destructuring tuples
+const [x, y] = coordinate;
+const [firstName, userAge] = nameAge;
+```
+
+### Special Types
+
+#### Any type
+```typescript
+// Any - disables type checking (use sparingly)
+let anything: any = "hello";
+anything = 42;
+anything = true;
+anything.foo.bar; // No type checking
+
+// Unknown - safer alternative to any
+let userInput: unknown = "hello";
+if (typeof userInput === "string") {
+  console.log(userInput.toUpperCase()); // Type guard required
+}
+```
+
+#### Void, never, and object
+```typescript
+// Void - absence of any type (typically for functions)
+function logMessage(): void {
+  console.log("Hello");
+}
+
+// Never - represents values that never occur
+function throwError(message: string): never {
+  throw new Error(message);
+}
+
+function infiniteLoop(): never {
+  while (true) {}
+}
+
+// Object type
+const person: object = { name: "John", age: 30 };
+
+// Better object typing
+const betterPerson: { name: string; age: number } = {
+  name: "John",
+  age: 30
+};
+```
+
+## Enums
+
+<Callout type="info">
+Enums allow you to define a set of named constants, making it easier to document intent and create distinct cases.
+</Callout>
+
+### Numeric and String Enums
+
+#### Basic enums
+```typescript
+// Numeric enum (auto-incrementing)
+enum Direction {
+  Up,    // 0
+  Down,  // 1
+  Left,  // 2
+  Right  // 3
+}
+
+// Custom numeric values
+enum StatusCode {
+  Success = 200,
+  NotFound = 404,
+  ServerError = 500
+}
+
+// String enums
+enum Color {
+  Red = "red",
+  Green = "green",
+  Blue = "blue"
+}
+
+// Mixed enums (not recommended)
+enum MixedEnum {
+  No = 0,
+  Yes = "YES"
+}
+```
+
+#### Using enums
+```typescript
+// Using enum values
+const userDirection = Direction.Up;
+const response = StatusCode.Success;
+const primaryColor = Color.Red;
+
+// Enum as a type
+function move(direction: Direction): void {
+  console.log(`Moving ${Direction[direction]}`);
+}
+
+move(Direction.Up); // Valid
+// move("up"); // Error: not assignable
+
+// Reverse mapping (numeric enums only)
+console.log(Direction[0]); // "Up"
+console.log(Direction.Up); // 0
+```
+
+#### Const enums
+```typescript
+// Const enums - inlined at compile time
+const enum LogLevel {
+  Error,
+  Warning,
+  Info,
+  Debug
+}
+
+const level = LogLevel.Error; // Inlined as 0
+```
+
+## Functions
+
+<Callout type="tip">
+TypeScript functions support type annotations for parameters, return types, and advanced features like function overloads and generic functions.
+</Callout>
+
+### Function Types
+
+#### Function declarations and expressions
+```typescript
+// Function declaration
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+// Function expression
+const multiply = function(a: number, b: number): number {
+  return a * b;
+};
+
+// Arrow function
+const subtract = (a: number, b: number): number => a - b;
+
+// Function with optional parameters
+function greet(name: string, title?: string): string {
+  return title ? `Hello, ${title} ${name}` : `Hello, ${name}`;
+}
+
+// Function with default parameters
+function createUser(name: string, age: number = 18): object {
+  return { name, age };
+}
+
+// Rest parameters
+function sum(...numbers: number[]): number {
+  return numbers.reduce((total, num) => total + num, 0);
+}
+```
+
+#### Function types and interfaces
+```typescript
+// Function type
+type MathOperation = (a: number, b: number) => number;
+
+const divide: MathOperation = (a, b) => a / b;
+
+// Function interface
+interface Calculator {
+  add: (a: number, b: number) => number;
+  subtract: (a: number, b: number) => number;
+}
+
+const calculator: Calculator = {
+  add: (a, b) => a + b,
+  subtract: (a, b) => a - b
+};
+
+// Call signatures
+interface StringProcessor {
+  (input: string): string;
+  version: string;
+}
+
+const processor: StringProcessor = (input: string) => input.toUpperCase();
+processor.version = "1.0.0";
+```
+
+#### Function overloads
+```typescript
+// Function overloads
+function createElement(tag: "div"): HTMLDivElement;
+function createElement(tag: "span"): HTMLSpanElement;
+function createElement(tag: "img"): HTMLImageElement;
+function createElement(tag: string): HTMLElement {
+  return document.createElement(tag);
+}
+
+// Usage
+const divElement = createElement("div");    // HTMLDivElement
+const spanElement = createElement("span");  // HTMLSpanElement
+const imgElement = createElement("img");    // HTMLImageElement
+```
+
+## Interfaces
+
+<Callout type="info">
+Interfaces define the shape of objects, providing a powerful way to define contracts within your code and with code outside of your project.
+</Callout>
+
+### Basic Interfaces
+
+#### Object interfaces
+```typescript
+// Basic interface
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+
+// Using the interface
+const user: User = {
+  name: "John Doe",
+  age: 30,
+  email: "john@example.com"
+};
+
+// Optional properties
+interface Product {
+  id: number;
+  name: string;
+  description?: string; // Optional
+  price: number;
+}
+
+// Readonly properties
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+
+const origin: Point = { x: 0, y: 0 };
+// origin.x = 10; // Error: Cannot assign to readonly property
+```
+
+#### Advanced interface features
+```typescript
+// Index signatures
+interface Dictionary {
+  [key: string]: string;
+}
+
+const translations: Dictionary = {
+  hello: "hola",
+  goodbye: "adiós"
+};
+
+// Method signatures
+interface Calculator {
+  add(a: number, b: number): number;
+  subtract(a: number, b: number): number;
+}
+
+// Extending interfaces
+interface Animal {
+  name: string;
+  age: number;
+}
+
+interface Dog extends Animal {
+  breed: string;
+  bark(): void;
+}
+
+const myDog: Dog = {
+  name: "Buddy",
+  age: 3,
+  breed: "Golden Retriever",
+  bark() {
+    console.log("Woof!");
+  }
+};
+```
+
+### Interface Inheritance and Implementation
+
+#### Multiple inheritance
+```typescript
+interface Flyable {
+  fly(): void;
+  altitude: number;
+}
+
+interface Swimmable {
+  swim(): void;
+  depth: number;
+}
+
+interface Duck extends Flyable, Swimmable {
+  quack(): void;
+}
+
+const duck: Duck = {
+  altitude: 100,
+  depth: 5,
+  fly() { console.log("Flying"); },
+  swim() { console.log("Swimming"); },
+  quack() { console.log("Quack!"); }
+};
+```
+
+#### Implementing interfaces
+```typescript
+// Class implementing interface
+interface Drawable {
+  draw(): void;
+  color: string;
+}
+
+class Circle implements Drawable {
+  color: string;
+  radius: number;
+
+  constructor(color: string, radius: number) {
+    this.color = color;
+    this.radius = radius;
+  }
+
+  draw(): void {
+    console.log(`Drawing a ${this.color} circle with radius ${this.radius}`);
+  }
+}
+
+// Function implementing interface
+interface Validator {
+  (value: string): boolean;
+}
+
+const emailValidator: Validator = (email: string): boolean => {
+  return email.includes("@");
+};
+```
+
+## Classes
+
+<Callout type="tip">
+TypeScript classes provide object-oriented programming features with type safety, access modifiers, and modern ES6+ class syntax.
+</Callout>
+
+### Basic Classes
+
+#### Class definition and usage
+```typescript
+class Person {
+  // Properties
+  name: string;
+  age: number;
+  private _id: string;
+  protected department: string;
+  readonly birthDate: Date;
+
+  // Constructor
+  constructor(name: string, age: number, department: string) {
+    this.name = name;
+    this.age = age;
+    this._id = Math.random().toString(36);
+    this.department = department;
+    this.birthDate = new Date();
+  }
+
+  // Methods
+  introduce(): string {
+    return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
+  }
+
+  // Getter
+  get id(): string {
+    return this._id;
+  }
+
+  // Setter
+  set id(value: string) {
+    if (value.length > 0) {
+      this._id = value;
+    }
+  }
+
+  // Static method
+  static createGuest(): Person {
+    return new Person("Guest", 0, "Visitor");
+  }
+}
+
+// Using the class
+const person = new Person("John", 30, "Engineering");
+console.log(person.introduce());
+console.log(person.id);
+
+const guest = Person.createGuest();
+```
+
+#### Parameter properties
+```typescript
+// Shorthand syntax for constructor parameters
+class User {
+  constructor(
+    public name: string,
+    private email: string,
+    protected role: string,
+    readonly id: number
+  ) {}
+
+  getEmail(): string {
+    return this.email;
+  }
+}
+
+const user = new User("John", "john@example.com", "admin", 1);
+console.log(user.name); // Accessible
+// console.log(user.email); // Error: private
+```
+
+### Inheritance and Abstract Classes
+
+#### Class inheritance
+```typescript
+// Base class
+class Animal {
+  protected name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  move(): void {
+    console.log(`${this.name} is moving`);
+  }
+}
+
+// Derived class
+class Dog extends Animal {
+  private breed: string;
+
+  constructor(name: string, breed: string) {
+    super(name); // Call parent constructor
+    this.breed = breed;
+  }
+
+  // Override parent method
+  move(): void {
+    console.log(`${this.name} is running`);
+  }
+
+  // New method
+  bark(): void {
+    console.log(`${this.name} barks: Woof!`);
+  }
+
+  // Getter for protected property
+  getName(): string {
+    return this.name;
+  }
+}
+
+const dog = new Dog("Buddy", "Golden Retriever");
+dog.move(); // "Buddy is running"
+dog.bark(); // "Buddy barks: Woof!"
+```
+
+#### Abstract classes
+```typescript
+// Abstract class - cannot be instantiated directly
+abstract class Shape {
+  protected color: string;
+
+  constructor(color: string) {
+    this.color = color;
+  }
+
+  // Abstract method - must be implemented by derived classes
+  abstract calculateArea(): number;
+
+  // Concrete method
+  getColor(): string {
+    return this.color;
+  }
+}
+
+class Rectangle extends Shape {
+  constructor(
+    color: string,
+    private width: number,
+    private height: number
+  ) {
+    super(color);
+  }
+
+  calculateArea(): number {
+    return this.width * this.height;
+  }
+}
+
+class Circle extends Shape {
+  constructor(color: string, private radius: number) {
+    super(color);
+  }
+
+  calculateArea(): number {
+    return Math.PI * this.radius ** 2;
+  }
+}
+
+const rectangle = new Rectangle("blue", 10, 20);
+const circle = new Circle("red", 5);
+
+console.log(rectangle.calculateArea()); // 200
+console.log(circle.calculateArea());    // ~78.54
+```
+
+## Generics
+
+<Callout type="info">
+Generics provide a way to create reusable components that work with multiple types while maintaining type safety and avoiding code duplication.
+</Callout>
+
+### Basic Generics
+
+#### Generic functions
+```typescript
+// Generic function
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+// Usage
+const numberResult = identity<number>(42);
+const stringResult = identity<string>("hello");
+const booleanResult = identity(true); // Type inference
+
+// Generic function with constraints
+interface Lengthwise {
+  length: number;
+}
+
+function logAndReturn<T extends Lengthwise>(arg: T): T {
+  console.log(arg.length);
+  return arg;
+}
+
+logAndReturn("hello");     // string has length
+logAndReturn([1, 2, 3]);   // array has length
+logAndReturn({ length: 5, value: "test" }); // object with length
+// logAndReturn(42);        // Error: number doesn't have length
+```
+
+#### Generic interfaces and types
+```typescript
+// Generic interface
+interface Container<T> {
+  value: T;
+  getValue(): T;
+  setValue(value: T): void;
+}
+
+class StringContainer implements Container<string> {
+  constructor(public value: string) {}
+
+  getValue(): string {
+    return this.value;
+  }
+
+  setValue(value: string): void {
+    this.value = value;
+  }
+}
+
+// Generic type alias
+type Pair<T, U> = {
+  first: T;
+  second: U;
+};
+
+const numberStringPair: Pair<number, string> = {
+  first: 42,
+  second: "hello"
+};
+
+// Generic array type
+type KeyValuePair<K, V> = {
+  key: K;
+  value: V;
+}[];
+
+const config: KeyValuePair<string, number> = [
+  { key: "port", value: 3000 },
+  { key: "timeout", value: 5000 }
+];
+```
+
+### Advanced Generics
+
+#### Generic classes
+```typescript
+class GenericRepository<T> {
+  private items: T[] = [];
+
+  add(item: T): void {
+    this.items.push(item);
+  }
+
+  get(index: number): T | undefined {
+    return this.items[index];
+  }
+
+  getAll(): T[] {
+    return [...this.items];
+  }
+
+  find(predicate: (item: T) => boolean): T | undefined {
+    return this.items.find(predicate);
+  }
+
+  remove(predicate: (item: T) => boolean): boolean {
+    const index = this.items.findIndex(predicate);
+    if (index !== -1) {
+      this.items.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+}
+
+// Usage
+interface User {
+  id: number;
+  name: string;
+}
+
+const userRepository = new GenericRepository<User>();
+userRepository.add({ id: 1, name: "John" });
+userRepository.add({ id: 2, name: "Jane" });
+
+const user = userRepository.find(u => u.id === 1);
+```
+
+#### Utility types
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+// Partial - makes all properties optional
+type PartialUser = Partial<User>;
+const updateUser: PartialUser = { name: "John" }; // Only name required
+
+// Required - makes all properties required
+interface OptionalUser {
+  id?: number;
+  name?: string;
+}
+type RequiredUser = Required<OptionalUser>;
+
+// Pick - select specific properties
+type UserSummary = Pick<User, "id" | "name">;
+const summary: UserSummary = { id: 1, name: "John" };
+
+// Omit - exclude specific properties
+type UserWithoutId = Omit<User, "id">;
+const newUser: UserWithoutId = { name: "John", email: "john@example.com", age: 30 };
+
+// Record - create type with specific keys and values
+type UserRoles = Record<"admin" | "user" | "guest", string[]>;
+const roles: UserRoles = {
+  admin: ["read", "write", "delete"],
+  user: ["read", "write"],
+  guest: ["read"]
+};
+
+// Extract and Exclude
+type StringOrNumber = string | number | boolean;
+type StringOnly = Extract<StringOrNumber, string>; // string
+type NotString = Exclude<StringOrNumber, string>;  // number | boolean
+```
+
+## Modules and Namespaces
+
+<Callout type="tip">
+TypeScript supports ES6 modules and provides namespaces for organizing code. Modern TypeScript development primarily uses ES6 modules.
+</Callout>
+
+### ES6 Modules
+
+#### Export and import
+```typescript
+// math.ts - Named exports
+export const PI = 3.14159;
+
+export function add(a: number, b: number): number {
+  return a + b;
+}
+
+export function multiply(a: number, b: number): number {
+  return a * b;
+}
+
+export class Calculator {
+  add(a: number, b: number): number {
+    return a + b;
+  }
+}
+
+// user.ts - Default export
+interface User {
+  id: number;
+  name: string;
+}
+
+export default class UserService {
+  private users: User[] = [];
+
+  addUser(user: User): void {
+    this.users.push(user);
+  }
+
+  getUser(id: number): User | undefined {
+    return this.users.find(u => u.id === id);
+  }
+}
+
+// main.ts - Importing
+import { PI, add, Calculator } from './math';
+import UserService from './user';
+import * as MathUtils from './math';
+
+console.log(PI);
+console.log(add(2, 3));
+
+const calc = new Calculator();
+const userService = new UserService();
+
+// Using namespace import
+console.log(MathUtils.multiply(4, 5));
+```
+
+#### Re-exports
+```typescript
+// utils/index.ts - Barrel export
+export { add, multiply, Calculator } from './math';
+export { default as UserService } from './user';
+export * from './helpers';
+
+// main.ts - Clean imports
+import { add, UserService, Calculator } from './utils';
+```
+
+### Namespaces
+
+#### Basic namespaces
+```typescript
+// Legacy pattern - use modules instead when possible
+namespace Geometry {
+  export interface Point {
+    x: number;
+    y: number;
+  }
+
+  export function distance(p1: Point, p2: Point): number {
+    return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+  }
+
+  export namespace Shapes {
+    export class Circle {
+      constructor(public center: Point, public radius: number) {}
+
+      area(): number {
+        return Math.PI * this.radius ** 2;
+      }
+    }
+  }
+}
+
+// Usage
+const point1: Geometry.Point = { x: 0, y: 0 };
+const point2: Geometry.Point = { x: 3, y: 4 };
+const dist = Geometry.distance(point1, point2);
+
+const circle = new Geometry.Shapes.Circle(point1, 5);
+```
+
+## TypeScript with React
+
+<Callout type="info">
+TypeScript provides excellent support for React development with strong typing for props, state, hooks, and event handlers.
+</Callout>
+
+### React Component Types
+
+#### Function components
+```typescript
+import React from 'react';
+
+// Basic props interface
+interface GreetingProps {
+  name: string;
+  age?: number;
+  onClick?: () => void;
+}
+
+// Function component
+const Greeting: React.FC<GreetingProps> = ({ name, age, onClick }) => {
+  return (
+    <div onClick={onClick}>
+      <h1>Hello, {name}!</h1>
+      {age && <p>Age: {age}</p>}
+    </div>
+  );
+};
+
+// Alternative syntax (preferred)
+function Welcome({ name, age }: GreetingProps) {
+  return (
+    <div>
+      <h1>Welcome, {name}!</h1>
+      {age && <p>You are {age} years old</p>}
+    </div>
+  );
+}
+
+// Component with children
+interface ContainerProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const Container = ({ title, children }: ContainerProps) => {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <div>{children}</div>
+    </div>
+  );
+};
+```
+
+#### Class components
+```typescript
+import React, { Component } from 'react';
+
+interface CounterProps {
+  initialValue: number;
+  onValueChange?: (value: number) => void;
+}
+
+interface CounterState {
+  count: number;
+}
+
+class Counter extends Component<CounterProps, CounterState> {
+  constructor(props: CounterProps) {
+    super(props);
+    this.state = {
+      count: props.initialValue
+    };
+  }
+
+  increment = (): void => {
+    this.setState(
+      prevState => ({ count: prevState.count + 1 }),
+      () => {
+        this.props.onValueChange?.(this.state.count);
+      }
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        <p>Count: {this.state.count}</p>
+        <button onClick={this.increment}>Increment</button>
+      </div>
+    );
+  }
+}
+```
+
+### React Hooks with TypeScript
+
+#### useState and useEffect
+```typescript
+import React, { useState, useEffect } from 'react';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const UserProfile: React.FC = () => {
+  // useState with explicit type
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  // useEffect with cleanup
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/user');
+        const userData: User = await response.json();
+        setUser(userData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+
+    // Cleanup function
+    return () => {
+      // Cleanup logic
+    };
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!user) return <div>No user found</div>;
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+    </div>
+  );
+};
+```
+
+#### Custom hooks
+```typescript
+import { useState, useEffect } from 'react';
+
+// Custom hook with generic type
+function useApi<T>(url: string): {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+} {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result: T = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+// Usage
+interface Post {
+  id: number;
+  title: string;
+  body: string;
+}
+
+const BlogPost: React.FC<{ postId: number }> = ({ postId }) => {
+  const { data: post, loading, error } = useApi<Post>(`/api/posts/${postId}`);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!post) return <div>Post not found</div>;
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </article>
+  );
+};
+```
+
+### Event Handling
+
+#### Event types
+```typescript
+import React, { ChangeEvent, FormEvent, MouseEvent } from 'react';
+
+const FormExample: React.FC = () => {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+
+  // Input change handler
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setName(event.target.value);
+  };
+
+  // Form submit handler
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    console.log({ name, email });
+  };
+
+  // Button click handler
+  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>): void => {
+    console.log('Button clicked', event.currentTarget);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={name}
+        onChange={handleNameChange}
+        placeholder="Name"
+      />
+      <input
+        type="email"
+        value={email}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+        placeholder="Email"
+      />
+      <button type="submit" onClick={handleButtonClick}>
+        Submit
+      </button>
+    </form>
+  );
+};
+```
+
+## Decorators
+
+<Callout type="warn">
+Decorators are an experimental feature in TypeScript. Enable them by setting `"experimentalDecorators": true` in your tsconfig.json.
+</Callout>
+
+### Basic Decorators
+
+#### Class decorators
+```typescript
+// Class decorator
+function sealed(constructor: Function) {
+  Object.seal(constructor);
+  Object.seal(constructor.prototype);
+}
+
+function entity(tableName: string) {
+  return function <T extends { new (...args: any[]): {} }>(constructor: T) {
+    return class extends constructor {
+      tableName = tableName;
+    };
+  };
+}
+
+// Using decorators
+@sealed
+@entity("users")
+class User {
+  constructor(public name: string, public email: string) {}
+}
+
+const user = new User("John", "john@example.com");
+console.log((user as any).tableName); // "users"
+```
+
+#### Method decorators
+```typescript
+// Method decorator
+function log(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  const method = descriptor.value;
+
+  descriptor.value = function (...args: any[]) {
+    console.log(`Calling ${propertyName} with arguments:`, args);
+    const result = method.apply(this, args);
+    console.log(`Method ${propertyName} returned:`, result);
+    return result;
+  };
+}
+
+// Property decorator
+function readonly(target: any, propertyName: string) {
+  const descriptor: PropertyDescriptor = {
+    writable: false
+  };
+  return descriptor;
+}
+
+class Calculator {
+  @readonly
+  version = "1.0.0";
+
+  @log
+  add(a: number, b: number): number {
+    return a + b;
+  }
+
+  @log
+  multiply(a: number, b: number): number {
+    return a * b;
+  }
+}
+
+const calc = new Calculator();
+calc.add(2, 3); // Logs method call and result
+// calc.version = "2.0.0"; // Error: readonly property
+```
+
+#### Parameter decorators
+```typescript
+function validate(target: any, methodName: string, parameterIndex: number) {
+  console.log(`Parameter at index ${parameterIndex} in method ${methodName} needs validation`);
+}
+
+class UserService {
+  createUser(@validate name: string, @validate email: string): void {
+    console.log(`Creating user: ${name}, ${email}`);
+  }
+}
+```
+
+## Advanced Types
+
+<Callout type="tip">
+TypeScript provides powerful advanced type features including mapped types, conditional types, and template literal types for sophisticated type manipulation.
+</Callout>
+
+### Mapped Types
+
+#### Basic mapped types
+```typescript
+// Make all properties optional
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
+// Make all properties required
+type Required<T> = {
+  [P in keyof T]-?: T[P];
+};
+
+// Make all properties readonly
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P];
+};
+
+// Custom mapped type - add prefix to keys
+type Getters<T> = {
+  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];
+};
+
+interface User {
+  name: string;
+  age: number;
+}
+
+type UserGetters = Getters<User>;
+// Result: { getName: () => string; getAge: () => number; }
+```
+
+### Conditional Types
+
+#### Basic conditional types
+```typescript
+// Basic conditional type
+type IsString<T> = T extends string ? true : false;
+
+type Test1 = IsString<string>;  // true
+type Test2 = IsString<number>;  // false
+
+// More complex conditional types
+type NonNullable<T> = T extends null | undefined ? never : T;
+
+type ApiResponse<T> = T extends string 
+  ? { message: T } 
+  : T extends number 
+    ? { code: T } 
+    : { data: T };
+
+type StringResponse = ApiResponse<string>;  // { message: string }
+type NumberResponse = ApiResponse<number>;  // { code: number }
+type ObjectResponse = ApiResponse<object>;  // { data: object }
+
+// Distributive conditional types
+type ToArray<T> = T extends any ? T[] : never;
+type ArrayTypes = ToArray<string | number>; // string[] | number[]
+```
+
+### Template Literal Types
+
+#### String manipulation
+```typescript
+// Template literal types
+type EventName<T extends string> = `on${Capitalize<T>}`;
+type ClickEvent = EventName<"click">; // "onClick"
+
+// Advanced template literals
+type HTTPMethods = "get" | "post" | "put" | "delete";
+type APIEndpoint<T extends string> = `/${T}`;
+type FullAPIPath<Method extends HTTPMethods, Path extends string> = 
+  `${Uppercase<Method>} ${APIEndpoint<Path>}`;
+
+type UserAPI = FullAPIPath<"get", "users">; // "GET /users"
+type CreateUserAPI = FullAPIPath<"post", "users">; // "POST /users"
+
+// Extract parts from template literals
+type ExtractRouteParams<T extends string> = 
+  T extends `${string}/:${infer Param}/${infer Rest}`
+    ? Param | ExtractRouteParams<`/${Rest}`>
+    : T extends `${string}/:${infer Param}`
+      ? Param
+      : never;
+
+type Params = ExtractRouteParams<"/users/:id/posts/:postId">; // "id" | "postId"
+```
+
+## Best Practices
+
+<Callout type="tip">
+Follow these TypeScript best practices for writing maintainable, type-safe code that leverages the full power of the TypeScript compiler.
+</Callout>
+
+- **Use strict mode** - Enable `"strict": true` in tsconfig.json for maximum type safety
+- **Prefer interfaces over type aliases** for object shapes that might be extended
+- **Use type aliases for unions** and complex type expressions
+- **Leverage type inference** - don't over-annotate when TypeScript can infer types
+- **Use const assertions** (`as const`) for immutable values and better literal types
+- **Prefer composition over inheritance** - use interfaces and mixins
+- **Use discriminated unions** for type-safe state management
+- **Avoid `any`** - use `unknown` or proper typing instead
+- **Use utility types** like `Partial`, `Pick`, `Omit` for type transformations
+- **Write type guards** for runtime type checking
+- **Use namespace imports** sparingly - prefer named imports for better tree-shaking
+
+---
+
+<div className="not-prose mt-12 pt-8 border-t border-border">
+  <div className="container mx-auto grid gap-8 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:gap-16 sm:px-8 sm:py-16">
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Learn More</p>
+      <p>Explore comprehensive TypeScript documentation and advanced development patterns</p>
+    </div>
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-foreground">Resources</p>
+      <ul className="flex flex-col gap-3">
+        <li>
+          <a 
+            href="https://www.typescriptlang.org/docs/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            Official TypeScript Documentation
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://react-typescript-cheatsheet.netlify.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            React TypeScript Cheatsheet
+          </a>
+        </li>
+        <li>
+          <a 
+            href="https://www.typescriptlang.org/play" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            TypeScript Playground
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
